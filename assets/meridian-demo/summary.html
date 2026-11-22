@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proxy — Meeting Summary</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    body { background: #0F172A; color: #F1F5F9; }
+    .card { background: #1E293B; border: 1px solid #334155; border-radius: 16px; }
+    .tag-proxy { background: rgba(16,185,129,0.15); color: #34D399; border: 1px solid rgba(16,185,129,0.3); border-radius: 6px; padding: 3px 10px; font-size: 11px; font-weight: 600; }
+    .tag-meridian { background: rgba(99,102,241,0.15); color: #818CF8; border: 1px solid rgba(99,102,241,0.3); border-radius: 6px; padding: 3px 10px; font-size: 11px; font-weight: 600; }
+    .btn-secondary { background: linear-gradient(135deg, #10B981, #059669); color: white; border-radius: 10px; padding: 10px 22px; font-weight: 600; transition: all 0.2s; display: inline-block; font-size: 14px; }
+    .btn-primary { background: linear-gradient(135deg, #6366F1, #4F46E5); color: white; border-radius: 10px; padding: 10px 22px; font-weight: 600; transition: all 0.2s; display: inline-block; font-size: 14px; }
+    .decision-chip { background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2); border-radius: 10px; padding: 12px 16px; }
+    .action-chip { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); border-radius: 10px; padding: 12px 16px; }
+    .question-chip { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.2); border-radius: 10px; padding: 12px 16px; }
+    .priority-badge { font-size: 11px; font-weight: 700; border-radius: 6px; padding: 2px 8px; }
+    .priority-high { background: rgba(239,68,68,0.15); color: #FCA5A5; }
+    .priority-med { background: rgba(251,191,36,0.15); color: #FCD34D; }
+    .avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 11px; flex-shrink: 0; }
+    .stat-pill { background: #162032; border: 1px solid #334155; border-radius: 10px; padding: 14px; text-align: center; }
+    .sunrise-glow { background: linear-gradient(135deg, rgba(251,191,36,0.05), rgba(16,185,129,0.05)); border: 1px solid rgba(251,191,36,0.2); border-radius: 16px; }
+  </style>
+</head>
+<body>
+
+<nav class="flex items-center justify-between px-8 py-5 border-b border-slate-800">
+  <div class="flex items-center gap-4">
+    <a href="index.html" class="flex items-center gap-2">
+      <span class="text-2xl">🌐</span>
+      <span class="font-bold text-white text-lg">Meridian <span class="text-slate-500 font-normal">×</span> <span class="text-emerald-400">Proxy</span></span>
+    </a>
+    <span class="text-slate-700">/</span>
+    <span class="text-slate-400 text-sm">Meeting Summary</span>
+  </div>
+  <div class="flex items-center gap-3">
+    <button onclick="navigator.clipboard.writeText('Summary copied!')" class="text-slate-400 hover:text-white text-sm transition-colors border border-slate-700 rounded-lg px-3 py-1.5">📋 Copy</button>
+    <button class="text-slate-400 hover:text-white text-sm transition-colors border border-slate-700 rounded-lg px-3 py-1.5">📧 Email to Priya</button>
+    <button class="text-slate-400 hover:text-white text-sm transition-colors border border-slate-700 rounded-lg px-3 py-1.5">💬 Post to Slack</button>
+  </div>
+</nav>
+
+<div class="max-w-4xl mx-auto px-8 py-10">
+
+  <!-- SUNRISE HERO -->
+  <div class="sunrise-glow p-6 mb-8 flex items-center gap-5">
+    <div style="font-size:3rem;">🌅</div>
+    <div>
+      <div class="text-2xl font-bold mb-1">Good morning, Priya!</div>
+      <p class="text-slate-400">While you slept, Proxy attended your Sprint Sync. Here's everything that happened — decisions made, your action items, and questions that need your attention.</p>
+      <div class="flex items-center gap-3 mt-3">
+        <span class="tag-proxy">PROXY</span>
+        <span class="text-slate-500 text-xs">Sprint Sync · Thursday Oct 5 · 10:30 PM – 11:15 PM IST · 45 min</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="grid grid-cols-4 gap-4 mb-8">
+    <div class="stat-pill">
+      <div class="text-2xl font-bold text-emerald-400">4</div>
+      <div class="text-xs text-slate-500 mt-1">Questions answered</div>
+    </div>
+    <div class="stat-pill">
+      <div class="text-2xl font-bold text-yellow-400">2</div>
+      <div class="text-xs text-slate-500 mt-1">Escalated to you</div>
+    </div>
+    <div class="stat-pill">
+      <div class="text-2xl font-bold text-indigo-400">3</div>
+      <div class="text-xs text-slate-500 mt-1">Decisions made</div>
+    </div>
+    <div class="stat-pill">
+      <div class="text-2xl font-bold text-slate-300">0</div>
+      <div class="text-xs text-slate-500 mt-1">Guardrail violations</div>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="card p-6 mb-6">
+    <h2 class="font-semibold mb-3 flex items-center gap-2"><span>📋</span> Meeting Summary</h2>
+    <p class="text-slate-300 leading-relaxed text-sm">The team reviewed Sprint 41 progress. The sprint is on track at 94% completion. The timezone conflict detector feature — your work — was well received by the team. Arjun noted it's already flagging two long-standing scheduling issues for the Berlin and London teams. The main discussion was around the summary page feature slip risk due to pending design mockups. The team agreed to give the design team until Thursday EOD before deciding to push to Sprint 42.</p>
+  </div>
+
+  <!-- DECISIONS -->
+  <div class="card p-6 mb-6">
+    <h2 class="font-semibold mb-4 flex items-center gap-2"><span>✅</span> Decisions Made</h2>
+    <div class="space-y-3">
+      <div class="decision-chip">
+        <div class="text-sm font-medium">Summary page feature will wait until Thursday EOD for design mockups</div>
+        <div class="text-xs text-slate-500 mt-1">Decision by: Full team · If no mockups → feature slips to Sprint 42</div>
+      </div>
+      <div class="decision-chip">
+        <div class="text-sm font-medium">Timezone conflict detector to be presented at all-hands next Monday</div>
+        <div class="text-xs text-slate-500 mt-1">Decision by: Arjun · Will showcase Priya's work to the wider org</div>
+      </div>
+      <div class="decision-chip">
+        <div class="text-sm font-medium">Sprint 42 kickoff moved to Tuesday Oct 13 to allow Monday all-hands</div>
+        <div class="text-xs text-slate-500 mt-1">Decision by: Arjun · Agreed by full team</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTION ITEMS -->
+  <div class="card p-6 mb-6">
+    <h2 class="font-semibold mb-4 flex items-center gap-2"><span>🎯</span> Your Action Items</h2>
+    <div class="space-y-3">
+
+      <div class="action-chip flex items-start gap-3">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="priority-badge priority-high">HIGH</span>
+            <span class="text-sm font-medium">Follow up with Emma on summary page mockups</span>
+          </div>
+          <div class="text-xs text-slate-500">Due: Thursday Oct 5, EOD · If not received → inform Arjun to slip to Sprint 42</div>
+        </div>
+      </div>
+
+      <div class="action-chip flex items-start gap-3">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="priority-badge priority-med">MED</span>
+            <span class="text-sm font-medium">Prepare demo slides for all-hands presentation</span>
+          </div>
+          <div class="text-xs text-slate-500">Due: Monday Oct 9 · 5-minute demo of the timezone conflict detector</div>
+        </div>
+      </div>
+
+      <div class="action-chip flex items-start gap-3">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="priority-badge priority-med">MED</span>
+            <span class="text-sm font-medium">Answer Lucas's question about Q4 budget allocation</span>
+          </div>
+          <div class="text-xs text-slate-500">Due: Friday Oct 6 · Proxy escalated this — needs your direct response</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ESCALATED QUESTIONS -->
+  <div class="card p-6 mb-6">
+    <h2 class="font-semibold mb-4 flex items-center gap-2"><span>❓</span> Questions Proxy Couldn't Answer — Needs Your Response</h2>
+    <div class="space-y-3">
+
+      <div class="question-chip">
+        <div class="flex items-center gap-2 mb-1">
+          <div class="avatar" style="background:#D97706">L</div>
+          <span class="text-sm font-semibold">Lucas Becker asked:</span>
+        </div>
+        <p class="text-sm text-slate-300 ml-9">"Can we approve a 15% budget increase for the Q4 infra upgrade?"</p>
+        <p class="text-xs text-yellow-400 mt-2 ml-9">Proxy responded: "That needs Priya's decision — I've noted it." ✓</p>
+      </div>
+
+      <div class="question-chip">
+        <div class="flex items-center gap-2 mb-1">
+          <div class="avatar" style="background:#6D28D9">E</div>
+          <span class="text-sm font-semibold">Emma Clarke asked:</span>
+        </div>
+        <p class="text-sm text-slate-300 ml-9">"Is Priya available for a design review call this Friday afternoon?"</p>
+        <p class="text-xs text-yellow-400 mt-2 ml-9">Proxy responded: "I'll check with Priya on her availability." ✓</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MERIDIAN FOOTER -->
+  <div class="card p-5 mb-8" style="border-color: rgba(99,102,241,0.3);">
+    <div class="flex items-center gap-3">
+      <span class="tag-meridian">MERIDIAN</span>
+      <span class="text-sm text-slate-400">Equity update: Priya's off-hours burden this week has been reduced from <span class="text-red-400 font-semibold">82%</span> to <span class="text-emerald-400 font-semibold">25%</span> after applying the fair rotation schedule.</span>
+    </div>
+  </div>
+
+  <div class="flex gap-4">
+    <a href="dashboard.html" class="btn-primary">← Back to Dashboard</a>
+    <a href="meeting.html" class="btn-secondary">View Meeting Transcript</a>
+  </div>
+
+</div>
+
+</body>
+</html>

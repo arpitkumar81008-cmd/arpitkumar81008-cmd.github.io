@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proxy — Briefing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    body { background: #0F172A; color: #F1F5F9; }
+    .card { background: #1E293B; border: 1px solid #334155; border-radius: 16px; }
+    .tag-proxy { background: rgba(16,185,129,0.15); color: #34D399; border: 1px solid rgba(16,185,129,0.3); border-radius: 6px; padding: 3px 10px; font-size: 11px; font-weight: 600; }
+    .btn-primary { background: linear-gradient(135deg, #6366F1, #4F46E5); color: white; border-radius: 10px; padding: 12px 28px; font-weight: 600; transition: all 0.2s; display: inline-block; font-size: 15px; cursor: pointer; border: none; }
+    .btn-secondary { background: linear-gradient(135deg, #10B981, #059669); color: white; border-radius: 10px; padding: 12px 28px; font-weight: 600; transition: all 0.2s; display: inline-block; font-size: 15px; }
+    .btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(16,185,129,0.4); }
+    .step { background: #162032; border: 1px solid #334155; border-radius: 12px; }
+    .step-active { border-color: #10B981; }
+    .step-num { width: 32px; height: 32px; border-radius: 50%; background: rgba(16,185,129,0.2); color: #34D399; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+    .doc-chip { background: #0F172A; border: 1px solid #334155; border-radius: 8px; padding: 8px 14px; display: flex; align-items: center; gap-3: auto; }
+    .rule-chip { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 8px; padding: 6px 14px; font-size: 13px; color: #FCA5A5; }
+    .rule-chip-green { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; padding: 6px 14px; font-size: 13px; color: #6EE7B7; }
+    input, textarea { background: #162032; border: 1px solid #334155; border-radius: 8px; color: #F1F5F9; padding: 10px 14px; width: 100%; font-family: Inter, sans-serif; font-size: 14px; }
+    input:focus, textarea:focus { outline: none; border-color: #10B981; }
+    .proxy-avatar { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg,#10B981,#6366F1); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+<nav class="flex items-center justify-between px-8 py-5 border-b border-slate-800">
+  <div class="flex items-center gap-4">
+    <a href="index.html" class="flex items-center gap-2">
+      <span class="text-2xl">🌐</span>
+      <span class="font-bold text-white text-lg">Meridian <span class="text-slate-500 font-normal">×</span> <span class="text-emerald-400">Proxy</span></span>
+    </a>
+    <span class="text-slate-700">/</span>
+    <a href="dashboard.html" class="text-slate-400 text-sm hover:text-white">Dashboard</a>
+    <span class="text-slate-700">/</span>
+    <span class="text-slate-400 text-sm">Brief Proxy</span>
+  </div>
+</nav>
+
+<div class="max-w-4xl mx-auto px-8 py-10">
+
+  <!-- HEADER -->
+  <div class="flex items-start justify-between mb-8">
+    <div>
+      <div class="flex items-center gap-3 mb-2">
+        <span class="tag-proxy">PROXY</span>
+        <span class="text-slate-500 text-sm">Sprint Sync — Thursday Oct 5, 10:30 PM IST</span>
+      </div>
+      <h1 class="text-3xl font-bold">Brief Your Proxy</h1>
+      <p class="text-slate-400 mt-1">Set up what Proxy knows, how it speaks, and what it's allowed to say.</p>
+    </div>
+    <div class="flex items-center gap-3 card p-4">
+      <div class="proxy-avatar">🤖</div>
+      <div>
+        <div class="font-semibold text-sm">Proxy for Priya Sharma</div>
+        <div class="text-xs text-emerald-400 mt-1">● Ready to brief</div>
+        <div class="text-xs text-slate-500">Sprint Sync meeting</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="space-y-5">
+
+    <!-- STEP 1: Docs -->
+    <div class="step step-active p-6">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="step-num">1</div>
+        <h2 class="font-semibold">Upload Your Documents</h2>
+      </div>
+      <p class="text-slate-400 text-sm mb-4">Proxy will only answer from these documents. It won't hallucinate or make up information.</p>
+
+      <div class="space-y-2 mb-4">
+        <div class="doc-chip flex items-center justify-between p-3">
+          <div class="flex items-center gap-3">
+            <span class="text-lg">📄</span>
+            <div>
+              <div class="text-sm font-medium">Sprint_Q4_Progress_Report.pdf</div>
+              <div class="text-xs text-slate-500">2.3 MB · Uploaded · ✅ 847 chunks indexed</div>
+            </div>
+          </div>
+          <span class="text-emerald-400 text-xs">Ready</span>
+        </div>
+        <div class="doc-chip flex items-center justify-between p-3">
+          <div class="flex items-center gap-3">
+            <span class="text-lg">📊</span>
+            <div>
+              <div class="text-sm font-medium">Feature_Roadmap_Oct2026.pptx</div>
+              <div class="text-xs text-slate-500">4.1 MB · Uploaded · ✅ 312 chunks indexed</div>
+            </div>
+          </div>
+          <span class="text-emerald-400 text-xs">Ready</span>
+        </div>
+        <div class="doc-chip flex items-center justify-between p-3">
+          <div class="flex items-center gap-3">
+            <span class="text-lg">📝</span>
+            <div>
+              <div class="text-sm font-medium">My_Talking_Points.docx</div>
+              <div class="text-xs text-slate-500">128 KB · Uploaded · ✅ 43 chunks indexed</div>
+            </div>
+          </div>
+          <span class="text-emerald-400 text-xs">Ready</span>
+        </div>
+      </div>
+
+      <div class="border-2 border-dashed border-slate-700 rounded-xl p-6 text-center text-slate-500 text-sm hover:border-slate-500 transition-colors cursor-pointer">
+        + Drop more files here (PDF, DOCX, PPTX, TXT)
+      </div>
+    </div>
+
+    <!-- STEP 2: Talking Points -->
+    <div class="step p-6">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="step-num">2</div>
+        <h2 class="font-semibold">Your Talking Points</h2>
+      </div>
+      <p class="text-slate-400 text-sm mb-4">Proxy will open the meeting with your update. Write it how you'd say it.</p>
+      <textarea rows="5" class="w-full" readonly style="cursor:default;">Sprint 41 is on track. We shipped the timezone conflict detector on Tuesday — it's already flagging 3 recurring meetings for the team. Currently at 94% of our sprint goal with 2 days remaining.
+
+Main blocker: waiting on the design team for the summary page mockups. I've pinged Emma twice — if we don't have them by EOD Thursday, we may need to push the summary feature to Sprint 42.
+
+Otherwise no major blockers. Happy to take questions.</textarea>
+    </div>
+
+    <!-- STEP 3: Rules -->
+    <div class="step p-6">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="step-num">3</div>
+        <h2 class="font-semibold">Guardrails & Rules</h2>
+      </div>
+      <p class="text-slate-400 text-sm mb-4">What Proxy is <strong class="text-red-300">never</strong> allowed to do — and what it should <strong class="text-emerald-300">always</strong> do.</p>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <div class="text-xs text-red-400 font-semibold mb-2 uppercase tracking-wider">🚫 Never allowed</div>
+          <div class="space-y-2">
+            <div class="rule-chip">Discuss pricing or budget numbers</div>
+            <div class="rule-chip">Commit to deadlines or timelines</div>
+            <div class="rule-chip">Approve any requests</div>
+            <div class="rule-chip">Answer questions outside my docs</div>
+          </div>
+        </div>
+        <div>
+          <div class="text-xs text-emerald-400 font-semibold mb-2 uppercase tracking-wider">✅ Always required</div>
+          <div class="space-y-2">
+            <div class="rule-chip-green">Introduce itself as an AI proxy for Priya</div>
+            <div class="rule-chip-green">Cite source document for every answer</div>
+            <div class="rule-chip-green">Say "I'll check with Priya" when unsure</div>
+            <div class="rule-chip-green">Log all unanswered questions</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4: Launch -->
+    <div class="step p-6" style="border-color: rgba(16,185,129,0.4);">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="step-num" style="background:rgba(16,185,129,0.25);color:#34D399;">4</div>
+        <h2 class="font-semibold">Ready to Deploy</h2>
+      </div>
+      <div class="grid grid-cols-3 gap-4 text-sm mb-6">
+        <div class="bg-slate-900 rounded-xl p-4 text-center">
+          <div class="text-2xl mb-1">📄</div>
+          <div class="font-semibold">1,202</div>
+          <div class="text-slate-500 text-xs">Document chunks indexed</div>
+        </div>
+        <div class="bg-slate-900 rounded-xl p-4 text-center">
+          <div class="text-2xl mb-1">📋</div>
+          <div class="font-semibold">5 talking points</div>
+          <div class="text-slate-500 text-xs">Ready to present</div>
+        </div>
+        <div class="bg-slate-900 rounded-xl p-4 text-center">
+          <div class="text-2xl mb-1">🛡️</div>
+          <div class="font-semibold">8 guardrails</div>
+          <div class="text-slate-500 text-xs">Protecting your reputation</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="meeting.html" class="btn-secondary">🚀 Deploy Proxy to Meeting</a>
+        <div class="text-slate-500 text-sm">Proxy will join as <strong class="text-white">"AI Proxy for Priya Sharma"</strong></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

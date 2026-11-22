@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proxy — Live Meeting</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    body { background: #0F172A; color: #F1F5F9; }
+    .card { background: #1E293B; border: 1px solid #334155; border-radius: 16px; }
+    .tag-proxy { background: rgba(16,185,129,0.15); color: #34D399; border: 1px solid rgba(16,185,129,0.3); border-radius: 6px; padding: 3px 10px; font-size: 11px; font-weight: 600; }
+    .btn-secondary { background: linear-gradient(135deg, #10B981, #059669); color: white; border-radius: 10px; padding: 12px 28px; font-weight: 600; transition: all 0.2s; display: inline-block; font-size: 15px; }
+    .proxy-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg,#10B981,#6366F1); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .person-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0; }
+    .msg { border-radius: 12px; padding: 12px 16px; max-width: 85%; }
+    .msg-proxy { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); }
+    .msg-human { background: #1E293B; border: 1px solid #334155; }
+    .msg-system { background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2); text-align: center; font-size: 12px; color: #818CF8; border-radius: 8px; padding: 6px 14px; }
+    .source-badge { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); border-radius: 6px; padding: 2px 8px; font-size: 11px; color: #6EE7B7; display: inline-block; margin-top: 6px; }
+    .escalate-badge { background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.2); border-radius: 6px; padding: 2px 8px; font-size: 11px; color: #FCD34D; display: inline-block; margin-top: 6px; }
+    .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #EF4444; animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .typing-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #34D399; margin: 0 2px; animation: bounce 1.2s ease-in-out infinite; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} }
+    .chat-input { background: #162032; border: 1px solid #334155; border-radius: 10px; color: #F1F5F9; padding: 10px 16px; font-size: 14px; font-family: Inter, sans-serif; }
+    .chat-input:focus { outline: none; border-color: #10B981; }
+    #chatLog { height: 440px; overflow-y: auto; scroll-behavior: smooth; }
+    #chatLog::-webkit-scrollbar { width: 4px; }
+    #chatLog::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+<nav class="flex items-center justify-between px-8 py-5 border-b border-slate-800">
+  <div class="flex items-center gap-4">
+    <a href="index.html" class="flex items-center gap-2">
+      <span class="text-2xl">🌐</span>
+      <span class="font-bold text-white text-lg">Meridian <span class="text-slate-500 font-normal">×</span> <span class="text-emerald-400">Proxy</span></span>
+    </a>
+    <span class="text-slate-700">/</span>
+    <span class="text-slate-400 text-sm">Live Meeting</span>
+  </div>
+  <div class="flex items-center gap-3">
+    <div class="live-dot"></div>
+    <span class="text-red-400 text-sm font-semibold">LIVE</span>
+    <span class="text-slate-500 text-sm">Sprint Sync — 10:30 PM IST</span>
+  </div>
+</nav>
+
+<div class="max-w-5xl mx-auto px-8 py-8">
+  <div class="grid grid-cols-3 gap-6">
+
+    <!-- MEETING PARTICIPANTS -->
+    <div class="space-y-4">
+      <div class="card p-5">
+        <h3 class="text-sm font-semibold text-slate-400 mb-4 uppercase tracking-wider">Participants</h3>
+        <div class="space-y-3">
+
+          <div class="flex items-center gap-3">
+            <div class="proxy-avatar">🤖</div>
+            <div>
+              <div class="text-sm font-semibold text-emerald-400">AI Proxy for Priya</div>
+              <div class="text-xs text-slate-500">Bangalore · 10:30 PM IST</div>
+              <span class="tag-proxy" style="font-size:10px;padding:1px 7px;">PRESENTING</span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="person-avatar" style="background:#0369A1">A</div>
+            <div>
+              <div class="text-sm font-semibold">Arjun Mehta</div>
+              <div class="text-xs text-slate-500">New York · 9:00 AM</div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="person-avatar" style="background:#6D28D9">E</div>
+            <div>
+              <div class="text-sm font-semibold">Emma Clarke</div>
+              <div class="text-xs text-slate-500">London · 2:00 PM</div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="person-avatar" style="background:#D97706">L</div>
+            <div>
+              <div class="text-sm font-semibold">Lucas Becker</div>
+              <div class="text-xs text-slate-500">Berlin · 3:00 PM</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="card p-5">
+        <h3 class="text-sm font-semibold text-slate-400 mb-3 uppercase tracking-wider">Proxy Status</h3>
+        <div class="space-y-2 text-xs text-slate-400">
+          <div class="flex justify-between">
+            <span>Docs loaded</span>
+            <span class="text-emerald-400">✓ 3 files</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Knowledge chunks</span>
+            <span class="text-emerald-400">✓ 1,202</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Guardrails active</span>
+            <span class="text-emerald-400">✓ 8 rules</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Questions escalated</span>
+            <span class="text-yellow-400" id="escalateCount">0</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Questions answered</span>
+            <span class="text-emerald-400" id="answerCount">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card p-5">
+        <h3 class="text-sm font-semibold text-slate-400 mb-3 uppercase tracking-wider">Quick Questions</h3>
+        <div class="space-y-2">
+          <button onclick="askQ(0)" class="w-full text-left text-xs bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 transition-colors">What's the sprint progress?</button>
+          <button onclick="askQ(1)" class="w-full text-left text-xs bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 transition-colors">What's blocking the team?</button>
+          <button onclick="askQ(2)" class="w-full text-left text-xs bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 transition-colors">Can we approve a budget increase?</button>
+          <button onclick="askQ(3)" class="w-full text-left text-xs bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 transition-colors">When will the roadmap be ready?</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHAT -->
+    <div class="col-span-2 card flex flex-col" style="height:640px;">
+      <div class="px-5 py-4 border-b border-slate-700 flex items-center gap-3">
+        <div class="proxy-avatar" style="width:36px;height:36px;font-size:16px;">🤖</div>
+        <div>
+          <div class="font-semibold text-sm">AI Proxy for Priya Sharma</div>
+          <div class="text-xs text-emerald-400">● Active · Answering from your documents</div>
+        </div>
+      </div>
+
+      <div class="flex-1 overflow-y-auto px-5 py-5 space-y-4" id="chatLog">
+        <!-- System join message -->
+        <div class="msg-system mx-auto">🤖 AI Proxy for Priya Sharma has joined the meeting</div>
+
+        <!-- Proxy intro -->
+        <div class="flex items-start gap-3">
+          <div class="proxy-avatar" style="width:36px;height:36px;font-size:16px;">🤖</div>
+          <div>
+            <div class="text-xs text-slate-500 mb-1">AI Proxy for Priya · 10:31 PM IST</div>
+            <div class="msg msg-proxy">
+              <p class="text-sm">Hi everyone — I'm Priya's AI Proxy. Priya has briefed me with her documents and talking points for today's sprint sync. I'll present her update and answer questions from her materials. Anything outside those materials, I'll flag for Priya to follow up on.</p>
+              <p class="text-sm mt-2">Here's Priya's update:</p>
+              <p class="text-sm mt-2 text-emerald-300 font-medium">Sprint 41 is on track — we're at 94% of our sprint goal with 2 days remaining. We shipped the timezone conflict detector on Tuesday and it's already flagging recurring meetings across the team.</p>
+              <p class="text-sm mt-2">Main blocker: waiting on design mockups for the summary page. If we don't have them by EOD Thursday, the summary feature may need to slip to Sprint 42.</p>
+              <div class="source-badge">📄 My_Talking_Points.docx</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input -->
+      <div class="px-5 py-4 border-t border-slate-700 flex gap-3">
+        <input class="chat-input flex-1" id="chatInput" placeholder="Ask Proxy a question..." onkeydown="if(event.key==='Enter')sendMsg()" />
+        <button onclick="sendMsg()" class="btn-secondary" style="padding:10px 20px;font-size:14px;">Send</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="mt-6 flex justify-between items-center">
+    <a href="briefing.html" class="text-slate-500 text-sm hover:text-white">← Back to Briefing</a>
+    <a href="summary.html" class="btn-secondary">End Meeting → View Summary</a>
+  </div>
+
+</div>
+
+<script>
+let answerCount = 0;
+let escalateCount = 0;
+
+const qas = [
+  {
+    q: "What's the sprint progress?",
+    a: "Priya's sprint is at 94% of its goal with 2 days remaining. The timezone conflict detector shipped on Tuesday. The only pending item is the summary page, which depends on design mockups from Emma's team.",
+    source: "Sprint_Q4_Progress_Report.pdf · Page 3",
+    escalated: false
+  },
+  {
+    q: "What's blocking the team?",
+    a: "The primary blocker is the design team's summary page mockups. Priya has followed up with Emma twice. If they don't arrive by EOD Thursday, the summary feature will likely slip to Sprint 42.",
+    source: "My_Talking_Points.docx · Section: Blockers",
+    escalated: false
+  },
+  {
+    q: "Can we approve a budget increase?",
+    a: "I'm not able to approve or commit to any budget changes — that's outside what Priya has authorized me to discuss. I've logged this as an open question for Priya to address directly. She'll follow up tomorrow.",
+    source: null,
+    escalated: true
+  },
+  {
+    q: "When will the roadmap be ready?",
+    a: "Based on the Feature Roadmap document, the Q4 roadmap review is scheduled for October 15th. The current draft covers the timezone equity dashboard and Proxy deployment features through end of quarter.",
+    source: "Feature_Roadmap_Oct2026.pptx · Slide 4",
+    escalated: false
+  }
+];
+
+function askQ(i) {
+  const qa = qas[i];
+  addHumanMsg("Arjun", qa.q);
+  setTimeout(() => showTyping(), 400);
+  setTimeout(() => {
+    removeTyping();
+    addProxyMsg(qa.a, qa.source, qa.escalated);
+    if (qa.escalated) {
+      escalateCount++;
+      document.getElementById('escalateCount').textContent = escalateCount;
+    } else {
+      answerCount++;
+      document.getElementById('answerCount').textContent = answerCount;
+    }
+  }, 2000);
+}
+
+function sendMsg() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  addHumanMsg("Arjun", text);
+  setTimeout(() => showTyping(), 400);
+  setTimeout(() => {
+    removeTyping();
+    addProxyMsg(
+      "I don't have specific information about that in Priya's documents. I've logged this question for Priya to answer directly. She'll follow up with you tomorrow morning.",
+      null,
+      true
+    );
+    escalateCount++;
+    document.getElementById('escalateCount').textContent = escalateCount;
+  }, 2200);
+}
+
+function addHumanMsg(name, text) {
+  const log = document.getElementById('chatLog');
+  log.innerHTML += `
+    <div class="flex items-start gap-3 justify-end">
+      <div>
+        <div class="text-xs text-slate-500 mb-1 text-right">${name} · now</div>
+        <div class="msg msg-human text-sm">${text}</div>
+      </div>
+      <div class="person-avatar" style="background:#0369A1">A</div>
+    </div>`;
+  log.scrollTop = log.scrollHeight;
+}
+
+function showTyping() {
+  const log = document.getElementById('chatLog');
+  log.innerHTML += `
+    <div class="flex items-start gap-3" id="typingIndicator">
+      <div class="proxy-avatar" style="width:36px;height:36px;font-size:16px;">🤖</div>
+      <div class="msg msg-proxy" style="padding:14px 18px;">
+        <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
+      </div>
+    </div>`;
+  log.scrollTop = log.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typingIndicator');
+  if (t) t.remove();
+}
+
+function addProxyMsg(text, source, escalated) {
+  const log = document.getElementById('chatLog');
+  const badge = escalated
+    ? `<div class="escalate-badge">⚠ Logged for Priya to follow up · Not in my documents</div>`
+    : source ? `<div class="source-badge">📄 ${source}</div>` : '';
+  log.innerHTML += `
+    <div class="flex items-start gap-3">
+      <div class="proxy-avatar" style="width:36px;height:36px;font-size:16px;">🤖</div>
+      <div>
+        <div class="text-xs text-slate-500 mb-1">AI Proxy for Priya · just now</div>
+        <div class="msg msg-proxy">
+          <p class="text-sm">${text}</p>
+          ${badge}
+        </div>
+      </div>
+    </div>`;
+  log.scrollTop = log.scrollHeight;
+}
+</script>
+
+</body>
+</html>

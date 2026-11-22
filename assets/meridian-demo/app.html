@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meridian × Proxy Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    
+    * { font-family: 'Inter', sans-serif; }
+    body { background: #0F172A; color: #F1F5F9; }
+    .gradient-text {
+      background: linear-gradient(135deg, #6366F1 0%, #10B981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .card { background: #1E293B; border: 1px solid #334155; border-radius: 16px; }
+    .btn-primary {
+      background: linear-gradient(135deg, #6366F1, #4F46E5);
+      color: white; border-radius: 10px; padding: 12px 28px;
+      font-weight: 600; transition: all 0.2s; display: inline-block;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99,102,241,0.4); }
+    .btn-secondary {
+      background: linear-gradient(135deg, #10B981, #059669);
+      color: white; border-radius: 10px; padding: 12px 28px;
+      font-weight: 600; transition: all 0.2s; display: inline-block;
+    }
+    .btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(16,185,129,0.4); }
+    .tag-meridian { background: rgba(99,102,241,0.15); color: #818CF8; border: 1px solid rgba(99,102,241,0.3); border-radius: 6px; padding: 3px 10px; font-size: 12px; font-weight: 600; }
+    .tag-proxy { background: rgba(16,185,129,0.15); color: #34D399; border: 1px solid rgba(16,185,129,0.3); border-radius: 6px; padding: 3px 10px; font-size: 12px; font-weight: 600; }
+    .globe-icon { font-size: 4rem; animation: float 4s ease-in-out infinite; }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    .stat-card { background: linear-gradient(135deg, #1E293B, #162032); border: 1px solid #334155; }
+    nav a { color: #94A3B8; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+    nav a:hover { color: #F1F5F9; }
+    .hero-badge { background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3); border-radius: 999px; padding: 6px 16px; font-size: 13px; color: #818CF8; font-weight: 500; display: inline-block; margin-bottom: 24px; }
+  
+    * { font-family: 'Inter', sans-serif; }
+    body { background: #0F172A; color: #F1F5F9; }
+    .card { background: #1E293B; border: 1px solid #334155; border-radius: 16px; }
+    .tag-meridian { background: rgba(99,102,241,0.15); color: #818CF8; border: 1px solid rgba(99,102,241,0.3); border-radius: 6px; padding: 3px 10px; font-size: 11px; font-weight: 600; }
+    nav a { color: #94A3B8; font-size: 14px; font-weight: 500; }
+    .burn-low { background: rgba(16,185,129,0.1); color: #34D399; border: 1px solid rgba(16,185,129,0.3); }
+    .burn-med { background: rgba(251,191,36,0.1); color: #FCD34D; border: 1px solid rgba(251,191,36,0.3); }
+    .burn-high { background: rgba(239,68,68,0.1); color: #FCA5A5; border: 1px solid rgba(239,68,68,0.3); }
+    .burn-badge { border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
+    .alert-bar { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 12px; }
+    .btn-primary { background: linear-gradient(135deg, #6366F1, #4F46E5); color: white; border-radius: 10px; padding: 10px 22px; font-weight: 600; transition: all 0.2s; display: inline-block; font-size: 14px; }
+    .btn-secondary { background: linear-gradient(135deg, #10B981, #059669); color: white; border-radius: 10px; padding: 10px 22px; font-weight: 600; transition: all 0.2s; display: inline-block; font-size: 14px; }
+    .btn-ghost { background: rgba(255,255,255,0.05); color: #94A3B8; border: 1px solid #334155; border-radius: 10px; padding: 10px 22px; font-weight: 600; transition: all 0.2s; display: inline-block; font-size: 14px; }
+    .meeting-row { background: #162032; border: 1px solid #334155; border-radius: 12px; }
+    .tz-pill { background: #0F172A; border: 1px solid #334155; border-radius: 6px; padding: 4px 10px; font-size: 12px; }
+    .avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+  
+    * { font-family: 'Inter', sans-serif; }
+    body { background: #0F172A; color: #F1F5F9; }
+    .card { background: #1E293B; border: 1px solid #334155; border-radius: 16px; }
+    .tag-meridian { background: rgba(99,102,241,0.15); color: #818CF8; border: 1px solid rgba(99,102,241,0.3); border-radius: 6px; padding: 3px 10px; font-size: 11px; font-weight: 600; }
+    .btn-primary { background: linear-gradient(135deg, #6366F1, #4F46E5); color: white; border-radius: 10px; padding: 10px 22px; font-weight: 600; transition: all 0.2s; display: inline-block; font-size: 14px; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99,102,241,0.4); }
+    .cell-great { background: rgba(16,185,129,0.15); color: #34D399; border: 1px solid rgba(16,185,129,0.25); border-radius: 8px; padding: 6px 10px; font-size: 12px; text-align:center; }
+    .cell-ok { background: rgba(251,191,36,0.10); color: #FCD34D; border: 1px solid rgba(251,191,36,0.2); border-radius: 8px; padding: 6px 10px; font-size: 12px; text-align:center; }
+    .cell-bad { background: rgba(239,68,68,0.10); color: #FCA5A5; border: 1px solid rgba(239,68,68,0.2); border-radius: 8px; padding: 6px 10px; font-size: 12px; text-align:center; }
+    .old-cell { background: rgba(239,68,68,0.08); }
+    .avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; flex-shrink: 0; }
+    .checkmark { display: none; }
+  
+    * { font-family: 'Inter', sans-serif; }
+    body { background: #0F172A; color: #F1F5F9; }
+    .card { background: #1E293B; border: 1px solid #334155; border-radius: 16px; }
+    .tag-proxy { background: rgba(16,185,129,0.15); color: #34D399; border: 1px solid rgba(16,185,129,0.3); border-radius: 6px; padding: 3px 10px; font-size: 11px; font-weight: 600; }
+    .btn-primary { background: linear-gradient(135deg, #6366F1, #4F46E5); color: white; border-radius: 10px; padding: 12px 28px; font-weight: 600; transition: all 0.2s; display: inline-block; font-size: 15px; cursor: pointer; border: none; }
+    .btn-secondary { background: linear-gradient(135deg, #10B981, #059669); color: white; border-radius: 10px; padding: 12px 28px; font-weight: 600; transition: all 0.2s; display: inline-block; font-size: 15px; }
+    .btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(16,185,129,0.4); }
+    .step { background: #162032; border: 1px solid #334155; border-radius: 12px; }
+    .step-active { border-color: #10B981; }
+    .step-num { width: 32px; height: 32px; border-radius: 50%; background: rgba(16,185,129,0.2); color: #34D399; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+    .doc-chip { background: #0F172A; border: 1px solid #334155; border-radius: 8px; padding: 8px 14px; display: flex; align-items: center; gap-3: auto; }
+    .rule-chip { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 8px; padding: 6px 14px; font-size: 13px; color: #FCA5A5; }
+    .rule-chip-green { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; padding: 6px 14px; font-size: 13px; color: #6EE7B7; }
+    input, textarea { background: #162032; border: 1px solid #334155; border-radius: 8px; color: #F1F5F9; padding: 10px 14px; width: 100%; font-family: Inter, sans-serif; font-size: 14px; }
+    input:focus, textarea:focus { outline: none; border-color: #10B981; }
+    .proxy-avatar { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg,#10B981,#6366F1); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+  
+    * { font-family: 'Inter', sans-serif; }
+    body { background: #0F172A; color: #F1F5F9; }
+    .card { background: #1E293B; border: 1px solid #334155; border-radius: 16px; }
+    .tag-proxy { background: rgba(16,185,129,0.15); color: #34D399; border: 1px solid rgba(16,185,129,0.3); border-radius: 6px; padding: 3px 10px; font-size: 11px; font-weight: 600; }
+    .btn-secondary { background: linear-gradient(135deg, #10B981, #059669); color: white; border-radius: 10px; padding: 12px 28px; font-weight: 600; transition: all 0.2s; display: inline-block; font-size: 15px; }
+    .proxy-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg,#10B981,#6366F1); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .person-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0; }
+    .msg { border-radius: 12px; padding: 12px 16px; max-width: 85%; }
+    .msg-proxy { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); }
+    .msg-human { background: #1E293B; border: 1px solid #334155; }
+    .msg-system { background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2); text-align: center; font-size: 12px; color: #818CF8; border-radius: 8px; padding: 6px 14px; }
+    .source-badge { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); border-radius: 6px; padding: 2px 8px; font-size: 11px; color: #6EE7B7; display: inline-block; margin-top: 6px; }
+    .escalate-badge { background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.2); border-radius: 6px; padding: 2px 8px; font-size: 11px; color: #FCD34D; display: inline-block; margin-top: 6px; }
+    .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #EF4444; animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .typing-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #34D399; margin: 0 2px; animation: bounce 1.2s ease-in-out infinite; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} }
+    .chat-input { background: #162032; border: 1px solid #334155; border-radius: 10px; color: #F1F5F9; padding: 10px 16px; font-size: 14px; font-family: Inter, sans-serif; }
+    .chat-input:focus { outline: none; border-color: #10B981; }
+    #chatLog { height: 440px; overflow-y: auto; scroll-behavior: smooth; }
+    #chatLog::-webkit-scrollbar { width: 4px; }
+    #chatLog::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+  
+    * { font-family: 'Inter', sans-serif; }
+    body { background: #0F172A; color: #F1F5F9; }
+    .card { background: #1E293B; border: 1px solid #334155; border-radius: 16px; }
+    .tag-proxy { background: rgba(16,185,129,0.15); color: #34D399; border: 1px solid rgba(16,185,129,0.3); border-radius: 6px; padding: 3px 10px; font-size: 11px; font-weight: 600; }
+    .tag-meridian { background: rgba(99,102,241,0.15); color: #818CF8; border: 1px solid rgba(99,102,241,0.3); border-radius: 6px; padding: 3px 10px; font-size: 11px; font-weight: 600; }
+    .btn-secondary { background: linear-gradient(135deg, #10B981, #059669); color: white; border-radius: 10px; padding: 10px 22px; font-weight: 600; transition: all 0.2s; display: inline-block; font-size: 14px; }
+    .btn-primary { background: linear-gradient(135deg, #6366F1, #4F46E5); color: white; border-radius: 10px; padding: 10px 22px; font-weight: 600; transition: all 0.2s; display: inline-block; font-size: 14px; }
+    .decision-chip { background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2); border-radius: 10px; padding: 12px 16px; }
+    .action-chip { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); border-radius: 10px; padding: 12px 16px; }
+    .question-chip { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.2); border-radius: 10px; padding: 12px 16px; }
+    .priority-badge { font-size: 11px; font-weight: 700; border-radius: 6px; padding: 2px 8px; }
+    .priority-high { background: rgba(239,68,68,0.15); color: #FCA5A5; }
+    .priority-med { background: rgba(251,191,36,0.15); color: #FCD34D; }
+    .avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 11px; flex-shrink: 0; }
+    .stat-pill { background: #162032; border: 1px solid #334155; border-radius: 10px; padding: 14px; text-align: center; }
+    .sunrise-glow { background: linear-gradient(135deg, rgba(251,191,36,0.05), rgba(16,185,129,0.05)); border: 1px solid rgba(251,191,36,0.2); border-radius: 16px; }
+  
+  </style>
+  <script>
+    function navigate(viewId) {
+        document.querySelectorAll('.view').forEach(el => el.style.display = 'none');
+        document.getElementById('view-' + viewId).style.display = 'block';
+        window.scrollTo(0, 0);
+        if (viewId === 'dashboard' && typeof window.initChart === 'function') {
+            window.initChart();
+        }
+    }
+  </script>
+</head>
+<body>
+  <div id="view-index" class="view" style="display:block;">
+
+
+<!-- NAV -->
+<nav class="flex items-center justify-between px-8 py-5 border-b border-slate-800">
+  <div class="flex items-center gap-2">
+    <span class="text-2xl">🌐</span>
+    <span class="font-bold text-white text-lg">Meridian <span class="text-slate-500">×</span> <span class="text-emerald-400">Proxy</span></span>
+  </div>
+  <div class="flex items-center gap-8">
+    <a href="#" onclick="navigate('dashboard'); return false;">Dashboard</a>
+    <a href="#" onclick="navigate('briefing'); return false;">Proxy</a>
+    <a href="#" onclick="navigate('summary'); return false;">Summary</a>
+    <a href="#" onclick="navigate('dashboard'); return false;" class="btn-primary" style="padding:8px 20px;font-size:14px;">See Demo →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="text-center py-28 px-6 max-w-4xl mx-auto">
+  <div class="globe-icon mb-6">🌐</div>
+  <div class="hero-badge">⚡ Built for the timezone era of work</div>
+  <h1 class="text-6xl font-extrabold leading-tight mb-6">
+    End <span class="gradient-text">Timezone Burnout</span><br/>for remote teams
+  </h1>
+  <p class="text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+    <strong class="text-indigo-400">Meridian</strong> rotates meetings so no one always pays the price.<br/>
+    <strong class="text-emerald-400">Proxy</strong> attends unavoidable meetings for you — while you sleep.
+  </p>
+  <div class="flex justify-center gap-4 flex-wrap">
+    <a href="#" onclick="navigate('dashboard'); return false;" class="btn-primary">See Meridian →</a>
+    <a href="#" onclick="navigate('briefing'); return false;" class="btn-secondary">Meet Proxy →</a>
+  </div>
+</section>
+
+<!-- STAT BAR -->
+<section class="border-y border-slate-800 py-10 bg-slate-900/40">
+  <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 px-8 text-center">
+    <div>
+      <div class="text-3xl font-bold text-indigo-400">73M</div>
+      <div class="text-sm text-slate-500 mt-1">Remote workers globally</div>
+    </div>
+    <div>
+      <div class="text-3xl font-bold text-red-400">11%</div>
+      <div class="text-sm text-slate-500 mt-1">Sync drop per hour of timezone gap</div>
+    </div>
+    <div>
+      <div class="text-3xl font-bold text-yellow-400">30%</div>
+      <div class="text-sm text-slate-500 mt-1">Productivity lost to poor TZ coordination</div>
+    </div>
+    <div>
+      <div class="text-3xl font-bold text-emerald-400">77%</div>
+      <div class="text-sm text-slate-500 mt-1">Employees report burnout (Deloitte 2024)</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT CARDS -->
+<section class="max-w-5xl mx-auto px-8 py-24 grid md:grid-cols-2 gap-8">
+
+  <!-- Meridian -->
+  <div class="card p-8">
+    <span class="tag-meridian">MERIDIAN</span>
+    <h2 class="text-2xl font-bold mt-4 mb-3">Make coordination fair</h2>
+    <p class="text-slate-400 leading-relaxed mb-6">When a meeting is scheduled, Meridian checks who's been burning the midnight oil. It rotates the time slot so the sacrifice is shared — not silently dumped on one timezone.</p>
+    <div class="space-y-3 mb-8">
+      <div class="flex items-start gap-3">
+        <span class="text-indigo-400 mt-1">🔄</span>
+        <div>
+          <div class="font-semibold text-sm">Fair Rotation Scheduler</div>
+          <div class="text-slate-500 text-sm">No single timezone always gets the 10 PM slot</div>
+        </div>
+      </div>
+      <div class="flex items-start gap-3">
+        <span class="text-indigo-400 mt-1">📊</span>
+        <div>
+          <div class="font-semibold text-sm">Timezone Equity Dashboard</div>
+          <div class="text-slate-500 text-sm">Burn risk scores before someone quits</div>
+        </div>
+      </div>
+    </div>
+    <a href="#" onclick="navigate('dashboard'); return false;" class="btn-primary" style="font-size:14px;padding:10px 22px;">Open Dashboard →</a>
+  </div>
+
+  <!-- Proxy -->
+  <div class="card p-8" style="border-color: rgba(16,185,129,0.3);">
+    <span class="tag-proxy">PROXY</span>
+    <h2 class="text-2xl font-bold mt-4 mb-3">Your AI in the meeting</h2>
+    <p class="text-slate-400 leading-relaxed mb-6">When a meeting can't be rescheduled, send Proxy. It joins as your clearly-labeled AI, presents your update, answers questions from your documents only, and sends you a summary at sunrise.</p>
+    <div class="space-y-3 mb-8">
+      <div class="flex items-start gap-3">
+        <span class="text-emerald-400 mt-1">🎤</span>
+        <div>
+          <div class="font-semibold text-sm">Presents your update</div>
+          <div class="text-slate-500 text-sm">From your talking points and slides</div>
+        </div>
+      </div>
+      <div class="flex items-start gap-3">
+        <span class="text-emerald-400 mt-1">🧠</span>
+        <div>
+          <div class="font-semibold text-sm">Answers from your docs only</div>
+          <div class="text-slate-500 text-sm">Never guesses. Escalates when unsure.</div>
+        </div>
+      </div>
+    </div>
+    <a href="#" onclick="navigate('briefing'); return false;" class="btn-secondary" style="font-size:14px;padding:10px 22px;">Brief Proxy →</a>
+  </div>
+
+</section>
+
+<!-- HOW THEY CONNECT -->
+<section class="max-w-4xl mx-auto px-8 pb-24 text-center">
+  <h2 class="text-3xl font-bold mb-4">One mission. Two tools.</h2>
+  <p class="text-slate-400 mb-12">Meridian tries to fix the meeting. If it can't — Proxy handles it.</p>
+  <div class="card p-8 text-left">
+    <div class="flex flex-col md:flex-row items-center gap-6 text-sm text-slate-300">
+      <div class="flex-1 text-center">
+        <div class="text-2xl mb-2">📅</div>
+        <div class="font-semibold">Meeting scheduled</div>
+        <div class="text-slate-500 text-xs mt-1">10:30 PM for Priya</div>
+      </div>
+      <div class="text-slate-600 text-2xl">→</div>
+      <div class="flex-1 text-center">
+        <div class="text-2xl mb-2">🌐</div>
+        <div class="font-semibold text-indigo-400">Meridian checks equity</div>
+        <div class="text-slate-500 text-xs mt-1">Can we reschedule fairly?</div>
+      </div>
+      <div class="text-slate-600 text-2xl">→</div>
+      <div class="flex-1 text-center">
+        <div class="text-2xl mb-2">🤖</div>
+        <div class="font-semibold text-emerald-400">Proxy attends</div>
+        <div class="text-slate-500 text-xs mt-1">If meeting can't move</div>
+      </div>
+      <div class="text-slate-600 text-2xl">→</div>
+      <div class="flex-1 text-center">
+        <div class="text-2xl mb-2">🌅</div>
+        <div class="font-semibold">Priya wakes to a summary</div>
+        <div class="text-slate-500 text-xs mt-1">Decisions. Action items. Done.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="text-center py-8 text-slate-600 text-sm border-t border-slate-800">
+  Built for the timezone era of work · Meridian × Proxy · 2026
+</footer>
+
+
+</div><div id="view-dashboard" class="view" style="display:none;">
+
+
+<!-- NAV -->
+<nav class="flex items-center justify-between px-8 py-5 border-b border-slate-800">
+  <div class="flex items-center gap-4">
+    <a href="#" onclick="navigate('index'); return false;" class="flex items-center gap-2">
+      <span class="text-2xl">🌐</span>
+      <span class="font-bold text-white text-lg">Meridian <span class="text-slate-500 font-normal">×</span> <span class="text-emerald-400">Proxy</span></span>
+    </a>
+    <span class="text-slate-700">/</span>
+    <span class="text-slate-400 text-sm">Dashboard</span>
+  </div>
+  <div class="flex items-center gap-8">
+    <a href="#" onclick="navigate('dashboard'); return false;" class="text-white font-semibold" style="font-size:14px;">Dashboard</a>
+    <a href="#" onclick="navigate('briefing'); return false;" class="text-slate-400 hover:text-white transition-colors" style="font-size:14px;">Proxy</a>
+    <a href="#" onclick="navigate('summary'); return false;" class="text-slate-400 hover:text-white transition-colors" style="font-size:14px;">Summary</a>
+  </div>
+</nav>
+
+<div class="max-w-6xl mx-auto px-8 py-10">
+
+  <!-- HEADER -->
+  <div class="flex items-start justify-between mb-8">
+    <div>
+      <div class="flex items-center gap-3 mb-2">
+        <span class="tag-meridian">MERIDIAN</span>
+        <span class="text-slate-500 text-sm">Team: Horizon Engineering</span>
+      </div>
+      <h1 class="text-3xl font-bold">Timezone Equity Dashboard</h1>
+      <p class="text-slate-400 mt-1">Week of Oct 3 – Oct 10, 2026</p>
+    </div>
+    <div class="text-right">
+      <div class="text-sm text-slate-500 mb-1">Team Equity Score</div>
+      <div class="text-4xl font-bold text-yellow-400">42<span class="text-2xl">/100</span></div>
+      <div class="text-xs text-yellow-500 mt-1">⚠ Imbalanced — action recommended</div>
+    </div>
+  </div>
+
+  <!-- BURN ALERT -->
+  <div class="alert-bar p-4 mb-8 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <span class="text-2xl">🚨</span>
+      <div>
+        <div class="font-semibold text-red-300">Burnout Alert: Priya Sharma</div>
+        <div class="text-sm text-slate-400">Has been on <strong class="text-red-400">4 off-hours meetings</strong> this week. Sprint sync tonight is at <strong class="text-red-400">10:30 PM IST</strong>.</div>
+      </div>
+    </div>
+    <div class="flex gap-3">
+      <a href="#" onclick="navigate('reschedule'); return false;" class="btn-primary">Reschedule Fairly</a>
+      <a href="#" onclick="navigate('briefing'); return false;" class="btn-secondary">Send Proxy</a>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-3 gap-6 mb-8">
+
+    <!-- Team Members -->
+    <div class="col-span-2 card p-6">
+      <h2 class="font-semibold mb-5">Team Burn Risk</h2>
+      <div class="space-y-4">
+
+        <!-- Priya -->
+        <div class="flex items-center gap-4">
+          <div class="avatar" style="background:#4F46E5">P</div>
+          <div class="flex-1">
+            <div class="flex items-center justify-between mb-1">
+              <div>
+                <span class="font-semibold text-sm">Priya Sharma</span>
+                <span class="text-slate-500 text-xs ml-2">Bangalore, IST (UTC+5:30)</span>
+              </div>
+              <span class="burn-badge burn-high">🔥 HIGH RISK</span>
+            </div>
+            <div class="w-full bg-slate-700 rounded-full h-2">
+              <div class="h-2 rounded-full bg-red-500" style="width:82%"></div>
+            </div>
+            <div class="flex justify-between text-xs text-slate-500 mt-1">
+              <span>4 of 5 meetings outside core hours this week</span>
+              <span class="text-red-400">82% burden</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Arjun -->
+        <div class="flex items-center gap-4">
+          <div class="avatar" style="background:#0369A1">A</div>
+          <div class="flex-1">
+            <div class="flex items-center justify-between mb-1">
+              <div>
+                <span class="font-semibold text-sm">Arjun Mehta</span>
+                <span class="text-slate-500 text-xs ml-2">New York, EST (UTC-5)</span>
+              </div>
+              <span class="burn-badge burn-low">✅ HEALTHY</span>
+            </div>
+            <div class="w-full bg-slate-700 rounded-full h-2">
+              <div class="h-2 rounded-full bg-emerald-500" style="width:18%"></div>
+            </div>
+            <div class="flex justify-between text-xs text-slate-500 mt-1">
+              <span>1 of 5 meetings outside core hours</span>
+              <span class="text-emerald-400">18% burden</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Emma -->
+        <div class="flex items-center gap-4">
+          <div class="avatar" style="background:#6D28D9">E</div>
+          <div class="flex-1">
+            <div class="flex items-center justify-between mb-1">
+              <div>
+                <span class="font-semibold text-sm">Emma Clarke</span>
+                <span class="text-slate-500 text-xs ml-2">London, GMT (UTC+0)</span>
+              </div>
+              <span class="burn-badge burn-low">✅ HEALTHY</span>
+            </div>
+            <div class="w-full bg-slate-700 rounded-full h-2">
+              <div class="h-2 rounded-full bg-emerald-500" style="width:25%"></div>
+            </div>
+            <div class="flex justify-between text-xs text-slate-500 mt-1">
+              <span>1 of 4 meetings outside core hours</span>
+              <span class="text-emerald-400">25% burden</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lucas -->
+        <div class="flex items-center gap-4">
+          <div class="avatar" style="background:#D97706">L</div>
+          <div class="flex-1">
+            <div class="flex items-center justify-between mb-1">
+              <div>
+                <span class="font-semibold text-sm">Lucas Becker</span>
+                <span class="text-slate-500 text-xs ml-2">Berlin, CET (UTC+1)</span>
+              </div>
+              <span class="burn-badge burn-med">⚠ MODERATE</span>
+            </div>
+            <div class="w-full bg-slate-700 rounded-full h-2">
+              <div class="h-2 rounded-full bg-yellow-500" style="width:45%"></div>
+            </div>
+            <div class="flex justify-between text-xs text-slate-500 mt-1">
+              <span>2 of 5 meetings outside core hours</span>
+              <span class="text-yellow-400">45% burden</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="card p-6">
+      <h2 class="font-semibold mb-4">Off-Hours Burden</h2>
+      <canvas id="equityChart" height="220"></canvas>
+      <div class="mt-4 text-xs text-slate-500 text-center">% of meetings outside core working hours</div>
+    </div>
+
+  </div>
+
+  <!-- THIS WEEK'S MEETINGS -->
+  <div class="card p-6">
+    <h2 class="font-semibold mb-5">This Week's Meetings</h2>
+    <div class="space-y-3">
+
+      <div class="meeting-row p-4 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div class="text-2xl">📅</div>
+          <div>
+            <div class="font-semibold text-sm">Sprint Sync — Weekly</div>
+            <div class="text-slate-500 text-xs">Thursday Oct 5 · Recurring</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 flex-wrap">
+          <span class="tz-pill text-emerald-400">NYC 9:00 AM</span>
+          <span class="tz-pill text-emerald-400">LDN 2:00 PM</span>
+          <span class="tz-pill text-yellow-400">BER 3:00 PM</span>
+          <span class="tz-pill text-red-400">BLR 10:30 PM 🔥</span>
+        </div>
+        <div class="flex gap-2">
+          <a href="#" onclick="navigate('reschedule'); return false;" class="btn-primary" style="padding:7px 14px;font-size:12px;">Rotate</a>
+          <a href="#" onclick="navigate('briefing'); return false;" class="btn-secondary" style="padding:7px 14px;font-size:12px;">Send Proxy</a>
+        </div>
+      </div>
+
+      <div class="meeting-row p-4 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div class="text-2xl">📋</div>
+          <div>
+            <div class="font-semibold text-sm">Product Review</div>
+            <div class="text-slate-500 text-xs">Monday Oct 5 · One-time</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 flex-wrap">
+          <span class="tz-pill text-emerald-400">NYC 11:00 AM</span>
+          <span class="tz-pill text-emerald-400">LDN 4:00 PM</span>
+          <span class="tz-pill text-emerald-400">BER 5:00 PM</span>
+          <span class="tz-pill text-yellow-400">BLR 8:30 PM</span>
+        </div>
+        <div class="flex gap-2">
+          <span class="btn-ghost" style="padding:7px 14px;font-size:12px;cursor:default;">✓ OK</span>
+        </div>
+      </div>
+
+      <div class="meeting-row p-4 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div class="text-2xl">🎯</div>
+          <div>
+            <div class="font-semibold text-sm">1:1 — Priya & Manager</div>
+            <div class="text-slate-500 text-xs">Friday Oct 7 · Recurring</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 flex-wrap">
+          <span class="tz-pill text-emerald-400">NYC 8:00 AM</span>
+          <span class="tz-pill text-red-400">BLR 11:30 PM 🔥</span>
+        </div>
+        <div class="flex gap-2">
+          <a href="#" onclick="navigate('reschedule'); return false;" class="btn-primary" style="padding:7px 14px;font-size:12px;">Rotate</a>
+          <a href="#" onclick="navigate('briefing'); return false;" class="btn-secondary" style="padding:7px 14px;font-size:12px;">Send Proxy</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+const ctx = document.getElementById('equityChart').getContext('2d');
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ['Priya\n(BLR)', 'Lucas\n(BER)', 'Emma\n(LDN)', 'Arjun\n(NYC)'],
+    datasets: [{
+      data: [82, 45, 25, 18],
+      backgroundColor: ['#EF4444', '#F59E0B', '#10B981', '#10B981'],
+      borderRadius: 8,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: '#1E293B' }, ticks: { color: '#94A3B8', font: { size: 11 } } },
+      y: {
+        grid: { color: '#1E293B' },
+        ticks: { color: '#94A3B8', font: { size: 11 }, callback: v => v + '%' },
+        max: 100
+      }
+    }
+  }
+});
+</script>
+
+
+</div><div id="view-reschedule" class="view" style="display:none;">
+
+
+<nav class="flex items-center justify-between px-8 py-5 border-b border-slate-800">
+  <div class="flex items-center gap-4">
+    <a href="#" onclick="navigate('index'); return false;" class="flex items-center gap-2">
+      <span class="text-2xl">🌐</span>
+      <span class="font-bold text-white text-lg">Meridian <span class="text-slate-500 font-normal">×</span> <span class="text-emerald-400">Proxy</span></span>
+    </a>
+    <span class="text-slate-700">/</span>
+    <a href="#" onclick="navigate('dashboard'); return false;" class="text-slate-400 text-sm hover:text-white">Dashboard</a>
+    <span class="text-slate-700">/</span>
+    <span class="text-slate-400 text-sm">Fair Rotation</span>
+  </div>
+</nav>
+
+<div class="max-w-5xl mx-auto px-8 py-10">
+
+  <div class="flex items-center gap-3 mb-2">
+    <span class="tag-meridian">MERIDIAN</span>
+    <span class="text-slate-500 text-sm">Sprint Sync — Weekly Rotation Planner</span>
+  </div>
+  <h1 class="text-3xl font-bold mb-2">Fair Rotation Schedule</h1>
+  <p class="text-slate-400 mb-8">Meridian has designed a 4-week rotation that distributes the off-hours burden equitably. No single timezone always takes the late slot.</p>
+
+  <!-- BEFORE / AFTER -->
+  <div class="grid grid-cols-2 gap-6 mb-8">
+
+    <div class="card p-6">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="text-red-400 text-lg">❌</span>
+        <h3 class="font-semibold">Current Schedule (Unfair)</h3>
+      </div>
+      <p class="text-slate-400 text-sm mb-4">Every week, same time. Priya always at 10:30 PM.</p>
+      <div class="space-y-2 text-sm">
+        <div class="flex justify-between old-cell rounded-lg px-3 py-2">
+          <span class="text-slate-400">Every week</span>
+          <span class="text-red-400">9 AM EST → 10:30 PM IST 🔥</span>
+        </div>
+      </div>
+      <div class="mt-4 text-xs text-red-400">Priya absorbs 100% of the late-night burden</div>
+    </div>
+
+    <div class="card p-6" style="border-color: rgba(99,102,241,0.4);">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="text-emerald-400 text-lg">✅</span>
+        <h3 class="font-semibold text-indigo-300">Meridian Rotation (Fair)</h3>
+      </div>
+      <p class="text-slate-400 text-sm mb-4">Burden rotates. Each team member takes their share.</p>
+      <div class="space-y-2 text-xs">
+        <div class="flex justify-between items-center">
+          <span class="text-slate-400">Week 1 (Oct 5)</span>
+          <span class="cell-great" style="font-size:11px;">8 AM EST — BLR 6:30 PM ✓</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-slate-400">Week 2 (Oct 12)</span>
+          <span class="cell-ok" style="font-size:11px;">3 PM EST — LDN 8 PM ⚡</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-slate-400">Week 3 (Oct 19)</span>
+          <span class="cell-great" style="font-size:11px;">9 AM EST — BLR 7:30 PM ✓</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-slate-400">Week 4 (Oct 26)</span>
+          <span class="cell-ok" style="font-size:11px;">2 PM EST — BER 8 PM ⚡</span>
+        </div>
+      </div>
+      <div class="mt-4 text-xs text-emerald-400">Burden distributed across all team members</div>
+    </div>
+
+  </div>
+
+  <!-- FULL ROTATION TABLE -->
+  <div class="card p-6 mb-8">
+    <h2 class="font-semibold mb-5">4-Week Rotation — Full Breakdown</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-slate-500 text-xs">
+            <th class="text-left pb-3 pr-4">Week</th>
+            <th class="text-left pb-3 pr-4">UTC Time</th>
+            <th class="text-center pb-3 px-2">
+              <div class="flex items-center justify-center gap-1">
+                <div class="avatar" style="background:#4F46E5;width:22px;height:22px;font-size:10px;">P</div>
+                <span>BLR (IST)</span>
+              </div>
+            </th>
+            <th class="text-center pb-3 px-2">
+              <div class="flex items-center justify-center gap-1">
+                <div class="avatar" style="background:#0369A1;width:22px;height:22px;font-size:10px;">A</div>
+                <span>NYC (EST)</span>
+              </div>
+            </th>
+            <th class="text-center pb-3 px-2">
+              <div class="flex items-center justify-center gap-1">
+                <div class="avatar" style="background:#6D28D9;width:22px;height:22px;font-size:10px;">E</div>
+                <span>LDN (GMT)</span>
+              </div>
+            </th>
+            <th class="text-center pb-3 px-2">
+              <div class="flex items-center justify-center gap-1">
+                <div class="avatar" style="background:#D97706;width:22px;height:22px;font-size:10px;">L</div>
+                <span>BER (CET)</span>
+              </div>
+            </th>
+            <th class="text-left pb-3 pl-4">Who sacrifices</th>
+          </tr>
+        </thead>
+        <tbody class="space-y-2">
+          <tr>
+            <td class="pr-4 py-2 font-medium text-indigo-300">Week 1</td>
+            <td class="pr-4 py-2 text-slate-400">13:00 UTC</td>
+            <td class="px-2 py-2"><div class="cell-great">6:30 PM ✅</div></td>
+            <td class="px-2 py-2"><div class="cell-great">8:00 AM ✅</div></td>
+            <td class="px-2 py-2"><div class="cell-great">1:00 PM ✅</div></td>
+            <td class="px-2 py-2"><div class="cell-great">2:00 PM ✅</div></td>
+            <td class="pl-4 py-2 text-emerald-400 text-xs">Nobody 🎉</td>
+          </tr>
+          <tr>
+            <td class="pr-4 py-2 font-medium text-indigo-300">Week 2</td>
+            <td class="pr-4 py-2 text-slate-400">20:00 UTC</td>
+            <td class="px-2 py-2"><div class="cell-great">1:30 AM+1 ✅</div></td>
+            <td class="px-2 py-2"><div class="cell-great">3:00 PM ✅</div></td>
+            <td class="px-2 py-2"><div class="cell-ok">8:00 PM ⚡</div></td>
+            <td class="px-2 py-2"><div class="cell-ok">9:00 PM ⚡</div></td>
+            <td class="pl-4 py-2 text-yellow-400 text-xs">Emma, Lucas (evening)</td>
+          </tr>
+          <tr>
+            <td class="pr-4 py-2 font-medium text-indigo-300">Week 3</td>
+            <td class="pr-4 py-2 text-slate-400">14:30 UTC</td>
+            <td class="px-2 py-2"><div class="cell-great">8:00 PM ✅</div></td>
+            <td class="px-2 py-2"><div class="cell-great">9:30 AM ✅</div></td>
+            <td class="px-2 py-2"><div class="cell-great">2:30 PM ✅</div></td>
+            <td class="px-2 py-2"><div class="cell-great">3:30 PM ✅</div></td>
+            <td class="pl-4 py-2 text-emerald-400 text-xs">Nobody 🎉</td>
+          </tr>
+          <tr>
+            <td class="pr-4 py-2 font-medium text-indigo-300">Week 4</td>
+            <td class="pr-4 py-2 text-slate-400">07:00 UTC</td>
+            <td class="px-2 py-2"><div class="cell-great">12:30 PM ✅</div></td>
+            <td class="px-2 py-2"><div class="cell-ok">2:00 AM 🌙</div></td>
+            <td class="px-2 py-2"><div class="cell-great">7:00 AM ✅</div></td>
+            <td class="px-2 py-2"><div class="cell-great">8:00 AM ✅</div></td>
+            <td class="pl-4 py-2 text-yellow-400 text-xs">Arjun (early morning)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="flex items-center gap-6 mt-4 text-xs text-slate-500">
+      <div class="flex items-center gap-2"><div class="cell-great" style="padding:2px 8px;font-size:10px;">✅</div> Within core hours</div>
+      <div class="flex items-center gap-2"><div class="cell-ok" style="padding:2px 8px;font-size:10px;">⚡</div> Slight inconvenience</div>
+      <div class="flex items-center gap-2"><div class="cell-bad" style="padding:2px 8px;font-size:10px;">🔥</div> Off-hours sacrifice</div>
+    </div>
+  </div>
+
+  <!-- EQUITY IMPROVEMENT -->
+  <div class="card p-6 mb-8">
+    <h2 class="font-semibold mb-4">Equity Score Impact</h2>
+    <div class="grid grid-cols-2 gap-4 text-center">
+      <div class="bg-slate-900 rounded-xl p-4">
+        <div class="text-slate-500 text-xs mb-1">Current Team Equity Score</div>
+        <div class="text-3xl font-bold text-red-400">42/100</div>
+        <div class="text-xs text-red-500 mt-1">Priya carries 82% of the burden</div>
+      </div>
+      <div class="rounded-xl p-4" style="background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3);">
+        <div class="text-slate-400 text-xs mb-1">After Applying Rotation</div>
+        <div class="text-3xl font-bold text-indigo-400">87/100</div>
+        <div class="text-xs text-emerald-400 mt-1">Burden distributed across all 4 timezones</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex gap-4">
+    <button onclick="applyRotation()" class="btn-primary" id="applyBtn">✅ Apply This Rotation</button>
+    <a href="#" onclick="navigate('dashboard'); return false;" class="btn-primary" style="background: rgba(255,255,255,0.07); background-image:none;">← Back to Dashboard</a>
+  </div>
+  <div id="successMsg" class="hidden mt-4 text-emerald-400 font-semibold">
+    🎉 Rotation applied! Calendar invites updated. Priya's burn risk: <span class="text-emerald-300">LOW</span>
+  </div>
+
+</div>
+
+<script>
+function applyRotation() {
+  document.getElementById('applyBtn').textContent = '✓ Applied!';
+  document.getElementById('applyBtn').style.background = 'linear-gradient(135deg,#10B981,#059669)';
+  document.getElementById('successMsg').classList.remove('hidden');
+}
+</script>
+
+
+</div><div id="view-briefing" class="view" style="display:none;">
+
+
+<nav class="flex items-center justify-between px-8 py-5 border-b border-slate-800">
+  <div class="flex items-center gap-4">
+    <a href="#" onclick="navigate('index'); return false;" class="flex items-center gap-2">
+      <span class="text-2xl">🌐</span>
+      <span class="font-bold text-white text-lg">Meridian <span class="text-slate-500 font-normal">×</span> <span class="text-emerald-400">Proxy</span></span>
+    </a>
+    <span class="text-slate-700">/</span>
+    <a href="#" onclick="navigate('dashboard'); return false;" class="text-slate-400 text-sm hover:text-white">Dashboard</a>
+    <span class="text-slate-700">/</span>
+    <span class="text-slate-400 text-sm">Brief Proxy</span>
+  </div>
+</nav>
+
+<div class="max-w-4xl mx-auto px-8 py-10">
+
+  <!-- HEADER -->
+  <div class="flex items-start justify-between mb-8">
+    <div>
+      <div class="flex items-center gap-3 mb-2">
+        <span class="tag-proxy">PROXY</span>
+        <span class="text-slate-500 text-sm">Sprint Sync — Thursday Oct 5, 10:30 PM IST</span>
+      </div>
+      <h1 class="text-3xl font-bold">Brief Your Proxy</h1>
+      <p class="text-slate-400 mt-1">Set up what Proxy knows, how it speaks, and what it's allowed to say.</p>
+    </div>
+    <div class="flex items-center gap-3 card p-4">
+      <div class="proxy-avatar">🤖</div>
+      <div>
+        <div class="font-semibold text-sm">Proxy for Priya Sharma</div>
+        <div class="text-xs text-emerald-400 mt-1">● Ready to brief</div>
+        <div class="text-xs text-slate-500">Sprint Sync meeting</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="space-y-5">
+
+    <!-- STEP 1: Docs -->
+    <div class="step step-active p-6">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="step-num">1</div>
+        <h2 class="font-semibold">Upload Your Documents</h2>
+      </div>
+      <p class="text-slate-400 text-sm mb-4">Proxy will only answer from these documents. It won't hallucinate or make up information.</p>
+
+      <div class="space-y-2 mb-4">
+        <div class="doc-chip flex items-center justify-between p-3">
+          <div class="flex items-center gap-3">
+            <span class="text-lg">📄</span>
+            <div>
+              <div class="text-sm font-medium">Sprint_Q4_Progress_Report.pdf</div>
+              <div class="text-xs text-slate-500">2.3 MB · Uploaded · ✅ 847 chunks indexed</div>
+            </div>
+          </div>
+          <span class="text-emerald-400 text-xs">Ready</span>
+        </div>
+        <div class="doc-chip flex items-center justify-between p-3">
+          <div class="flex items-center gap-3">
+            <span class="text-lg">📊</span>
+            <div>
+              <div class="text-sm font-medium">Feature_Roadmap_Oct2026.pptx</div>
+              <div class="text-xs text-slate-500">4.1 MB · Uploaded · ✅ 312 chunks indexed</div>
+            </div>
+          </div>
+          <span class="text-emerald-400 text-xs">Ready</span>
+        </div>
+        <div class="doc-chip flex items-center justify-between p-3">
+          <div class="flex items-center gap-3">
+            <span class="text-lg">📝</span>
+            <div>
+              <div class="text-sm font-medium">My_Talking_Points.docx</div>
+              <div class="text-xs text-slate-500">128 KB · Uploaded · ✅ 43 chunks indexed</div>
+            </div>
+          </div>
+          <span class="text-emerald-400 text-xs">Ready</span>
+        </div>
+      </div>
+
+      <div class="border-2 border-dashed border-slate-700 rounded-xl p-6 text-center text-slate-500 text-sm hover:border-slate-500 transition-colors cursor-pointer">
+        + Drop more files here (PDF, DOCX, PPTX, TXT)
+      </div>
+    </div>
+
+    <!-- STEP 2: Talking Points -->
+    <div class="step p-6">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="step-num">2</div>
+        <h2 class="font-semibold">Your Talking Points</h2>
+      </div>
+      <p class="text-slate-400 text-sm mb-4">Proxy will open the meeting with your update. Write it how you'd say it.</p>
+      <textarea rows="5" class="w-full" readonly style="cursor:default;">Sprint 41 is on track. We shipped the timezone conflict detector on Tuesday — it's already flagging 3 recurring meetings for the team. Currently at 94% of our sprint goal with 2 days remaining.
+
+Main blocker: waiting on the design team for the summary page mockups. I've pinged Emma twice — if we don't have them by EOD Thursday, we may need to push the summary feature to Sprint 42.
+
+Otherwise no major blockers. Happy to take questions.</textarea>
+    </div>
+
+    <!-- STEP 3: Rules -->
+    <div class="step p-6">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="step-num">3</div>
+        <h2 class="font-semibold">Guardrails & Rules</h2>
+      </div>
+      <p class="text-slate-400 text-sm mb-4">What Proxy is <strong class="text-red-300">never</strong> allowed to do — and what it should <strong class="text-emerald-300">always</strong> do.</p>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <div class="text-xs text-red-400 font-semibold mb-2 uppercase tracking-wider">🚫 Never allowed</div>
+          <div class="space-y-2">
+            <div class="rule-chip">Discuss pricing or budget numbers</div>
+            <div class="rule-chip">Commit to deadlines or timelines</div>
+            <div class="rule-chip">Approve any requests</div>
+            <div class="rule-chip">Answer questions outside my docs</div>
+          </div>
+        </div>
+        <div>
+          <div class="text-xs text-emerald-400 font-semibold mb-2 uppercase tracking-wider">✅ Always required</div>
+          <div class="space-y-2">
+            <div class="rule-chip-green">Introduce itself as an AI proxy for Priya</div>
+            <div class="rule-chip-green">Cite source document for every answer</div>
+            <div class="rule-chip-green">Say "I'll check with Priya" when unsure</div>
+            <div class="rule-chip-green">Log all unanswered questions</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4: Launch -->
+    <div class="step p-6" style="border-color: rgba(16,185,129,0.4);">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="step-num" style="background:rgba(16,185,129,0.25);color:#34D399;">4</div>
+        <h2 class="font-semibold">Ready to Deploy</h2>
+      </div>
+      <div class="grid grid-cols-3 gap-4 text-sm mb-6">
+        <div class="bg-slate-900 rounded-xl p-4 text-center">
+          <div class="text-2xl mb-1">📄</div>
+          <div class="font-semibold">1,202</div>
+          <div class="text-slate-500 text-xs">Document chunks indexed</div>
+        </div>
+        <div class="bg-slate-900 rounded-xl p-4 text-center">
+          <div class="text-2xl mb-1">📋</div>
+          <div class="font-semibold">5 talking points</div>
+          <div class="text-slate-500 text-xs">Ready to present</div>
+        </div>
+        <div class="bg-slate-900 rounded-xl p-4 text-center">
+          <div class="text-2xl mb-1">🛡️</div>
+          <div class="font-semibold">8 guardrails</div>
+          <div class="text-slate-500 text-xs">Protecting your reputation</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="#" onclick="navigate('meeting'); return false;" class="btn-secondary">🚀 Deploy Proxy to Meeting</a>
+        <div class="text-slate-500 text-sm">Proxy will join as <strong class="text-white">"AI Proxy for Priya Sharma"</strong></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+</div><div id="view-meeting" class="view" style="display:none;">
+
+
+<nav class="flex items-center justify-between px-8 py-5 border-b border-slate-800">
+  <div class="flex items-center gap-4">
+    <a href="#" onclick="navigate('index'); return false;" class="flex items-center gap-2">
+      <span class="text-2xl">🌐</span>
+      <span class="font-bold text-white text-lg">Meridian <span class="text-slate-500 font-normal">×</span> <span class="text-emerald-400">Proxy</span></span>
+    </a>
+    <span class="text-slate-700">/</span>
+    <span class="text-slate-400 text-sm">Live Meeting</span>
+  </div>
+  <div class="flex items-center gap-3">
+    <div class="live-dot"></div>
+    <span class="text-red-400 text-sm font-semibold">LIVE</span>
+    <span class="text-slate-500 text-sm">Sprint Sync — 10:30 PM IST</span>
+  </div>
+</nav>
+
+<div class="max-w-5xl mx-auto px-8 py-8">
+  <div class="grid grid-cols-3 gap-6">
+
+    <!-- MEETING PARTICIPANTS -->
+    <div class="space-y-4">
+      <div class="card p-5">
+        <h3 class="text-sm font-semibold text-slate-400 mb-4 uppercase tracking-wider">Participants</h3>
+        <div class="space-y-3">
+
+          <div class="flex items-center gap-3">
+            <div class="proxy-avatar">🤖</div>
+            <div>
+              <div class="text-sm font-semibold text-emerald-400">AI Proxy for Priya</div>
+              <div class="text-xs text-slate-500">Bangalore · 10:30 PM IST</div>
+              <span class="tag-proxy" style="font-size:10px;padding:1px 7px;">PRESENTING</span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="person-avatar" style="background:#0369A1">A</div>
+            <div>
+              <div class="text-sm font-semibold">Arjun Mehta</div>
+              <div class="text-xs text-slate-500">New York · 9:00 AM</div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="person-avatar" style="background:#6D28D9">E</div>
+            <div>
+              <div class="text-sm font-semibold">Emma Clarke</div>
+              <div class="text-xs text-slate-500">London · 2:00 PM</div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="person-avatar" style="background:#D97706">L</div>
+            <div>
+              <div class="text-sm font-semibold">Lucas Becker</div>
+              <div class="text-xs text-slate-500">Berlin · 3:00 PM</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="card p-5">
+        <h3 class="text-sm font-semibold text-slate-400 mb-3 uppercase tracking-wider">Proxy Status</h3>
+        <div class="space-y-2 text-xs text-slate-400">
+          <div class="flex justify-between">
+            <span>Docs loaded</span>
+            <span class="text-emerald-400">✓ 3 files</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Knowledge chunks</span>
+            <span class="text-emerald-400">✓ 1,202</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Guardrails active</span>
+            <span class="text-emerald-400">✓ 8 rules</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Questions escalated</span>
+            <span class="text-yellow-400" id="escalateCount">0</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Questions answered</span>
+            <span class="text-emerald-400" id="answerCount">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card p-5">
+        <h3 class="text-sm font-semibold text-slate-400 mb-3 uppercase tracking-wider">Quick Questions</h3>
+        <div class="space-y-2">
+          <button onclick="askQ(0)" class="w-full text-left text-xs bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 transition-colors">What's the sprint progress?</button>
+          <button onclick="askQ(1)" class="w-full text-left text-xs bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 transition-colors">What's blocking the team?</button>
+          <button onclick="askQ(2)" class="w-full text-left text-xs bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 transition-colors">Can we approve a budget increase?</button>
+          <button onclick="askQ(3)" class="w-full text-left text-xs bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 transition-colors">When will the roadmap be ready?</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHAT -->
+    <div class="col-span-2 card flex flex-col" style="height:640px;">
+      <div class="px-5 py-4 border-b border-slate-700 flex items-center gap-3">
+        <div class="proxy-avatar" style="width:36px;height:36px;font-size:16px;">🤖</div>
+        <div>
+          <div class="font-semibold text-sm">AI Proxy for Priya Sharma</div>
+          <div class="text-xs text-emerald-400">● Active · Answering from your documents</div>
+        </div>
+      </div>
+
+      <div class="flex-1 overflow-y-auto px-5 py-5 space-y-4" id="chatLog">
+        <!-- System join message -->
+        <div class="msg-system mx-auto">🤖 AI Proxy for Priya Sharma has joined the meeting</div>
+
+        <!-- Proxy intro -->
+        <div class="flex items-start gap-3">
+          <div class="proxy-avatar" style="width:36px;height:36px;font-size:16px;">🤖</div>
+          <div>
+            <div class="text-xs text-slate-500 mb-1">AI Proxy for Priya · 10:31 PM IST</div>
+            <div class="msg msg-proxy">
+              <p class="text-sm">Hi everyone — I'm Priya's AI Proxy. Priya has briefed me with her documents and talking points for today's sprint sync. I'll present her update and answer questions from her materials. Anything outside those materials, I'll flag for Priya to follow up on.</p>
+              <p class="text-sm mt-2">Here's Priya's update:</p>
+              <p class="text-sm mt-2 text-emerald-300 font-medium">Sprint 41 is on track — we're at 94% of our sprint goal with 2 days remaining. We shipped the timezone conflict detector on Tuesday and it's already flagging recurring meetings across the team.</p>
+              <p class="text-sm mt-2">Main blocker: waiting on design mockups for the summary page. If we don't have them by EOD Thursday, the summary feature may need to slip to Sprint 42.</p>
+              <div class="source-badge">📄 My_Talking_Points.docx</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input -->
+      <div class="px-5 py-4 border-t border-slate-700 flex gap-3">
+        <input class="chat-input flex-1" id="chatInput" placeholder="Ask Proxy a question..." onkeydown="if(event.key==='Enter')sendMsg()" />
+        <button onclick="sendMsg()" class="btn-secondary" style="padding:10px 20px;font-size:14px;">Send</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="mt-6 flex justify-between items-center">
+    <a href="#" onclick="navigate('briefing'); return false;" class="text-slate-500 text-sm hover:text-white">← Back to Briefing</a>
+    <a href="#" onclick="navigate('summary'); return false;" class="btn-secondary">End Meeting → View Summary</a>
+  </div>
+
+</div>
+
+<script>
+let answerCount = 0;
+let escalateCount = 0;
+
+const qas = [
+  {
+    q: "What's the sprint progress?",
+    a: "Priya's sprint is at 94% of its goal with 2 days remaining. The timezone conflict detector shipped on Tuesday. The only pending item is the summary page, which depends on design mockups from Emma's team.",
+    source: "Sprint_Q4_Progress_Report.pdf · Page 3",
+    escalated: false
+  },
+  {
+    q: "What's blocking the team?",
+    a: "The primary blocker is the design team's summary page mockups. Priya has followed up with Emma twice. If they don't arrive by EOD Thursday, the summary feature will likely slip to Sprint 42.",
+    source: "My_Talking_Points.docx · Section: Blockers",
+    escalated: false
+  },
+  {
+    q: "Can we approve a budget increase?",
+    a: "I'm not able to approve or commit to any budget changes — that's outside what Priya has authorized me to discuss. I've logged this as an open question for Priya to address directly. She'll follow up tomorrow.",
+    source: null,
+    escalated: true
+  },
+  {
+    q: "When will the roadmap be ready?",
+    a: "Based on the Feature Roadmap document, the Q4 roadmap review is scheduled for October 15th. The current draft covers the timezone equity dashboard and Proxy deployment features through end of quarter.",
+    source: "Feature_Roadmap_Oct2026.pptx · Slide 4",
+    escalated: false
+  }
+];
+
+function askQ(i) {
+  const qa = qas[i];
+  addHumanMsg("Arjun", qa.q);
+  setTimeout(() => showTyping(), 400);
+  setTimeout(() => {
+    removeTyping();
+    addProxyMsg(qa.a, qa.source, qa.escalated);
+    if (qa.escalated) {
+      escalateCount++;
+      document.getElementById('escalateCount').textContent = escalateCount;
+    } else {
+      answerCount++;
+      document.getElementById('answerCount').textContent = answerCount;
+    }
+  }, 2000);
+}
+
+function sendMsg() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  addHumanMsg("Arjun", text);
+  setTimeout(() => showTyping(), 400);
+  setTimeout(() => {
+    removeTyping();
+    addProxyMsg(
+      "I don't have specific information about that in Priya's documents. I've logged this question for Priya to answer directly. She'll follow up with you tomorrow morning.",
+      null,
+      true
+    );
+    escalateCount++;
+    document.getElementById('escalateCount').textContent = escalateCount;
+  }, 2200);
+}
+
+function addHumanMsg(name, text) {
+  const log = document.getElementById('chatLog');
+  log.innerHTML += `
+    <div class="flex items-start gap-3 justify-end">
+      <div>
+        <div class="text-xs text-slate-500 mb-1 text-right">${name} · now</div>
+        <div class="msg msg-human text-sm">${text}</div>
+      </div>
+      <div class="person-avatar" style="background:#0369A1">A</div>
+    </div>`;
+  log.scrollTop = log.scrollHeight;
+}
+
+function showTyping() {
+  const log = document.getElementById('chatLog');
+  log.innerHTML += `
+    <div class="flex items-start gap-3" id="typingIndicator">
+      <div class="proxy-avatar" style="width:36px;height:36px;font-size:16px;">🤖</div>
+      <div class="msg msg-proxy" style="padding:14px 18px;">
+        <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
+      </div>
+    </div>`;
+  log.scrollTop = log.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typingIndicator');
+  if (t) t.remove();
+}
+
+function addProxyMsg(text, source, escalated) {
+  const log = document.getElementById('chatLog');
+  const badge = escalated
+    ? `<div class="escalate-badge">⚠ Logged for Priya to follow up · Not in my documents</div>`
+    : source ? `<div class="source-badge">📄 ${source}</div>` : '';
+  log.innerHTML += `
+    <div class="flex items-start gap-3">
+      <div class="proxy-avatar" style="width:36px;height:36px;font-size:16px;">🤖</div>
+      <div>
+        <div class="text-xs text-slate-500 mb-1">AI Proxy for Priya · just now</div>
+        <div class="msg msg-proxy">
+          <p class="text-sm">${text}</p>
+          ${badge}
+        </div>
+      </div>
+    </div>`;
+  log.scrollTop = log.scrollHeight;
+}
+</script>
+
+
+</div><div id="view-summary" class="view" style="display:none;">
+
+
+<nav class="flex items-center justify-between px-8 py-5 border-b border-slate-800">
+  <div class="flex items-center gap-4">
+    <a href="#" onclick="navigate('index'); return false;" class="flex items-center gap-2">
+      <span class="text-2xl">🌐</span>
+      <span class="font-bold text-white text-lg">Meridian <span class="text-slate-500 font-normal">×</span> <span class="text-emerald-400">Proxy</span></span>
+    </a>
+    <span class="text-slate-700">/</span>
+    <span class="text-slate-400 text-sm">Meeting Summary</span>
+  </div>
+  <div class="flex items-center gap-3">
+    <button onclick="navigator.clipboard.writeText('Summary copied!')" class="text-slate-400 hover:text-white text-sm transition-colors border border-slate-700 rounded-lg px-3 py-1.5">📋 Copy</button>
+    <button class="text-slate-400 hover:text-white text-sm transition-colors border border-slate-700 rounded-lg px-3 py-1.5">📧 Email to Priya</button>
+    <button class="text-slate-400 hover:text-white text-sm transition-colors border border-slate-700 rounded-lg px-3 py-1.5">💬 Post to Slack</button>
+  </div>
+</nav>
+
+<div class="max-w-4xl mx-auto px-8 py-10">
+
+  <!-- SUNRISE HERO -->
+  <div class="sunrise-glow p-6 mb-8 flex items-center gap-5">
+    <div style="font-size:3rem;">🌅</div>
+    <div>
+      <div class="text-2xl font-bold mb-1">Good morning, Priya!</div>
+      <p class="text-slate-400">While you slept, Proxy attended your Sprint Sync. Here's everything that happened — decisions made, your action items, and questions that need your attention.</p>
+      <div class="flex items-center gap-3 mt-3">
+        <span class="tag-proxy">PROXY</span>
+        <span class="text-slate-500 text-xs">Sprint Sync · Thursday Oct 5 · 10:30 PM – 11:15 PM IST · 45 min</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="grid grid-cols-4 gap-4 mb-8">
+    <div class="stat-pill">
+      <div class="text-2xl font-bold text-emerald-400">4</div>
+      <div class="text-xs text-slate-500 mt-1">Questions answered</div>
+    </div>
+    <div class="stat-pill">
+      <div class="text-2xl font-bold text-yellow-400">2</div>
+      <div class="text-xs text-slate-500 mt-1">Escalated to you</div>
+    </div>
+    <div class="stat-pill">
+      <div class="text-2xl font-bold text-indigo-400">3</div>
+      <div class="text-xs text-slate-500 mt-1">Decisions made</div>
+    </div>
+    <div class="stat-pill">
+      <div class="text-2xl font-bold text-slate-300">0</div>
+      <div class="text-xs text-slate-500 mt-1">Guardrail violations</div>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="card p-6 mb-6">
+    <h2 class="font-semibold mb-3 flex items-center gap-2"><span>📋</span> Meeting Summary</h2>
+    <p class="text-slate-300 leading-relaxed text-sm">The team reviewed Sprint 41 progress. The sprint is on track at 94% completion. The timezone conflict detector feature — your work — was well received by the team. Arjun noted it's already flagging two long-standing scheduling issues for the Berlin and London teams. The main discussion was around the summary page feature slip risk due to pending design mockups. The team agreed to give the design team until Thursday EOD before deciding to push to Sprint 42.</p>
+  </div>
+
+  <!-- DECISIONS -->
+  <div class="card p-6 mb-6">
+    <h2 class="font-semibold mb-4 flex items-center gap-2"><span>✅</span> Decisions Made</h2>
+    <div class="space-y-3">
+      <div class="decision-chip">
+        <div class="text-sm font-medium">Summary page feature will wait until Thursday EOD for design mockups</div>
+        <div class="text-xs text-slate-500 mt-1">Decision by: Full team · If no mockups → feature slips to Sprint 42</div>
+      </div>
+      <div class="decision-chip">
+        <div class="text-sm font-medium">Timezone conflict detector to be presented at all-hands next Monday</div>
+        <div class="text-xs text-slate-500 mt-1">Decision by: Arjun · Will showcase Priya's work to the wider org</div>
+      </div>
+      <div class="decision-chip">
+        <div class="text-sm font-medium">Sprint 42 kickoff moved to Tuesday Oct 13 to allow Monday all-hands</div>
+        <div class="text-xs text-slate-500 mt-1">Decision by: Arjun · Agreed by full team</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTION ITEMS -->
+  <div class="card p-6 mb-6">
+    <h2 class="font-semibold mb-4 flex items-center gap-2"><span>🎯</span> Your Action Items</h2>
+    <div class="space-y-3">
+
+      <div class="action-chip flex items-start gap-3">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="priority-badge priority-high">HIGH</span>
+            <span class="text-sm font-medium">Follow up with Emma on summary page mockups</span>
+          </div>
+          <div class="text-xs text-slate-500">Due: Thursday Oct 5, EOD · If not received → inform Arjun to slip to Sprint 42</div>
+        </div>
+      </div>
+
+      <div class="action-chip flex items-start gap-3">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="priority-badge priority-med">MED</span>
+            <span class="text-sm font-medium">Prepare demo slides for all-hands presentation</span>
+          </div>
+          <div class="text-xs text-slate-500">Due: Monday Oct 9 · 5-minute demo of the timezone conflict detector</div>
+        </div>
+      </div>
+
+      <div class="action-chip flex items-start gap-3">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="priority-badge priority-med">MED</span>
+            <span class="text-sm font-medium">Answer Lucas's question about Q4 budget allocation</span>
+          </div>
+          <div class="text-xs text-slate-500">Due: Friday Oct 6 · Proxy escalated this — needs your direct response</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ESCALATED QUESTIONS -->
+  <div class="card p-6 mb-6">
+    <h2 class="font-semibold mb-4 flex items-center gap-2"><span>❓</span> Questions Proxy Couldn't Answer — Needs Your Response</h2>
+    <div class="space-y-3">
+
+      <div class="question-chip">
+        <div class="flex items-center gap-2 mb-1">
+          <div class="avatar" style="background:#D97706">L</div>
+          <span class="text-sm font-semibold">Lucas Becker asked:</span>
+        </div>
+        <p class="text-sm text-slate-300 ml-9">"Can we approve a 15% budget increase for the Q4 infra upgrade?"</p>
+        <p class="text-xs text-yellow-400 mt-2 ml-9">Proxy responded: "That needs Priya's decision — I've noted it." ✓</p>
+      </div>
+
+      <div class="question-chip">
+        <div class="flex items-center gap-2 mb-1">
+          <div class="avatar" style="background:#6D28D9">E</div>
+          <span class="text-sm font-semibold">Emma Clarke asked:</span>
+        </div>
+        <p class="text-sm text-slate-300 ml-9">"Is Priya available for a design review call this Friday afternoon?"</p>
+        <p class="text-xs text-yellow-400 mt-2 ml-9">Proxy responded: "I'll check with Priya on her availability." ✓</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MERIDIAN FOOTER -->
+  <div class="card p-5 mb-8" style="border-color: rgba(99,102,241,0.3);">
+    <div class="flex items-center gap-3">
+      <span class="tag-meridian">MERIDIAN</span>
+      <span class="text-sm text-slate-400">Equity update: Priya's off-hours burden this week has been reduced from <span class="text-red-400 font-semibold">82%</span> to <span class="text-emerald-400 font-semibold">25%</span> after applying the fair rotation schedule.</span>
+    </div>
+  </div>
+
+  <div class="flex gap-4">
+    <a href="#" onclick="navigate('dashboard'); return false;" class="btn-primary">← Back to Dashboard</a>
+    <a href="#" onclick="navigate('meeting'); return false;" class="btn-secondary">View Meeting Transcript</a>
+  </div>
+
+</div>
+
+
+</div>
+  <script>
+    window.initChart = function() {
+if(window.chartInited) return;
+window.chartInited = true;
+
+const ctx = document.getElementById('equityChart').getContext('2d');
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ['Priya\n(BLR)', 'Lucas\n(BER)', 'Emma\n(LDN)', 'Arjun\n(NYC)'],
+    datasets: [{
+      data: [82, 45, 25, 18],
+      backgroundColor: ['#EF4444', '#F59E0B', '#10B981', '#10B981'],
+      borderRadius: 8,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: '#1E293B' }, ticks: { color: '#94A3B8', font: { size: 11 } } },
+      y: {
+        grid: { color: '#1E293B' },
+        ticks: { color: '#94A3B8', font: { size: 11 }, callback: v => v + '%' },
+        max: 100
+      }
+    }
+  }
+});
+
+};
+
+function applyRotation() {
+  document.getElementById('applyBtn').textContent = '✓ Applied!';
+  document.getElementById('applyBtn').style.background = 'linear-gradient(135deg,#10B981,#059669)';
+  document.getElementById('successMsg').classList.remove('hidden');
+}
+
+let answerCount = 0;
+let escalateCount = 0;
+
+const qas = [
+  {
+    q: "What's the sprint progress?",
+    a: "Priya's sprint is at 94% of its goal with 2 days remaining. The timezone conflict detector shipped on Tuesday. The only pending item is the summary page, which depends on design mockups from Emma's team.",
+    source: "Sprint_Q4_Progress_Report.pdf · Page 3",
+    escalated: false
+  },
+  {
+    q: "What's blocking the team?",
+    a: "The primary blocker is the design team's summary page mockups. Priya has followed up with Emma twice. If they don't arrive by EOD Thursday, the summary feature will likely slip to Sprint 42.",
+    source: "My_Talking_Points.docx · Section: Blockers",
+    escalated: false
+  },
+  {
+    q: "Can we approve a budget increase?",
+    a: "I'm not able to approve or commit to any budget changes — that's outside what Priya has authorized me to discuss. I've logged this as an open question for Priya to address directly. She'll follow up tomorrow.",
+    source: null,
+    escalated: true
+  },
+  {
+    q: "When will the roadmap be ready?",
+    a: "Based on the Feature Roadmap document, the Q4 roadmap review is scheduled for October 15th. The current draft covers the timezone equity dashboard and Proxy deployment features through end of quarter.",
+    source: "Feature_Roadmap_Oct2026.pptx · Slide 4",
+    escalated: false
+  }
+];
+
+function askQ(i) {
+  const qa = qas[i];
+  addHumanMsg("Arjun", qa.q);
+  setTimeout(() => showTyping(), 400);
+  setTimeout(() => {
+    removeTyping();
+    addProxyMsg(qa.a, qa.source, qa.escalated);
+    if (qa.escalated) {
+      escalateCount++;
+      document.getElementById('escalateCount').textContent = escalateCount;
+    } else {
+      answerCount++;
+      document.getElementById('answerCount').textContent = answerCount;
+    }
+  }, 2000);
+}
+
+function sendMsg() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  addHumanMsg("Arjun", text);
+  setTimeout(() => showTyping(), 400);
+  setTimeout(() => {
+    removeTyping();
+    addProxyMsg(
+      "I don't have specific information about that in Priya's documents. I've logged this question for Priya to answer directly. She'll follow up with you tomorrow morning.",
+      null,
+      true
+    );
+    escalateCount++;
+    document.getElementById('escalateCount').textContent = escalateCount;
+  }, 2200);
+}
+
+function addHumanMsg(name, text) {
+  const log = document.getElementById('chatLog');
+  log.innerHTML += `
+    <div class="flex items-start gap-3 justify-end">
+      <div>
+        <div class="text-xs text-slate-500 mb-1 text-right">${name} · now</div>
+        <div class="msg msg-human text-sm">${text}</div>
+      </div>
+      <div class="person-avatar" style="background:#0369A1">A</div>
+    </div>`;
+  log.scrollTop = log.scrollHeight;
+}
+
+function showTyping() {
+  const log = document.getElementById('chatLog');
+  log.innerHTML += `
+    <div class="flex items-start gap-3" id="typingIndicator">
+      <div class="proxy-avatar" style="width:36px;height:36px;font-size:16px;">🤖</div>
+      <div class="msg msg-proxy" style="padding:14px 18px;">
+        <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
+      </div>
+    </div>`;
+  log.scrollTop = log.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typingIndicator');
+  if (t) t.remove();
+}
+
+function addProxyMsg(text, source, escalated) {
+  const log = document.getElementById('chatLog');
+  const badge = escalated
+    ? `<div class="escalate-badge">⚠ Logged for Priya to follow up · Not in my documents</div>`
+    : source ? `<div class="source-badge">📄 ${source}</div>` : '';
+  log.innerHTML += `
+    <div class="flex items-start gap-3">
+      <div class="proxy-avatar" style="width:36px;height:36px;font-size:16px;">🤖</div>
+      <div>
+        <div class="text-xs text-slate-500 mb-1">AI Proxy for Priya · just now</div>
+        <div class="msg msg-proxy">
+          <p class="text-sm">${text}</p>
+          ${badge}
+        </div>
+      </div>
+    </div>`;
+  log.scrollTop = log.scrollHeight;
+}
+
+  </script>
+</body>
+</html>

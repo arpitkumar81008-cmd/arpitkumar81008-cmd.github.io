@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meridian — Fair Rotation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    body { background: #0F172A; color: #F1F5F9; }
+    .card { background: #1E293B; border: 1px solid #334155; border-radius: 16px; }
+    .tag-meridian { background: rgba(99,102,241,0.15); color: #818CF8; border: 1px solid rgba(99,102,241,0.3); border-radius: 6px; padding: 3px 10px; font-size: 11px; font-weight: 600; }
+    .btn-primary { background: linear-gradient(135deg, #6366F1, #4F46E5); color: white; border-radius: 10px; padding: 10px 22px; font-weight: 600; transition: all 0.2s; display: inline-block; font-size: 14px; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99,102,241,0.4); }
+    .cell-great { background: rgba(16,185,129,0.15); color: #34D399; border: 1px solid rgba(16,185,129,0.25); border-radius: 8px; padding: 6px 10px; font-size: 12px; text-align:center; }
+    .cell-ok { background: rgba(251,191,36,0.10); color: #FCD34D; border: 1px solid rgba(251,191,36,0.2); border-radius: 8px; padding: 6px 10px; font-size: 12px; text-align:center; }
+    .cell-bad { background: rgba(239,68,68,0.10); color: #FCA5A5; border: 1px solid rgba(239,68,68,0.2); border-radius: 8px; padding: 6px 10px; font-size: 12px; text-align:center; }
+    .old-cell { background: rgba(239,68,68,0.08); }
+    .avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; flex-shrink: 0; }
+    .checkmark { display: none; }
+  </style>
+</head>
+<body>
+
+<nav class="flex items-center justify-between px-8 py-5 border-b border-slate-800">
+  <div class="flex items-center gap-4">
+    <a href="index.html" class="flex items-center gap-2">
+      <span class="text-2xl">🌐</span>
+      <span class="font-bold text-white text-lg">Meridian <span class="text-slate-500 font-normal">×</span> <span class="text-emerald-400">Proxy</span></span>
+    </a>
+    <span class="text-slate-700">/</span>
+    <a href="dashboard.html" class="text-slate-400 text-sm hover:text-white">Dashboard</a>
+    <span class="text-slate-700">/</span>
+    <span class="text-slate-400 text-sm">Fair Rotation</span>
+  </div>
+</nav>
+
+<div class="max-w-5xl mx-auto px-8 py-10">
+
+  <div class="flex items-center gap-3 mb-2">
+    <span class="tag-meridian">MERIDIAN</span>
+    <span class="text-slate-500 text-sm">Sprint Sync — Weekly Rotation Planner</span>
+  </div>
+  <h1 class="text-3xl font-bold mb-2">Fair Rotation Schedule</h1>
+  <p class="text-slate-400 mb-8">Meridian has designed a 4-week rotation that distributes the off-hours burden equitably. No single timezone always takes the late slot.</p>
+
+  <!-- BEFORE / AFTER -->
+  <div class="grid grid-cols-2 gap-6 mb-8">
+
+    <div class="card p-6">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="text-red-400 text-lg">❌</span>
+        <h3 class="font-semibold">Current Schedule (Unfair)</h3>
+      </div>
+      <p class="text-slate-400 text-sm mb-4">Every week, same time. Priya always at 10:30 PM.</p>
+      <div class="space-y-2 text-sm">
+        <div class="flex justify-between old-cell rounded-lg px-3 py-2">
+          <span class="text-slate-400">Every week</span>
+          <span class="text-red-400">9 AM EST → 10:30 PM IST 🔥</span>
+        </div>
+      </div>
+      <div class="mt-4 text-xs text-red-400">Priya absorbs 100% of the late-night burden</div>
+    </div>
+
+    <div class="card p-6" style="border-color: rgba(99,102,241,0.4);">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="text-emerald-400 text-lg">✅</span>
+        <h3 class="font-semibold text-indigo-300">Meridian Rotation (Fair)</h3>
+      </div>
+      <p class="text-slate-400 text-sm mb-4">Burden rotates. Each team member takes their share.</p>
+      <div class="space-y-2 text-xs">
+        <div class="flex justify-between items-center">
+          <span class="text-slate-400">Week 1 (Oct 5)</span>
+          <span class="cell-great" style="font-size:11px;">8 AM EST — BLR 6:30 PM ✓</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-slate-400">Week 2 (Oct 12)</span>
+          <span class="cell-ok" style="font-size:11px;">3 PM EST — LDN 8 PM ⚡</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-slate-400">Week 3 (Oct 19)</span>
+          <span class="cell-great" style="font-size:11px;">9 AM EST — BLR 7:30 PM ✓</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-slate-400">Week 4 (Oct 26)</span>
+          <span class="cell-ok" style="font-size:11px;">2 PM EST — BER 8 PM ⚡</span>
+        </div>
+      </div>
+      <div class="mt-4 text-xs text-emerald-400">Burden distributed across all team members</div>
+    </div>
+
+  </div>
+
+  <!-- FULL ROTATION TABLE -->
+  <div class="card p-6 mb-8">
+    <h2 class="font-semibold mb-5">4-Week Rotation — Full Breakdown</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-slate-500 text-xs">
+            <th class="text-left pb-3 pr-4">Week</th>
+            <th class="text-left pb-3 pr-4">UTC Time</th>
+            <th class="text-center pb-3 px-2">
+              <div class="flex items-center justify-center gap-1">
+                <div class="avatar" style="background:#4F46E5;width:22px;height:22px;font-size:10px;">P</div>
+                <span>BLR (IST)</span>
+              </div>
+            </th>
+            <th class="text-center pb-3 px-2">
+              <div class="flex items-center justify-center gap-1">
+                <div class="avatar" style="background:#0369A1;width:22px;height:22px;font-size:10px;">A</div>
+                <span>NYC (EST)</span>
+              </div>
+            </th>
+            <th class="text-center pb-3 px-2">
+              <div class="flex items-center justify-center gap-1">
+                <div class="avatar" style="background:#6D28D9;width:22px;height:22px;font-size:10px;">E</div>
+                <span>LDN (GMT)</span>
+              </div>
+            </th>
+            <th class="text-center pb-3 px-2">
+              <div class="flex items-center justify-center gap-1">
+                <div class="avatar" style="background:#D97706;width:22px;height:22px;font-size:10px;">L</div>
+                <span>BER (CET)</span>
+              </div>
+            </th>
+            <th class="text-left pb-3 pl-4">Who sacrifices</th>
+          </tr>
+        </thead>
+        <tbody class="space-y-2">
+          <tr>
+            <td class="pr-4 py-2 font-medium text-indigo-300">Week 1</td>
+            <td class="pr-4 py-2 text-slate-400">13:00 UTC</td>
+            <td class="px-2 py-2"><div class="cell-great">6:30 PM ✅</div></td>
+            <td class="px-2 py-2"><div class="cell-great">8:00 AM ✅</div></td>
+            <td class="px-2 py-2"><div class="cell-great">1:00 PM ✅</div></td>
+            <td class="px-2 py-2"><div class="cell-great">2:00 PM ✅</div></td>
+            <td class="pl-4 py-2 text-emerald-400 text-xs">Nobody 🎉</td>
+          </tr>
+          <tr>
+            <td class="pr-4 py-2 font-medium text-indigo-300">Week 2</td>
+            <td class="pr-4 py-2 text-slate-400">20:00 UTC</td>
+            <td class="px-2 py-2"><div class="cell-great">1:30 AM+1 ✅</div></td>
+            <td class="px-2 py-2"><div class="cell-great">3:00 PM ✅</div></td>
+            <td class="px-2 py-2"><div class="cell-ok">8:00 PM ⚡</div></td>
+            <td class="px-2 py-2"><div class="cell-ok">9:00 PM ⚡</div></td>
+            <td class="pl-4 py-2 text-yellow-400 text-xs">Emma, Lucas (evening)</td>
+          </tr>
+          <tr>
+            <td class="pr-4 py-2 font-medium text-indigo-300">Week 3</td>
+            <td class="pr-4 py-2 text-slate-400">14:30 UTC</td>
+            <td class="px-2 py-2"><div class="cell-great">8:00 PM ✅</div></td>
+            <td class="px-2 py-2"><div class="cell-great">9:30 AM ✅</div></td>
+            <td class="px-2 py-2"><div class="cell-great">2:30 PM ✅</div></td>
+            <td class="px-2 py-2"><div class="cell-great">3:30 PM ✅</div></td>
+            <td class="pl-4 py-2 text-emerald-400 text-xs">Nobody 🎉</td>
+          </tr>
+          <tr>
+            <td class="pr-4 py-2 font-medium text-indigo-300">Week 4</td>
+            <td class="pr-4 py-2 text-slate-400">07:00 UTC</td>
+            <td class="px-2 py-2"><div class="cell-great">12:30 PM ✅</div></td>
+            <td class="px-2 py-2"><div class="cell-ok">2:00 AM 🌙</div></td>
+            <td class="px-2 py-2"><div class="cell-great">7:00 AM ✅</div></td>
+            <td class="px-2 py-2"><div class="cell-great">8:00 AM ✅</div></td>
+            <td class="pl-4 py-2 text-yellow-400 text-xs">Arjun (early morning)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="flex items-center gap-6 mt-4 text-xs text-slate-500">
+      <div class="flex items-center gap-2"><div class="cell-great" style="padding:2px 8px;font-size:10px;">✅</div> Within core hours</div>
+      <div class="flex items-center gap-2"><div class="cell-ok" style="padding:2px 8px;font-size:10px;">⚡</div> Slight inconvenience</div>
+      <div class="flex items-center gap-2"><div class="cell-bad" style="padding:2px 8px;font-size:10px;">🔥</div> Off-hours sacrifice</div>
+    </div>
+  </div>
+
+  <!-- EQUITY IMPROVEMENT -->
+  <div class="card p-6 mb-8">
+    <h2 class="font-semibold mb-4">Equity Score Impact</h2>
+    <div class="grid grid-cols-2 gap-4 text-center">
+      <div class="bg-slate-900 rounded-xl p-4">
+        <div class="text-slate-500 text-xs mb-1">Current Team Equity Score</div>
+        <div class="text-3xl font-bold text-red-400">42/100</div>
+        <div class="text-xs text-red-500 mt-1">Priya carries 82% of the burden</div>
+      </div>
+      <div class="rounded-xl p-4" style="background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3);">
+        <div class="text-slate-400 text-xs mb-1">After Applying Rotation</div>
+        <div class="text-3xl font-bold text-indigo-400">87/100</div>
+        <div class="text-xs text-emerald-400 mt-1">Burden distributed across all 4 timezones</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex gap-4">
+    <button onclick="applyRotation()" class="btn-primary" id="applyBtn">✅ Apply This Rotation</button>
+    <a href="dashboard.html" class="btn-primary" style="background: rgba(255,255,255,0.07); background-image:none;">← Back to Dashboard</a>
+  </div>
+  <div id="successMsg" class="hidden mt-4 text-emerald-400 font-semibold">
+    🎉 Rotation applied! Calendar invites updated. Priya's burn risk: <span class="text-emerald-300">LOW</span>
+  </div>
+
+</div>
+
+<script>
+function applyRotation() {
+  document.getElementById('applyBtn').textContent = '✓ Applied!';
+  document.getElementById('applyBtn').style.background = 'linear-gradient(135deg,#10B981,#059669)';
+  document.getElementById('successMsg').classList.remove('hidden');
+}
+</script>
+
+</body>
+</html>
