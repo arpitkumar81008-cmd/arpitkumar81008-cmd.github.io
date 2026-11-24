@@ -1014,6 +1014,24 @@ document.querySelectorAll("[data-copy-email]").forEach((btn) => {
   });
 });
 
+document.querySelectorAll("[data-send-email]").forEach((link) => {
+  link.addEventListener("click", async (e) => {
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (isMobile) {
+      e.preventDefault();
+      window.location.href = `mailto:${EMAIL}`;
+      return;
+    }
+    // On desktop: let the Gmail web compose tab open via href, and also copy the email address
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+      showToast(`Opening Gmail · Copied ${EMAIL}`);
+    } catch {
+      showToast(`Opening Gmail (${EMAIL})`);
+    }
+  });
+});
+
 /* ==========================================================================
    5. Scroll Progress, Active Nav, Ledger Trace & Reveal Choreography
    ========================================================================== */
