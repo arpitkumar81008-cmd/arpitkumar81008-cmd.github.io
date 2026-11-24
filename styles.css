@@ -830,6 +830,27 @@ body {
   background: var(--accent-warm-soft);
 }
 
+.project-badges-left {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ai-origin-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  font-family: var(--font-mono);
+  font-size: 0.67rem;
+  font-weight: 500;
+  color: var(--ink-secondary);
+  background: var(--tag-bg);
+  border: 1px solid var(--border-hairline);
+  padding: 0.2rem 0.56rem;
+  border-radius: 999px;
+}
+
 .project-year {
   font-weight: 500;
   color: var(--ink-muted);
@@ -1949,6 +1970,8 @@ body {
   #resume-modal[hidden] {
     display: block !important;
     content-visibility: visible !important;
+    opacity: 1 !important;
+    animation: none !important;
     position: static !important;
     inset: auto !important;
     background: #ffffff !important;

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Arpit Kumar Gupta — Editorial Pastel Portfolio, Infinite L→R Bento Showcase,
+   Arpit Kumar Gupta — Editorial Pastel Portfolio, Infinite R→L Bento Showcase,
    Strict Skill/Domain Filtering, Cursor Spotlight & Calm Silk Wave Canvas
    ========================================================================== */
 
@@ -12,19 +12,20 @@ const PROJECTS = [
     category: "web",
     bentoSize: "wide",
     badge: "1st Place · Unprompted",
+    aiPill: "✦ Made with AI in Antigravity",
     warmBadge: true,
     year: "2026",
-    role: "Built the Meridian Burnout Tracker & Fair-Rotation Engine",
+    role: "Meridian Burnout Concept & HTML · Made with AI in Antigravity",
     summary:
-      "Dual-product remote collaboration platform pairing Meridian (individual overtime & late-night meeting burnout tracker) with Proxy (asynchronous meeting attendance & sunrise summaries).",
+      "Dual-product remote collaboration web app—built using HTML fundamentals and AI-assisted coding in Antigravity—pairing Meridian (overtime & late-night meeting burnout tracker) with Proxy (async meeting summaries).",
     preview: {
       type: "image",
       src: "./assets/meridian-preview.png",
       drawerIframe: "./assets/meridian-demo/dashboard.html",
       alt: "Meridian Timezone Equity & Burnout Tracker Dashboard",
     },
-    leadMetric: "1st Place · Individual Burnout & Overtime Tracker",
-    stack: ["HTML", "CSS", "Tailwind CSS", "JavaScript", "Python", "Git & GitHub"],
+    leadMetric: "1st Place · Burnout Tracker · Made with AI in Antigravity",
+    stack: ["HTML", "Antigravity (AI)", "CSS", "Tailwind CSS", "JavaScript", "Python", "Git & GitHub"],
     links: [
       {
         label: "Burnout Dashboard Demo",
@@ -40,10 +41,10 @@ const PROJECTS = [
     metrics: [
       { label: "Result", value: "1st Place" },
       { label: "My Module", value: "Meridian Tracker" },
-      { label: "Workflow", value: "Burn Risk → Rotate" },
+      { label: "Built With", value: "HTML + Antigravity" },
     ],
     architecture: [
-      "Team Calendar Logs ──▶ Meridian Burnout Tracker (My Module)",
+      "Team Calendar Logs ──▶ Meridian Burnout Tracker (My Concept)",
       "                                 │ (Flags Overtime & Late-Night Load)",
       "                                 ▼",
       "             Fair Rotation Scheduler   OR  Proxy Async Attendance",
@@ -52,9 +53,9 @@ const PROJECTS = [
       "                              Sunrise Decision & Action Summary",
     ].join("\n"),
     highlights: [
-      "Engineered the Meridian burnout-tracking engine to monitor how many overtime and late-night meetings each individual attends across global timezones.",
-      "Designed automated burn-risk scoring and fair-rotation scheduling so off-hours sacrifices are shared equitably instead of overloading one teammate.",
-      "Integrated Meridian seamlessly with the Proxy async briefing/summary workflow across a 6-screen interactive product, winning 1st Place at the Unprompted Hackathon.",
+      "Designed the Meridian burnout-tracking concept to monitor how many overtime and late-night meetings a person attends and reduce individual burnout.",
+      "Built the multi-screen web interface using my HTML foundation paired with AI-assisted development in Antigravity for CSS, Tailwind, and JavaScript logic.",
+      "Collaborated with teammates to connect Meridian with Proxy and pitched our prototype live to win 1st Place at the Unprompted Hackathon.",
     ],
     mediaGallery: {
       photos: [
@@ -77,18 +78,19 @@ const PROJECTS = [
     category: "web",
     bentoSize: "wide",
     badge: "Live Production App",
+    aiPill: "✦ Made with AI in Antigravity",
     warmBadge: false,
     year: "2026",
-    role: "Solo Creator — Layout Engine, Bilingual Kinship & Cloud Sync",
+    role: "Solo Product Direction & Kinship UX · Made with AI in Antigravity",
     summary:
-      "Bilingual (English & हिन्दी) multi-generational family tree web platform with an authentic Indian kinship solver, dual-mode zero-collision spatial layout engine, and private Cloud Firestore sync.",
+      "Bilingual (English & हिन्दी) multi-generational family tree web platform—made with AI in Antigravity—featuring Indian kinship resolution, non-overlapping tree layouts, and private cloud sync.",
     preview: {
       type: "image",
       src: "./assets/vanshvriksha.jpg",
       alt: "VanshVriksha Bilingual Family Tree Platform",
     },
-    leadMetric: "Live PWA · Dual-Mode Spatial Engine · EN ↔ हिन्दी",
-    stack: ["React", "Vite", "Firebase", "JavaScript", "CSS", "Git & GitHub"],
+    leadMetric: "Live Web App · EN ↔ हिन्दी · Made with AI in Antigravity",
+    stack: ["Antigravity (AI)", "HTML", "React", "Vite", "Firebase", "JavaScript", "CSS", "Git & GitHub"],
     links: [
       {
         label: "Live App",
@@ -102,23 +104,23 @@ const PROJECTS = [
       },
     ],
     metrics: [
-      { label: "Layout", value: "Zero-Collision DAG" },
+      { label: "Workflow", value: "AI in Antigravity" },
       { label: "Language", value: "EN ↔ हिन्दी" },
-      { label: "Sync", value: "Firestore + PWA" },
+      { label: "Sync", value: "Firebase Cloud" },
     ],
     architecture: [
-      "React 18 + Vite ──▶ Dual-Mode Spatial Engine (Subtree + Manhattan)",
-      "                                 │",
-      "                                 ▼",
-      "      Phonetic Devanagari Translit (Online + Offline) & Kinship Solver",
-      "                                 │",
-      "                                 ▼",
-      "    Private Firestore ACLs + HEIC Compression + 2× DPI Poster Export",
+      "Product & Kinship Prompts ──▶ AI-Assisted Build in Antigravity",
+      "                                      │",
+      "                                      ▼",
+      "       Bilingual (EN / हिन्दी) Tree Layout & Indian Kinship Solver",
+      "                                      │",
+      "                                      ▼",
+      "          Private Firebase Sync + Poster & Backup Exports",
     ].join("\n"),
     highlights: [
-      "Engineered a dual-mode zero-collision flowchart engine supporting both full top-down lineage packing and person-centric bilateral Manhattan routing.",
-      "Built instant English ↔ हिन्दी switching, offline-capable phonetic Devanagari transliteration, and authentic Indian kinship resolution (Tauji, Chacha, Bua, Mama, Mausi, etc.).",
-      "Implemented private-by-default Cloud Firestore multi-tree security rules, 25-step undo/redo, family invite codes, client-side HEIC photo compression (<= 8 KB), and 2× DPI PNG/PDF poster export.",
+      "Directed the entire product vision, authentic Indian kinship rules (Tauji, Chacha, Bua, Mama, Mausi, etc.), and bilingual English ↔ हिन्दी experience using Antigravity.",
+      "Used AI-assisted coding in Antigravity to build and ship a full React, Vite, and Firebase application beyond my classroom languages (C, C++, Java, HTML).",
+      "Iteratively tested, refined, and deployed private family sharing, Hindi name transliteration, and high-res poster exports live at vanshvriksha.web.app.",
     ],
   },
   {
@@ -127,18 +129,19 @@ const PROJECTS = [
     category: "web",
     bentoSize: "compact",
     badge: "1st Place · Problem Protocol",
+    aiPill: "✦ Made with AI in Antigravity",
     warmBadge: true,
     year: "2026",
-    role: "Built Photo-Upload Web Portal & Google Maps API Integration",
+    role: "Leak Website & Maps Flow (HTML + AI in Antigravity)",
     summary:
-      "Campus-wide water leak reporting website where students and staff snap leak photos, attach live Google Maps API location pins, and dispatch repair tickets to maintenance teams.",
+      "Campus water leak reporting website—built with HTML and AI in Antigravity—where people click photos of leaks, upload them with their Google Maps API address, and route reports to a repair team.",
     preview: {
       type: "image",
       src: "./assets/campus-water-preview.png",
       alt: "Campus Water Leak Photo Upload & Google Maps API Dispatch Portal",
     },
-    leadMetric: "1st Place · Photo Evidence + Google Maps Geotagging",
-    stack: ["HTML", "CSS", "JavaScript", "Google Maps API", "Git & GitHub"],
+    leadMetric: "1st Place · Photo + Maps API · Made with AI in Antigravity",
+    stack: ["HTML", "Antigravity (AI)", "CSS", "JavaScript", "Google Maps API", "Git & GitHub"],
     links: [
       {
         label: "GitHub Profile",
@@ -148,22 +151,22 @@ const PROJECTS = [
     ],
     metrics: [
       { label: "Result", value: "1st Place" },
-      { label: "My Focus", value: "Web + Maps API" },
+      { label: "Built With", value: "HTML + Antigravity" },
       { label: "Routing", value: "Maintenance Crew" },
     ],
     architecture: [
-      "Campus Reporter ──▶ Web Camera / Photo Evidence Upload (My Module)",
-      "                                 │",
-      "                                 ▼",
-      "             Google Maps API Pin & Address Verification",
-      "                                 │",
-      "                                 ▼",
-      "         Automated Ticket Dispatch ──▶ Campus Maintenance Team",
+      "Campus Visitor ──▶ Click & Upload Leak Photo on Website",
+      "                                │",
+      "                                ▼",
+      "           Google Maps API Address & Location Pinning",
+      "                                │",
+      "                                ▼",
+      "         Forwarded to Separate Maintenance Team to Fix Leak",
     ].join("\n"),
     highlights: [
-      "Built the user-facing web application allowing anyone on campus to photograph active water leaks and submit structured incident reports in seconds.",
-      "Integrated the Google Maps API so every uploaded leak photo carries verified campus coordinates and exact building/zone address details.",
-      "Wired submissions to forward directly to the dedicated maintenance response workflow for rapid pipe repair, winning 1st Place at The Problem Protocol Hackathon.",
+      "Worked on the website flow where people on campus click photos of active water leaks and upload them directly through the browser.",
+      "Used HTML alongside AI-assisted coding in Antigravity to set up Google Maps API address pinning on each report.",
+      "Configured submissions to route directly to a dedicated repair team workflow, winning 1st Place at The Problem Protocol Hackathon.",
     ],
     mediaGallery: {
       photos: [
@@ -186,24 +189,25 @@ const PROJECTS = [
     category: "hardware",
     bentoSize: "wide",
     badge: "6th Place · SIH 2026",
+    aiPill: "✦ Soldering + AI in Antigravity",
     warmBadge: false,
     year: "2026",
-    role: "Hardware Prototyping, Soldering, Firmware Integration & Live Pitch",
+    role: "Hardware Soldering, Compiling onto ESP32 & Pitch · AI in Antigravity",
     summary:
-      "Low-latency ESP32-S3 hardware voice assistant streaming 16kHz I2S MEMS audio to a local FastAPI, Silero VAD, and Faster-Whisper server—cutting latency from ~4.5s to ~1.5s.",
+      "Group SIH 2026 ESP32-S3 voice assistant where I soldered the hardware prototype, compiled and flashed teammates' code onto the ESP32-S3 (with backend/tooling built via Antigravity), and pitched live.",
     preview: {
       type: "image",
       src: "./assets/sih-voice-assistant.png",
       alt: "ESP32-S3 and INMP441 hardware schematic",
     },
-    leadMetric: "Latency: ~4.5s → ~1.5s · 921,600 Baud · Live Demo",
+    leadMetric: "6th Place · Hand-Soldered Rig + Live Pitch · AI-Assisted",
     stack: [
       "C",
       "C++",
       "ESP32-S3",
-      "FreeRTOS",
       "INMP441 I2S",
       "Hardware Soldering",
+      "Antigravity (AI)",
       "Python",
       "FastAPI",
       "Faster-Whisper",
@@ -222,23 +226,23 @@ const PROJECTS = [
       },
     ],
     metrics: [
-      { label: "Latency", value: "~1.5s (-66%)" },
-      { label: "Serial Rate", value: "921,600 baud" },
+      { label: "My Focus", value: "Hardware & Pitch" },
+      { label: "Latency", value: "~1.5s Demo" },
       { label: "SIH 2026", value: "6th Place" },
     ],
     architecture: [
-      "Soldered INMP441 Mic (I2S) ──▶ ESP32-S3 Core 0 (DMA + DC Filter)",
-      "                                        │ (3s FIFO Ring Buffer)",
+      "Hand-Soldered INMP441 Mic ──▶ Wired ESP32-S3 Breadboard Prototype",
+      "                                        │ (Compiled & Flashed C/C++ Code)",
       "                                        ▼",
-      "                        ESP32-S3 Core 1 (921,600-Baud Framing)",
+      "                   AI-Assisted Python / Whisper Server Pipeline",
       "                                        │",
       "                                        ▼",
-      "             FastAPI ──▶ Silero VAD ──▶ Faster-Whisper ──▶ Live Demo",
+      "                     Live Jury Stage Pitch & Wake-Word Demo",
     ].join("\n"),
     highlights: [
-      "Handled physical hardware prototyping and precision pin-header soldering for the ESP32-S3-WROOM-1 board and INMP441 digital I2S MEMS microphone bench.",
-      "Compiled teammates' modules, resolved integration bottlenecks, and flashed the combined dual-core FreeRTOS firmware directly onto the ESP32-S3.",
-      "Led the stage presentation and live voice-assistant demonstration before the Smart India Hackathon (SIH) 2026 internal jury, securing 6th Place.",
+      "Worked hands-on on the hardware side: soldering the INMP441 microphone headers and assembling the physical ESP32-S3 breadboard prototype.",
+      "Compiled teammates' modules using my C/C++ foundation and AI assistance in Antigravity, flashing the integrated build directly onto the ESP32-S3.",
+      "Delivered the live stage pitch and working wake-word hardware demonstration before the SIH 2026 internal jury, placing 6th.",
     ],
     mediaGallery: {
       video: {
@@ -255,7 +259,7 @@ const PROJECTS = [
         {
           src: "./assets/sih-esp32-bench.jpg",
           label: "ESP32-S3-N16R8 Bench",
-          caption: "Dual-core ESP32-S3-N16R8 powered on the breadboard running integrated FreeRTOS firmware.",
+          caption: "ESP32-S3-N16R8 powered on the breadboard running the compiled voice-capture firmware.",
         },
         {
           src: "./assets/sih-inmp441-mic.jpg",
@@ -276,18 +280,19 @@ const PROJECTS = [
     category: "ai",
     bentoSize: "compact",
     badge: "Solo ~1-Hr Sprint · TechnoJam",
+    aiPill: "✦ Made with AI in Antigravity",
     warmBadge: false,
     year: "2026",
-    role: "Solo Builder — End-to-End Agent Pipeline (~1-Hour Sprint)",
+    role: "Solo ~1-Hour Sprint Build · Made with AI in Antigravity",
     summary:
-      "Evidence-backed autonomous research agent built solo during a ~1-hour online sprint—discovering sources, extracting rendered pages, and synthesizing conflict-aware reports.",
+      "Autonomous web research agent built solo in a ~1-hour online sprint with TechnoJam Club—made with AI in Antigravity to orchestrate web search, extraction, and Gemini report synthesis.",
     preview: {
       type: "image",
       src: "./assets/researchmesh.png",
       alt: "ResearchMesh web application interface",
     },
-    leadMetric: "Solo 1-Hr Build · 4-Stage Pipeline · 429/503 Fallback",
-    stack: ["Python", "Google Gemini", "TinyFish SDK", "Pydantic", "Streamlit", "Git & GitHub"],
+    leadMetric: "Solo 1-Hr Sprint · Made with AI in Antigravity",
+    stack: ["Antigravity (AI)", "Python", "Google Gemini", "TinyFish SDK", "Pydantic", "Streamlit", "Git & GitHub"],
     links: [
       {
         label: "GitHub Repository",
@@ -297,40 +302,41 @@ const PROJECTS = [
     ],
     metrics: [
       { label: "Sprint", value: "Solo (~1 Hr)" },
-      { label: "Resilience", value: "4-Tier Fallback" },
+      { label: "Built With", value: "Antigravity AI" },
       { label: "Export", value: "JSON & MD" },
     ],
     architecture: [
-      "User Query ──▶ Query Expansion ──▶ TinyFish Search",
+      "User Research Prompt ──▶ AI-Built 4-Stage Pipeline (Antigravity)",
       "                                        │",
       "                                        ▼",
-      "         TinyFish Fetch (Chromium) ──▶ Web Agent Escalation",
+      "             TinyFish Web Search & Extraction ──▶ Gemini Synthesis",
       "                                        │",
       "                                        ▼",
-      "     Gemini Tiered Fallback ──▶ Pydantic Report ──▶ Streamlit UI",
+      "                       Structured Streamlit Report (MD / JSON)",
     ].join("\n"),
     highlights: [
-      "Built solo end-to-end during an intensive ~1-hour online hackathon-style sprint in collaboration with Galgotias University's TechnoJam Club.",
-      "Engineered multi-query web discovery, parallel Chromium extraction, and tiered Google Gemini fallback to survive 429 rate-limit and 503 capacity spikes.",
-      "Enforced strict Pydantic schemas separating corroborated evidence from conflicting claims, with one-click Markdown and JSON export.",
+      "Built solo during a ~1-hour online hackathon-style sprint with Galgotias University's TechnoJam Club using AI-assisted coding in Antigravity.",
+      "Directed the research workflow—combining web discovery, page extraction, Gemini rate-limit fallback, and structured report export.",
+      "Tested and shipped the complete repository within the 1-hour sprint window using Antigravity.",
     ],
   },
 ];
 
-/* Dedicated Coursework / Algorithm Repository shown when filtering strictly by Java */
+/* Handwritten Core CS Repository shown when filtering by Java */
 const SUPPLEMENTAL_SKILL_PROJECTS = [
   {
     id: "java-dsa-suite",
     title: "Java Algorithms & OOP Suite",
     category: "cs",
     bentoSize: "wide",
-    badge: "40+ Programs · Core CS",
+    badge: "40+ Programs · Handwritten Java",
+    aiPill: "Handwritten Core CS",
     warmBadge: false,
     year: "2025 — 2026",
-    role: "Solo Author — Data Structures, Matrix Manipulation & OOP",
+    role: "Handwritten by Me — Java OOP, Matrices, Recursion & Algorithms",
     summary:
-      "Comprehensive repository of 40+ Java implementations spanning matrix transformations, recursion, string algorithms, sorting, and object-oriented programming from ICSE/ISC through B.Tech CSE.",
-    leadMetric: "40+ Java Source Files · Matrices, Recursion & OOP",
+      "My personal repository of 40+ handwritten Java programs covering 2D matrices, recursion, string algorithms, sorting, and object-oriented programming across ICSE/ISC and B.Tech CSE.",
+    leadMetric: "40+ Handwritten Java Programs · Core CS Foundation",
     stack: ["Java", "Git & GitHub"],
     links: [
       {
@@ -340,12 +346,12 @@ const SUPPLEMENTAL_SKILL_PROJECTS = [
       },
     ],
     metrics: [
-      { label: "Programs", value: "40+ in Java" },
-      { label: "Focus", value: "DSA & OOP" },
+      { label: "Programs", value: "40+ Handwritten" },
+      { label: "Language", value: "Pure Java" },
       { label: "Foundation", value: "ISC → B.Tech" },
     ],
     architecture: [
-      "Problem Specification ──▶ Object-Oriented Class Design (Java)",
+      "Problem Specification ──▶ Handwritten Java OOP Class Design",
       "                                      │",
       "                                      ▼",
       "        Matrix / String / Recursive Algorithm Implementation",
@@ -354,9 +360,8 @@ const SUPPLEMENTAL_SKILL_PROJECTS = [
       "               CLI & Swing GUI Verification Suites",
     ].join("\n"),
     highlights: [
-      "Implemented 40+ standalone Java programs covering 2D matrix transposition/rotation, anagram generators, number theory, and custom OOP data models.",
-      "Built interactive Java Swing mini-applications alongside core algorithmic problem sets.",
-      "Serves as my foundational problem-solving repository across ICSE/ISC computer science and first-year B.Tech CSE.",
+      "Hand-coded 40+ standalone Java programs covering 2D matrix transposition/rotation, anagram generators, number theory, and custom OOP classes.",
+      "Built without AI code generation as my core programming foundation from Little Flower School (ICSE/ISC) into B.Tech CSE.",
     ],
   },
 ];
@@ -365,20 +370,20 @@ const ALL_LOOKUP_PROJECTS = [...PROJECTS, ...SUPPLEMENTAL_SKILL_PROJECTS];
 
 const SKILL_GROUPS = [
   {
-    title: "Core CS & Languages",
-    skills: ["C", "C++", "Java", "Python", "JavaScript"],
+    title: "Languages I Know (Hands-On)",
+    skills: ["C", "C++", "Java", "HTML"],
   },
   {
-    title: "Web & Cloud Platforms",
-    skills: ["React", "Vite", "Firebase", "Google Maps API", "HTML", "CSS", "Tailwind CSS"],
+    title: "AI Workflow & Hardware",
+    skills: ["Antigravity (AI)", "ESP32-S3", "INMP441 I2S", "Hardware Soldering", "Git & GitHub"],
   },
   {
-    title: "Hardware & Edge Systems",
-    skills: ["ESP32-S3", "FreeRTOS", "INMP441 I2S", "Hardware Soldering"],
+    title: "Web Stacks (Made with Antigravity)",
+    skills: ["CSS", "Tailwind CSS", "JavaScript", "React", "Vite", "Firebase", "Google Maps API"],
   },
   {
-    title: "AI, Backend & Workflow",
-    skills: ["Google Gemini", "FastAPI", "Faster-Whisper", "Silero VAD", "Pydantic", "TinyFish SDK", "Streamlit", "Git & GitHub"],
+    title: "AI & Backend (Made with Antigravity)",
+    skills: ["Python", "FastAPI", "Google Gemini", "Faster-Whisper", "Silero VAD", "Pydantic", "TinyFish SDK", "Streamlit"],
   },
 ];
 
@@ -441,6 +446,10 @@ function buildCardHTML(project, { cardIdx = 0, isClone = false } = {}) {
       ? `<div class="project-preview"><img src="${project.preview.src}" alt="${project.preview.alt}" loading="lazy" /></div>`
       : "";
 
+  const aiPillMarkup = project.aiPill
+    ? `<span class="ai-origin-pill">${project.aiPill}</span>`
+    : "";
+
   const tabIndexAttr = isClone ? `-1` : `0`;
   const ariaHiddenAttr = isClone ? `aria-hidden="true"` : `role="button" aria-label="Open ${project.title} details"`;
   const linkTabIndex = isClone ? `tabindex="-1"` : "";
@@ -456,7 +465,10 @@ function buildCardHTML(project, { cardIdx = 0, isClone = false } = {}) {
       <div>
         ${previewMarkup}
         <div class="project-top">
-          <span class="${badgeClass}">${project.badge}</span>
+          <div class="project-badges-left">
+            <span class="${badgeClass}">${project.badge}</span>
+            ${aiPillMarkup}
+          </div>
           <span class="project-year">${project.year}</span>
         </div>
         <h3 class="project-title">${project.title}</h3>
@@ -758,7 +770,9 @@ function openProjectDrawer(projectId, updateHash = true) {
 
   lastFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
 
-  drawerKicker.textContent = `${project.badge} · ${project.year}`;
+  drawerKicker.textContent = project.aiPill
+    ? `${project.badge} · ${project.aiPill} · ${project.year}`
+    : `${project.badge} · ${project.year}`;
   drawerTitle.textContent = project.title;
 
   const hasVideo = Boolean(project.mediaGallery?.video);
