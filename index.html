@@ -48,7 +48,7 @@
     href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="./styles.css?v=8" />
+  <link rel="stylesheet" href="./styles.css?v=11" />
 </head>
 <body>
   <!-- Visibly Animated Calm Pastel Silk Wave Canvas -->
@@ -428,7 +428,10 @@
   <footer class="site-footer">
     <div class="footer-inner">
       <span>Arpit Kumar Gupta · 2026 · Built with AI in Antigravity</span>
-      <button type="button" id="toggle-motion-btn" class="motion-toggle">Background motion: On</button>
+      <div class="footer-controls">
+        <span class="footer-shortcuts">Keys: <kbd>T</kbd> theme · <kbd>←</kbd><kbd>→</kbd> cycle · <kbd>Esc</kbd> close</span>
+        <button type="button" id="toggle-motion-btn" class="motion-toggle">Background motion: On</button>
+      </div>
     </div>
   </footer>
 
@@ -442,7 +445,11 @@
           <div id="drawer-kicker" class="drawer-kicker"></div>
           <h2 id="drawer-title" class="drawer-title"></h2>
         </div>
-        <button type="button" id="drawer-close-btn" class="close-btn" data-close-overlay aria-label="Close project drawer">Close</button>
+        <div class="drawer-header-actions">
+          <button type="button" id="drawer-prev-btn" class="drawer-step-btn" aria-label="Previous project" title="Previous project (←)">←</button>
+          <button type="button" id="drawer-next-btn" class="drawer-step-btn" aria-label="Next project" title="Next project (→)">→</button>
+          <button type="button" id="drawer-close-btn" class="close-btn" data-close-overlay aria-label="Close project drawer">Close</button>
+        </div>
       </div>
       <div id="drawer-body" class="drawer-body"></div>
     </aside>
@@ -635,17 +642,29 @@
     </div>
   </div>
 
-  <!-- Full-Screen Photo Lightbox -->
+  <!-- Full-Screen Photo Lightbox with Prev / Next Navigation -->
   <div id="media-lightbox" class="lightbox-backdrop" hidden role="dialog" aria-modal="true" aria-label="Expanded photo preview">
-    <button type="button" class="close-btn lightbox-close" data-close-lightbox aria-label="Close photo preview">Close ×</button>
+    <div class="lightbox-topbar">
+      <span id="lightbox-counter" class="lightbox-counter"></span>
+      <button type="button" class="close-btn lightbox-close" data-close-lightbox aria-label="Close photo preview">Close ×</button>
+    </div>
+    <button type="button" id="lightbox-prev-btn" class="lightbox-nav-btn lightbox-nav-btn--prev" aria-label="Previous photo">‹</button>
     <figure class="lightbox-figure">
       <img id="lightbox-img" src="" alt="" />
       <figcaption id="lightbox-caption"></figcaption>
     </figure>
+    <button type="button" id="lightbox-next-btn" class="lightbox-nav-btn lightbox-nav-btn--next" aria-label="Next photo">›</button>
   </div>
+
+  <!-- Floating Back-to-Top Button -->
+  <button type="button" id="back-to-top-btn" class="back-to-top" aria-label="Scroll back to top" title="Back to top">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="m18 15-6-6-6 6" />
+    </svg>
+  </button>
 
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
-  <script src="./app.js?v=9" defer></script>
+  <script src="./app.js?v=11" defer></script>
 </body>
 </html>

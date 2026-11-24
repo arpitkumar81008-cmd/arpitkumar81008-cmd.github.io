@@ -401,20 +401,46 @@ const skillStatus = document.getElementById("skill-status");
 let activeFilter = "all";
 let activeSkill = null;
 
-// Marquee animation state (Right -> Left)
+// Marquee animation state (Right -> Left + Left/Right Step Controls + Drag)
 let marqueeRafId = null;
+let marqueeAbortController = null;
 let marqueeLastTs = 0;
 let marqueeOffsetX = 0;
 let marqueeCurrentSpeed = 48; // px per second moving Right -> Left
 let marqueeHovered = false;
+let marqueeManualPaused = false;
+let marqueeTouchHoldUntil = 0;
+let marqueePendingShift = 0; // smooth pixel impulse for Left / Right arrow clicks
 let marqueeSingleWidth = 0;
+let suppressCardClickUntil = 0;
 
 function stopMarqueeLoop() {
   if (marqueeRafId) {
     cancelAnimationFrame(marqueeRafId);
     marqueeRafId = null;
   }
+  if (marqueeAbortController) {
+    marqueeAbortController.abort();
+    marqueeAbortController = null;
+  }
   marqueeLastTs = 0;
+  marqueePendingShift = 0;
+}
+
+function wrapMarqueeOffset() {
+  if (marqueeSingleWidth <= 0) return;
+  while (marqueeOffsetX <= -marqueeSingleWidth) marqueeOffsetX += marqueeSingleWidth;
+  while (marqueeOffsetX > 0) marqueeOffsetX -= marqueeSingleWidth;
+}
+
+function stepMarqueeBy(direction) {
+  // direction: "prev" = Left button (bring previous card from left -> shift track right)
+  //            "next" = Right button (advance to next card on right -> shift track left)
+  const stepPx = Math.min(430, Math.max(300, window.innerWidth * 0.72));
+  marqueePendingShift += direction === "prev" ? stepPx : -stepPx;
+  if (!marqueeHovered) {
+    marqueeTouchHoldUntil = performance.now() + 4000;
+  }
 }
 
 function getFilteredProjects() {
@@ -443,7 +469,7 @@ function buildCardHTML(project, { cardIdx = 0, isClone = false } = {}) {
 
   const previewMarkup =
     project.preview?.type === "image"
-      ? `<div class="project-preview"><img src="${project.preview.src}" alt="${project.preview.alt}" loading="lazy" /></div>`
+      ? `<div class="project-preview"><img src="${project.preview.src}" alt="${project.preview.alt}" loading="lazy" draggable="false" /></div>`
       : "";
 
   const aiPillMarkup = project.aiPill
@@ -511,55 +537,129 @@ function updateFilterUI(filteredCount) {
   }
 }
 
+function updatePausePillUI() {
+  const pauseBtn = projectsShowcase?.querySelector("[data-marquee-pause]");
+  if (!pauseBtn) return;
+  pauseBtn.classList.toggle("is-paused", marqueeManualPaused);
+  pauseBtn.setAttribute("aria-pressed", String(marqueeManualPaused));
+  pauseBtn.textContent = marqueeManualPaused
+    ? "▶ Paused — Click to resume auto-scroll (or use ‹ ›)"
+    : "⏸ Auto-scrolling — Click to pause · Drag or use ‹ ›";
+}
+
 function startRightToLeftMarquee() {
   stopMarqueeLoop();
 
+  const shellEl = projectsShowcase?.querySelector(".bento-marquee-shell");
   const marqueeEl = projectsShowcase?.querySelector(".bento-marquee");
   const trackEl = projectsShowcase?.querySelector(".bento-marquee__track");
   const firstGroup = projectsShowcase?.querySelector(".bento-marquee__group");
-  if (!marqueeEl || !trackEl || !firstGroup) return;
+  if (!shellEl || !marqueeEl || !trackEl || !firstGroup) return;
+
+  marqueeAbortController = new AbortController();
+  const { signal } = marqueeAbortController;
 
   function measure() {
     marqueeSingleWidth = firstGroup.offsetWidth;
-    if (marqueeSingleWidth > 0 && marqueeOffsetX <= -marqueeSingleWidth) {
-      marqueeOffsetX %= marqueeSingleWidth;
-    }
+    wrapMarqueeOffset();
   }
 
   measure();
   marqueeOffsetX = 0;
-  marqueeCurrentSpeed = 48;
+  marqueeCurrentSpeed = marqueeManualPaused ? 0 : 48;
   marqueeHovered = false;
 
-  marqueeEl.addEventListener("pointerenter", () => {
-    marqueeHovered = true;
+  shellEl.addEventListener("pointerenter", (e) => {
+    if (e.pointerType !== "touch") marqueeHovered = true;
   });
-  marqueeEl.addEventListener("pointerleave", () => {
+  shellEl.addEventListener("pointerleave", () => {
     marqueeHovered = false;
   });
-  marqueeEl.addEventListener("focusin", () => {
+  shellEl.addEventListener("focusin", () => {
     marqueeHovered = true;
   });
-  marqueeEl.addEventListener("focusout", (e) => {
-    if (!marqueeEl.contains(e.relatedTarget)) {
+  shellEl.addEventListener("focusout", (e) => {
+    if (!shellEl.contains(e.relatedTarget)) {
       marqueeHovered = false;
     }
   });
 
-  // Allow horizontal trackpad scrolling along the reel
+  // Left & Right cycle buttons
+  shellEl.querySelectorAll("[data-marquee-step]").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const dir = btn.getAttribute("data-marquee-step");
+      stepMarqueeBy(dir === "prev" ? "prev" : "next");
+    });
+  });
+
+  // Click-to-lock-pause button
+  const pauseBtn = projectsShowcase?.querySelector("[data-marquee-pause]");
+  pauseBtn?.addEventListener("click", () => {
+    marqueeManualPaused = !marqueeManualPaused;
+    updatePausePillUI();
+  });
+
+  // Horizontal trackpad wheel scrolling
   marqueeEl.addEventListener(
     "wheel",
     (e) => {
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && marqueeSingleWidth > 0) {
         e.preventDefault();
         marqueeOffsetX -= e.deltaX;
-        while (marqueeOffsetX <= -marqueeSingleWidth) marqueeOffsetX += marqueeSingleWidth;
-        while (marqueeOffsetX > 0) marqueeOffsetX -= marqueeSingleWidth;
+        wrapMarqueeOffset();
         trackEl.style.transform = `translate3d(${marqueeOffsetX.toFixed(2)}px, 0, 0)`;
       }
     },
     { passive: false }
   );
+
+  // Pointer drag / touch swipe scrubbing
+  let isDragging = false;
+  let dragStartX = 0;
+  let dragLastX = 0;
+  let dragMoved = 0;
+
+  marqueeEl.addEventListener("pointerdown", (e) => {
+    if (e.button !== 0 || (e.target instanceof Element && e.target.closest("a, button"))) return;
+    isDragging = true;
+    dragStartX = e.clientX;
+    dragLastX = e.clientX;
+    dragMoved = 0;
+    marqueePendingShift = 0;
+    marqueeEl.classList.add("is-dragging");
+  });
+
+  window.addEventListener(
+    "pointermove",
+    (e) => {
+      if (!isDragging || marqueeSingleWidth <= 0) return;
+      const dx = e.clientX - dragLastX;
+      dragLastX = e.clientX;
+      dragMoved = Math.max(dragMoved, Math.abs(e.clientX - dragStartX));
+      if (dragMoved > 6) {
+        marqueeOffsetX += dx;
+        wrapMarqueeOffset();
+        trackEl.style.transform = `translate3d(${marqueeOffsetX.toFixed(2)}px, 0, 0)`;
+      }
+    },
+    { passive: true, signal }
+  );
+
+  function endDrag() {
+    if (!isDragging) return;
+    isDragging = false;
+    marqueeEl.classList.remove("is-dragging");
+    if (dragMoved > 6) {
+      suppressCardClickUntil = performance.now() + 180;
+      if (!marqueeHovered) {
+        marqueeTouchHoldUntil = performance.now() + 3000;
+      }
+    }
+  }
+
+  window.addEventListener("pointerup", endDrag, { signal });
+  window.addEventListener("pointercancel", endDrag, { signal });
 
   marqueeEl.querySelectorAll("img").forEach((img) => {
     if (!img.complete) {
@@ -574,15 +674,41 @@ function startRightToLeftMarquee() {
 
     if (marqueeSingleWidth <= 0) measure();
 
-    const targetSpeed = marqueeHovered ? 0 : 48;
-    marqueeCurrentSpeed += (targetSpeed - marqueeCurrentSpeed) * 0.085;
+    const overlayOpen =
+      (projectDrawer && !projectDrawer.hidden) ||
+      (resumeModal && !resumeModal.hidden);
 
-    if (marqueeSingleWidth > 0 && marqueeCurrentSpeed > 0.05) {
+    const shouldPauseAuto =
+      marqueeHovered ||
+      marqueeManualPaused ||
+      isDragging ||
+      overlayOpen ||
+      ts < marqueeTouchHoldUntil;
+
+    const targetSpeed = shouldPauseAuto ? 0 : 48;
+    marqueeCurrentSpeed += (targetSpeed - marqueeCurrentSpeed) * 0.09;
+
+    let moved = false;
+
+    if (marqueeSingleWidth > 0 && marqueeCurrentSpeed > 0.05 && !isDragging) {
       // Negative delta moves cards smoothly from RIGHT to LEFT
       marqueeOffsetX -= marqueeCurrentSpeed * dt;
-      if (marqueeOffsetX <= -marqueeSingleWidth) {
-        marqueeOffsetX += marqueeSingleWidth;
-      }
+      moved = true;
+    }
+
+    if (Math.abs(marqueePendingShift) > 0.4) {
+      const stepChunk = marqueePendingShift * Math.min(1, dt * 11);
+      marqueeOffsetX += stepChunk;
+      marqueePendingShift -= stepChunk;
+      moved = true;
+    } else if (marqueePendingShift !== 0) {
+      marqueeOffsetX += marqueePendingShift;
+      marqueePendingShift = 0;
+      moved = true;
+    }
+
+    if (moved && marqueeSingleWidth > 0) {
+      wrapMarqueeOffset();
       trackEl.style.transform = `translate3d(${marqueeOffsetX.toFixed(2)}px, 0, 0)`;
     }
 
@@ -590,6 +716,7 @@ function startRightToLeftMarquee() {
   }
 
   trackEl.style.transform = `translate3d(0px, 0, 0)`;
+  updatePausePillUI();
   marqueeRafId = requestAnimationFrame(step);
 }
 
@@ -597,6 +724,7 @@ window.addEventListener("resize", () => {
   const firstGroup = projectsShowcase?.querySelector(".bento-marquee__group");
   if (firstGroup) {
     marqueeSingleWidth = firstGroup.offsetWidth;
+    wrapMarqueeOffset();
   }
 });
 
@@ -608,7 +736,6 @@ function renderProjects() {
   updateFilterUI(filtered.length);
 
   if (filtered.length === 1) {
-    // Strictly 1 matching project: display it cleanly without repeating the identical card
     projectsShowcase.innerHTML = `
       <div class="single-project-wrap">
         ${buildCardHTML(filtered[0], { cardIdx: 0, isClone: false })}
@@ -624,23 +751,40 @@ function renderProjects() {
     .map((project, idx) => buildCardHTML(project, { cardIdx: idx, isClone: true }))
     .join("");
 
-  // Ensure enough clone groups so even 2- or 3-card filtered sets fill wide monitors seamlessly
   const extraCloneGroup =
     filtered.length < 4
       ? `<div class="bento-marquee__group" aria-hidden="true">${cloneCards}</div>`
       : "";
 
   projectsShowcase.innerHTML = `
-    <div class="bento-marquee" aria-label="Auto-scrolling selected projects showcase">
-      <div class="bento-marquee__track">
-        <div class="bento-marquee__group">${primaryCards}</div>
-        <div class="bento-marquee__group" aria-hidden="true">${cloneCards}</div>
-        ${extraCloneGroup}
+    <div class="bento-marquee-shell">
+      <button type="button" class="marquee-nav-btn marquee-nav-btn--prev" data-marquee-step="prev" aria-label="Scroll to previous project" title="Previous project (←)">‹</button>
+      <div class="bento-marquee" aria-label="Auto-scrolling selected projects showcase">
+        <div class="bento-marquee__track">
+          <div class="bento-marquee__group">${primaryCards}</div>
+          <div class="bento-marquee__group" aria-hidden="true">${cloneCards}</div>
+          ${extraCloneGroup}
+        </div>
       </div>
+      <button type="button" class="marquee-nav-btn marquee-nav-btn--next" data-marquee-step="next" aria-label="Scroll to next project" title="Next project (→)">›</button>
+    </div>
+    <div class="marquee-controls-row">
+      <button type="button" class="marquee-pause-pill" data-marquee-pause aria-pressed="false">
+        ⏸ Auto-scrolling — Click to pause · Drag or use ‹ ›
+      </button>
     </div>
   `;
 
   startRightToLeftMarquee();
+}
+
+function resetAllFilters() {
+  activeFilter = "all";
+  activeSkill = null;
+  if (skillStatus) skillStatus.textContent = "All skills";
+  updateFilterTabs();
+  renderSkills();
+  renderProjects();
 }
 
 function renderSkills() {
@@ -675,7 +819,8 @@ function renderSkills() {
         updateFilterTabs();
         const matches = getFilteredProjects();
         if (skillStatus) {
-          skillStatus.textContent = `${activeSkill} — showing ${matches.length} matching project${matches.length === 1 ? "" : "s"}`;
+          skillStatus.innerHTML = `${activeSkill} (${matches.length}) <button type="button" class="skill-clear-inline" data-clear-skill>Clear ×</button>`;
+          skillStatus.querySelector("[data-clear-skill]")?.addEventListener("click", resetAllFilters);
         }
         renderSkills();
         renderProjects();
@@ -708,14 +853,7 @@ document.querySelectorAll(".filter-tab").forEach((tab) => {
   });
 });
 
-clearFilterBtn?.addEventListener("click", () => {
-  activeFilter = "all";
-  activeSkill = null;
-  if (skillStatus) skillStatus.textContent = "All skills";
-  updateFilterTabs();
-  renderSkills();
-  renderProjects();
-});
+clearFilterBtn?.addEventListener("click", resetAllFilters);
 
 /* ==========================================================================
    2. Cursor-Tracked Specular Glass Spotlight
@@ -734,7 +872,7 @@ document.addEventListener(
 );
 
 /* ==========================================================================
-   3. Right-Side Project Drawer, Deep-Linking & Printable Resume Modal
+   3. Right-Side Project Drawer, Lightbox Cycling & Printable Resume Modal
    ========================================================================== */
 
 const projectDrawer = document.getElementById("project-drawer");
@@ -742,33 +880,96 @@ const drawerKicker = document.getElementById("drawer-kicker");
 const drawerTitle = document.getElementById("drawer-title");
 const drawerBody = document.getElementById("drawer-body");
 const drawerCloseBtn = document.getElementById("drawer-close-btn");
+const drawerPrevBtn = document.getElementById("drawer-prev-btn");
+const drawerNextBtn = document.getElementById("drawer-next-btn");
 const resumeModal = document.getElementById("resume-modal");
 const resumeCloseBtn = document.getElementById("resume-close-btn");
 const mediaLightbox = document.getElementById("media-lightbox");
 const lightboxImg = document.getElementById("lightbox-img");
 const lightboxCaption = document.getElementById("lightbox-caption");
+const lightboxCounter = document.getElementById("lightbox-counter");
+const lightboxPrevBtn = document.getElementById("lightbox-prev-btn");
+const lightboxNextBtn = document.getElementById("lightbox-next-btn");
 
 let lastFocusedElement = null;
+let currentDrawerProjectId = null;
+let currentLightboxPhotos = [];
+let currentLightboxIndex = 0;
 
-function openLightbox(src, caption) {
-  if (!mediaLightbox || !lightboxImg) return;
-  lightboxImg.src = src;
-  lightboxImg.alt = caption || "Project photo";
-  if (lightboxCaption) lightboxCaption.textContent = caption || "";
+function renderLightboxSlide() {
+  if (!mediaLightbox || !lightboxImg || currentLightboxPhotos.length === 0) return;
+  const item = currentLightboxPhotos[currentLightboxIndex];
+  lightboxImg.src = item.src;
+  lightboxImg.alt = item.caption || item.label || "Project photo";
+  if (lightboxCaption) lightboxCaption.textContent = item.caption || "";
+  if (lightboxCounter) {
+    lightboxCounter.textContent =
+      currentLightboxPhotos.length > 1
+        ? `Photo ${currentLightboxIndex + 1} of ${currentLightboxPhotos.length}`
+        : "";
+  }
+  const hasMultiple = currentLightboxPhotos.length > 1;
+  if (lightboxPrevBtn) lightboxPrevBtn.hidden = !hasMultiple;
+  if (lightboxNextBtn) lightboxNextBtn.hidden = !hasMultiple;
+}
+
+function openLightbox(photos, index = 0) {
+  if (!mediaLightbox || !photos.length) return;
+  currentLightboxPhotos = photos;
+  currentLightboxIndex = Math.max(0, Math.min(index, photos.length - 1));
+  renderLightboxSlide();
   mediaLightbox.hidden = false;
+}
+
+function stepLightbox(delta) {
+  if (currentLightboxPhotos.length <= 1) return;
+  currentLightboxIndex =
+    (currentLightboxIndex + delta + currentLightboxPhotos.length) %
+    currentLightboxPhotos.length;
+  renderLightboxSlide();
 }
 
 function closeLightbox() {
   if (!mediaLightbox) return;
   mediaLightbox.hidden = true;
   if (lightboxImg) lightboxImg.src = "";
+  currentLightboxPhotos = [];
 }
 
-function openProjectDrawer(projectId, updateHash = true) {
+lightboxPrevBtn?.addEventListener("click", (e) => {
+  e.stopPropagation();
+  stepLightbox(-1);
+});
+
+lightboxNextBtn?.addEventListener("click", (e) => {
+  e.stopPropagation();
+  stepLightbox(1);
+});
+
+function cycleDrawerProject(delta) {
+  if (!currentDrawerProjectId) return;
+  const pool = PROJECTS.some((p) => p.id === currentDrawerProjectId)
+    ? PROJECTS
+    : ALL_LOOKUP_PROJECTS;
+  const idx = pool.findIndex((p) => p.id === currentDrawerProjectId);
+  if (idx === -1) return;
+  const nextProject = pool[(idx + delta + pool.length) % pool.length];
+  openProjectDrawer(nextProject.id, true, false);
+}
+
+drawerPrevBtn?.addEventListener("click", () => cycleDrawerProject(-1));
+drawerNextBtn?.addEventListener("click", () => cycleDrawerProject(1));
+
+function openProjectDrawer(projectId, updateHash = true, saveFocus = true) {
   const project = ALL_LOOKUP_PROJECTS.find((p) => p.id === projectId);
   if (!project || !projectDrawer) return;
 
-  lastFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+  projectDrawer.querySelectorAll("video").forEach((v) => v.pause());
+
+  if (saveFocus && projectDrawer.hidden) {
+    lastFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+  }
+  currentDrawerProjectId = project.id;
 
   drawerKicker.textContent = project.aiPill
     ? `${project.badge} · ${project.aiPill} · ${project.year}`
@@ -799,8 +1000,8 @@ function openProjectDrawer(projectId, updateHash = true) {
         <div class="drawer-photo-grid">
           ${project.mediaGallery.photos
             .map(
-              (p) => `
-                <button type="button" class="drawer-photo-btn" data-lightbox-src="${p.src}" data-lightbox-caption="${p.caption}">
+              (p, idx) => `
+                <button type="button" class="drawer-photo-btn" data-lightbox-idx="${idx}">
                   <img src="${p.src}" alt="${p.label}" loading="lazy" />
                   <span>${p.label}</span>
                 </button>
@@ -811,6 +1012,11 @@ function openProjectDrawer(projectId, updateHash = true) {
       </div>
     `
     : "";
+
+  const pool = PROJECTS.some((p) => p.id === project.id) ? PROJECTS : ALL_LOOKUP_PROJECTS;
+  const pIdx = pool.findIndex((p) => p.id === project.id);
+  const prevProj = pool[(pIdx - 1 + pool.length) % pool.length];
+  const nextProj = pool[(pIdx + 1) % pool.length];
 
   drawerBody.innerHTML = `
     ${drawerPreviewMarkup}
@@ -864,16 +1070,24 @@ function openProjectDrawer(projectId, updateHash = true) {
         )
         .join("")}
     </div>
+
+    <div class="drawer-cycle-footer">
+      <button type="button" class="text-link text-link-muted" data-drawer-goto="${prevProj.id}">← ${prevProj.title}</button>
+      <button type="button" class="text-link" data-drawer-goto="${nextProj.id}">${nextProj.title} →</button>
+    </div>
   `;
 
   projectDrawer.hidden = false;
+  projectDrawer.querySelector(".drawer-panel")?.scrollTo({ top: 0 });
   document.body.style.overflow = "hidden";
   if (updateHash) {
     try {
       history.replaceState(null, "", `#project=${encodeURIComponent(project.id)}`);
     } catch {}
   }
-  drawerCloseBtn?.focus({ preventScroll: true });
+  if (saveFocus) {
+    drawerCloseBtn?.focus({ preventScroll: true });
+  }
 }
 
 function openResumeModal() {
@@ -888,11 +1102,11 @@ function closeOverlays() {
   const wasOpen =
     (projectDrawer && !projectDrawer.hidden) || (resumeModal && !resumeModal.hidden);
 
-  // Pause any playing drawer video before hiding
   projectDrawer?.querySelectorAll("video").forEach((v) => v.pause());
 
   if (projectDrawer) projectDrawer.hidden = true;
   if (resumeModal) resumeModal.hidden = true;
+  currentDrawerProjectId = null;
   closeLightbox();
   document.body.style.overflow = "";
 
@@ -916,12 +1130,21 @@ document.addEventListener("click", (e) => {
     return;
   }
 
-  const lightboxTrigger = target.closest("[data-lightbox-src]");
-  if (lightboxTrigger) {
-    openLightbox(
-      lightboxTrigger.getAttribute("data-lightbox-src"),
-      lightboxTrigger.getAttribute("data-lightbox-caption")
-    );
+  const drawerGoto = target.closest("[data-drawer-goto]");
+  if (drawerGoto) {
+    openProjectDrawer(drawerGoto.getAttribute("data-drawer-goto"), true, false);
+    return;
+  }
+
+  const lightboxTrigger = target.closest("[data-lightbox-idx]");
+  if (lightboxTrigger && currentDrawerProjectId) {
+    const proj = ALL_LOOKUP_PROJECTS.find((p) => p.id === currentDrawerProjectId);
+    if (proj?.mediaGallery?.photos?.length) {
+      openLightbox(
+        proj.mediaGallery.photos,
+        Number(lightboxTrigger.getAttribute("data-lightbox-idx") || 0)
+      );
+    }
     return;
   }
 
@@ -932,6 +1155,7 @@ document.addEventListener("click", (e) => {
 
   const projectTrigger = target.closest("[data-open-project]");
   if (projectTrigger) {
+    if (performance.now() < suppressCardClickUntil) return;
     openProjectDrawer(projectTrigger.getAttribute("data-open-project"));
     return;
   }
@@ -954,6 +1178,25 @@ document.addEventListener("keydown", (e) => {
       closeOverlays();
     }
     return;
+  }
+
+  if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+    const delta = e.key === "ArrowLeft" ? -1 : 1;
+    if (mediaLightbox && !mediaLightbox.hidden) {
+      e.preventDefault();
+      stepLightbox(delta);
+      return;
+    }
+    if (projectDrawer && !projectDrawer.hidden) {
+      e.preventDefault();
+      cycleDrawerProject(delta);
+      return;
+    }
+    if (marqueeHovered || document.activeElement?.closest("#work")) {
+      e.preventDefault();
+      stepMarqueeBy(delta < 0 ? "prev" : "next");
+      return;
+    }
   }
 
   if (
@@ -1022,7 +1265,6 @@ document.querySelectorAll("[data-send-email]").forEach((link) => {
       window.location.href = `mailto:${EMAIL}`;
       return;
     }
-    // On desktop: let the Gmail web compose tab open via href, and also copy the email address
     try {
       await navigator.clipboard.writeText(EMAIL);
       showToast(`Opening Gmail · Copied ${EMAIL}`);
@@ -1033,16 +1275,21 @@ document.querySelectorAll("[data-send-email]").forEach((link) => {
 });
 
 /* ==========================================================================
-   5. Scroll Progress, Active Nav, Ledger Trace & Reveal Choreography
+   5. Scroll Progress, Active Nav, Back-to-Top & Reveal Choreography
    ========================================================================== */
 
 const siteHeader = document.getElementById("site-header");
 const progressBar = document.getElementById("scroll-progress-bar");
 const ledgerWrap = document.getElementById("ledger-wrap");
 const ledgerRailFill = document.getElementById("ledger-rail-fill");
+const backToTopBtn = document.getElementById("back-to-top-btn");
 const navLinks = Array.from(document.querySelectorAll(".nav-link"));
 const sectionIds = [...new Set(navLinks.map((l) => l.getAttribute("data-section")).filter(Boolean))];
 const sections = sectionIds.map((id) => document.getElementById(id)).filter(Boolean);
+
+backToTopBtn?.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
 
 let scrollRatio = 0;
 
@@ -1053,6 +1300,7 @@ function onScroll() {
 
   if (progressBar) progressBar.style.width = `${(scrollRatio * 100).toFixed(2)}%`;
   if (siteHeader) siteHeader.classList.toggle("is-scrolled", scrollTop > 18);
+  if (backToTopBtn) backToTopBtn.classList.toggle("is-visible", scrollTop > 520);
 
   if (ledgerWrap && ledgerRailFill) {
     const rect = ledgerWrap.getBoundingClientRect();
@@ -1265,13 +1513,30 @@ renderProjects();
 renderSkills();
 initPastelWaveCanvas();
 
-// Support direct deep-links like #project=vanshvriksha or #resume
-if (window.location.hash.startsWith("#project=")) {
-  const initialId = decodeURIComponent(window.location.hash.replace("#project=", ""));
-  openProjectDrawer(initialId, false);
-} else if (window.location.hash === "#resume") {
-  openResumeModal();
+// Support direct deep-links and browser Back/Forward hash changes (#project=... or #resume)
+function syncFromLocationHash() {
+  if (window.location.hash.startsWith("#project=")) {
+    const targetId = decodeURIComponent(window.location.hash.replace("#project=", ""));
+    if (currentDrawerProjectId !== targetId || projectDrawer?.hidden) {
+      openProjectDrawer(targetId, false);
+    }
+  } else if (window.location.hash === "#resume") {
+    if (resumeModal?.hidden) {
+      openResumeModal();
+    }
+  } else if (
+    (projectDrawer && !projectDrawer.hidden) ||
+    (resumeModal && !resumeModal.hidden)
+  ) {
+    // Only auto-close if hash moved to a non-overlay hash (e.g. Back button)
+    if (!window.location.hash || !window.location.hash.startsWith("#project=")) {
+      closeOverlays();
+    }
+  }
 }
+
+syncFromLocationHash();
+window.addEventListener("hashchange", syncFromLocationHash);
 
 let openedForPrint = false;
 window.addEventListener("beforeprint", () => {
