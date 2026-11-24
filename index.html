@@ -3,18 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("arpit-theme");
+        if (saved === "dark") {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      } catch (e) {}
+    })();
+  </script>
   <title>Arpit Kumar Gupta — Portfolio &amp; Resume</title>
   <meta
     name="description"
-    content="Arpit Kumar Gupta — B.Tech CSE student at Galgotias University building Edge AI hardware, autonomous research agents, and practical web tools."
+    content="Arpit Kumar Gupta — B.Tech CSE student at Galgotias University building Edge AI hardware, autonomous research agents, and full-stack web platforms."
   />
+  <meta name="theme-color" content="#ede9e0" id="meta-theme-color" />
+
+  <!-- Editorial Monogram Favicon & Touch Icon -->
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
+  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
+
+  <!-- Open Graph & X Social Preview -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://arpitkumar81008-cmd.github.io/" />
+  <meta property="og:title" content="Arpit Kumar Gupta — Systems Builder &amp; B.Tech CSE Portfolio" />
+  <meta
+    property="og:description"
+    content="2× 1st Place Hackathon Winner building embedded ESP32-S3 Edge AI hardware, autonomous research agents, and full-stack web platforms."
+  />
+  <meta property="og:image" content="https://arpitkumar81008-cmd.github.io/assets/og-card.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@Arpit_omil" />
+  <meta name="twitter:title" content="Arpit Kumar Gupta — Portfolio &amp; Resume" />
+  <meta
+    name="twitter:description"
+    content="Building practical systems across embedded hardware, autonomous agents, and the web."
+  />
+  <meta name="twitter:image" content="https://arpitkumar81008-cmd.github.io/assets/og-card.png" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="./styles.css?v=4" />
+  <link rel="stylesheet" href="./styles.css?v=6" />
 </head>
 <body>
   <!-- Visibly Animated Calm Pastel Silk Wave Canvas -->
@@ -25,7 +59,7 @@
     <div id="scroll-progress-bar" class="scroll-progress__bar"></div>
   </div>
 
-  <!-- Refined Editorial Top Bar -->
+  <!-- Translucent Frosted-Glass Editorial Top Bar -->
   <header id="site-header" class="site-header">
     <div class="header-inner">
       <div class="brand-group">
@@ -75,6 +109,15 @@
         </button>
       </div>
     </div>
+
+    <!-- Compact Mobile Section Strip (< 760px) -->
+    <nav class="mobile-nav" aria-label="Mobile section navigation">
+      <a href="#work" class="nav-link" data-section="work">Work</a>
+      <a href="#hackathons" class="nav-link" data-section="hackathons">Hackathons</a>
+      <a href="#skills" class="nav-link" data-section="skills">Skills</a>
+      <a href="#education" class="nav-link" data-section="education">Education</a>
+      <a href="#contact" class="nav-link" data-section="contact">Contact</a>
+    </nav>
   </header>
 
   <main class="page-shell">
@@ -91,30 +134,36 @@
 
         <p class="hero-bio">
           I'm Arpit Kumar Gupta, a first-year CSE student interested in understanding what technology
-          can do and implementing it in real life—from dual-core ESP32 voice assistants to
-          evidence-backed research agents.
+          can do and implementing it in real life—from soldered ESP32-S3 voice assistants and
+          evidence-backed research agents to bilingual lineage platforms.
         </p>
 
         <div class="hero-actions">
           <a href="#work" class="btn btn-primary">View Selected Work</a>
-          <button type="button" class="btn btn-outline" data-open-resume>Open Resume</button>
+          <button type="button" class="btn btn-outline" data-open-resume>Interactive Resume</button>
+          <a href="./assets/Arpit_Kumar_Gupta_Resume.pdf" download="Arpit_Kumar_Gupta_Resume.pdf" class="btn btn-outline">
+            <span>Download PDF</span>
+            <svg class="icon-xs" style="margin-left: 0.4rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
           <button type="button" class="btn btn-text" data-copy-email>Copy Email</button>
         </div>
       </div>
 
-      <!-- Clean Architectural Facts Strip -->
-      <dl class="facts-strip reveal" style="--stagger: 1">
+      <!-- Translucent Frosted-Glass Hero Architectural Bar -->
+      <dl class="facts-strip glass-spotlight reveal" style="--stagger: 1">
         <div class="fact-cell">
           <dt>Hackathons</dt>
           <dd>2× 1st Place (Unprompted, Problem Protocol)</dd>
         </div>
         <div class="fact-cell">
           <dt>SIH 2026</dt>
-          <dd>6th Place, Internal Hackathon</dd>
+          <dd>6th Place · Hardware &amp; Live Pitch</dd>
         </div>
         <div class="fact-cell">
           <dt>Core Stack</dt>
-          <dd>C, C++, Java, Python, ESP32-S3</dd>
+          <dd>C, C++, Java, Python, React, ESP32-S3</dd>
         </div>
         <div class="fact-cell">
           <dt>Profiles</dt>
@@ -128,26 +177,40 @@
     </section>
 
     <!-- ================================================================
-         SELECTED WORK
+         SELECTED WORK (INFINITE L→R BENTO SHOWCASE + STRICT FILTER)
          ================================================================ -->
     <section id="work" class="section">
       <div class="section-head reveal">
         <div>
           <h2 class="section-title">Selected Work</h2>
           <p class="section-sub">
-            Click any project to open its architecture flow, metrics, and technical notes.
+            Hover to pause the live bento reel or click any card to inspect my exact role, system flow, and links.
           </p>
         </div>
 
-        <div class="filter-tabs" role="tablist" aria-label="Filter projects">
-          <button type="button" class="filter-tab is-active" data-filter="all" role="tab" aria-selected="true">All</button>
-          <button type="button" class="filter-tab" data-filter="ai" role="tab" aria-selected="false">AI Systems</button>
-          <button type="button" class="filter-tab" data-filter="hardware" role="tab" aria-selected="false">Hardware</button>
-          <button type="button" class="filter-tab" data-filter="web" role="tab" aria-selected="false">Web</button>
+        <div class="work-controls">
+          <div class="filter-tabs" role="tablist" aria-label="Filter projects">
+            <button type="button" class="filter-tab is-active" data-filter="all" role="tab" aria-selected="true">All</button>
+            <button type="button" class="filter-tab" data-filter="web" role="tab" aria-selected="false">Web</button>
+            <button type="button" class="filter-tab" data-filter="hardware" role="tab" aria-selected="false">Hardware</button>
+            <button type="button" class="filter-tab" data-filter="ai" role="tab" aria-selected="false">AI Systems</button>
+          </div>
+
+          <button type="button" id="layout-mode-btn" class="view-mode-btn" title="Switch between infinite auto-scroll and static bento grid">
+            <span class="view-mode-dot" aria-hidden="true"></span>
+            <span id="layout-mode-label">Auto-Scroll</span>
+          </button>
         </div>
       </div>
 
-      <div id="projects-list" class="projects-grid"></div>
+      <!-- Active Filter Banner (shown only when strictly filtering by category or skill) -->
+      <div id="active-filter-bar" class="active-filter-bar" hidden>
+        <span id="active-filter-text"></span>
+        <button type="button" id="clear-filter-btn" class="clear-filter-btn">Show all work (Auto-scroll) ×</button>
+      </div>
+
+      <!-- Dynamic Bento Showcase Container (Marquee in default state, Strict Bento Grid when filtered) -->
+      <div id="projects-showcase" class="projects-showcase"></div>
     </section>
 
     <!-- ================================================================
@@ -158,7 +221,7 @@
         <div>
           <h2 class="section-title">Hackathons</h2>
           <p class="section-sub">
-            Working systems built and demoed under competition deadlines.
+            Working systems built, integrated, and pitched live under competition deadlines.
           </p>
         </div>
       </div>
@@ -169,62 +232,93 @@
         </div>
 
         <div class="ledger-list">
-          <article class="ledger-row reveal" style="--stagger: 0" data-open-project="meridian-proxy">
+          <article class="ledger-row glass-spotlight reveal" style="--stagger: 0" data-open-project="meridian-proxy" tabindex="0" role="button" aria-label="Inspect Meridian x Proxy hackathon details">
             <div class="ledger-rank">1st Place</div>
             <div class="ledger-main">
-              <div class="ledger-meta">Unprompted Hackathon</div>
-              <h3 class="ledger-title">Meridian × Proxy — Timezone Equity &amp; Async Meeting Proxy</h3>
+              <div class="ledger-meta">Unprompted Hackathon · IEEE GUSB TEMS · Built Meridian Burnout Tracker</div>
+              <h3 class="ledger-title">Meridian × Proxy — Timezone Burnout Tracker &amp; Async Proxy</h3>
               <p class="ledger-desc">
-                Multi-screen web product designed to rotate global meetings fairly and delegate
-                unavoidable off-hours calls to an asynchronous briefing and summary workflow.
+                Built the <strong>Meridian</strong> module that tracks individual overtime and late-night meeting load across timezones and automatically rotates schedules to prevent teammate burnout.
               </p>
+
+              <div class="ledger-proof-strip" aria-label="Unprompted Hackathon event photos">
+                <span class="proof-thumb">
+                  <img src="./assets/unprompted-team.jpg" alt="Arpit and team at Unprompted Hackathon" loading="lazy" />
+                  <span class="proof-caption">Team at Venue</span>
+                </span>
+                <span class="proof-thumb">
+                  <img src="./assets/unprompted-stage.jpg" alt="Unprompted Hackathon main screen" loading="lazy" />
+                  <span class="proof-caption">Unprompted</span>
+                </span>
+              </div>
+
               <div class="ledger-actions">
-                <a href="./assets/meridian-demo/index.html" target="_blank" rel="noopener noreferrer" class="text-link" onclick="event.stopPropagation()">
-                  Live Demo
+                <a href="./assets/meridian-demo/dashboard.html" target="_blank" rel="noopener noreferrer" class="text-link">
+                  Burnout Dashboard Demo ↗
                 </a>
-                <button type="button" class="text-link text-link-muted" data-open-project="meridian-proxy">
-                  Read architecture notes
-                </button>
+                <span class="text-link text-link-muted">View photos, architecture &amp; role →</span>
               </div>
             </div>
           </article>
 
-          <article class="ledger-row reveal" style="--stagger: 1" data-open-project="campus-water-conservation">
+          <article class="ledger-row glass-spotlight reveal" style="--stagger: 1" data-open-project="campus-water-conservation" tabindex="0" role="button" aria-label="Inspect Campus Water Conservation hackathon details">
             <div class="ledger-rank">1st Place</div>
             <div class="ledger-main">
-              <div class="ledger-meta">The Problem Protocol Hackathon</div>
-              <h3 class="ledger-title">Campus Water Conservation &amp; Leak Detection</h3>
+              <div class="ledger-meta">The Problem Protocol · IEEE Student Branch · Built Web Portal &amp; Maps API</div>
+              <h3 class="ledger-title">Campus Water Leak Reporting &amp; Conservation Portal</h3>
               <p class="ledger-desc">
-                Practical campus-scale water conservation and leak monitoring solution designed to
-                identify wastage early, track zone-level usage, and support rapid maintenance response.
+                Built the web reporting application where campus users snap photos of leaks, attach live <strong>Google Maps API</strong> coordinates, and dispatch actionable repair tickets to the maintenance team.
               </p>
+
+              <div class="ledger-proof-strip" aria-label="The Problem Protocol 1st Place award photos">
+                <span class="proof-thumb">
+                  <img src="./assets/problem-protocol-award.jpg" alt="Arpit receiving 1st Place certificate at The Problem Protocol" loading="lazy" />
+                  <span class="proof-caption">1st Place Award</span>
+                </span>
+                <span class="proof-thumb">
+                  <img src="./assets/problem-protocol-stage.jpg" alt="The Problem Protocol stage screen" loading="lazy" />
+                  <span class="proof-caption">Event Stage</span>
+                </span>
+              </div>
+
               <div class="ledger-actions">
-                <a href="https://github.com/arpitkumar81008-cmd" target="_blank" rel="noopener noreferrer" class="text-link" onclick="event.stopPropagation()">
-                  GitHub Profile
+                <span class="text-link">View Award Photos &amp; System Flow →</span>
+                <a href="https://github.com/arpitkumar81008-cmd" target="_blank" rel="noopener noreferrer" class="text-link text-link-muted">
+                  GitHub Profile ↗
                 </a>
-                <button type="button" class="text-link text-link-muted" data-open-project="campus-water-conservation">
-                  Read system notes
-                </button>
               </div>
             </div>
           </article>
 
-          <article class="ledger-row reveal" style="--stagger: 2" data-open-project="sih-voice-assistant">
+          <article class="ledger-row glass-spotlight reveal" style="--stagger: 2" data-open-project="sih-voice-assistant" tabindex="0" role="button" aria-label="Inspect SIH 2026 Edge AI Voice Assistant details">
             <div class="ledger-rank is-secondary">6th Place</div>
             <div class="ledger-main">
-              <div class="ledger-meta">Smart India Hackathon (SIH) 2026 · Internal Round</div>
+              <div class="ledger-meta">Smart India Hackathon (SIH) 2026 · Hardware, Integration &amp; Stage Pitch</div>
               <h3 class="ledger-title">ESP32-S3 Edge AI Voice Assistant</h3>
               <p class="ledger-desc">
-                Dual-core FreeRTOS firmware with an INMP441 MEMS microphone streaming to a local
-                FastAPI, Silero VAD, and Faster-Whisper server—cutting latency from ~4.5s to ~1.5s.
+                Soldered and assembled the ESP32-S3 + INMP441 hardware prototype, compiled and flashed teammates' code onto dual-core FreeRTOS firmware, and pitched the live ~1.5s latency demo to judges.
               </p>
+
+              <div class="ledger-proof-strip" aria-label="SIH 2026 prototype and jury photos">
+                <span class="proof-thumb">
+                  <img src="./assets/sih-jury-pitch.jpg" alt="Presenting prototype to SIH 2026 jury" loading="lazy" />
+                  <span class="proof-caption">Jury Pitch</span>
+                </span>
+                <span class="proof-thumb">
+                  <img src="./assets/sih-esp32-bench.jpg" alt="Soldered ESP32-S3-N16R8 on breadboard" loading="lazy" />
+                  <span class="proof-caption">ESP32-S3</span>
+                </span>
+                <span class="proof-thumb">
+                  <img src="./assets/sih-inmp441-mic.jpg" alt="Soldered INMP441 I2S MEMS microphone" loading="lazy" />
+                  <span class="proof-caption">INMP441 Mic</span>
+                </span>
+              </div>
+
               <div class="ledger-actions">
-                <a href="https://github.com/arpitkumar81008-cmd/SIH-ESP32-S3-Voice-Assistant" target="_blank" rel="noopener noreferrer" class="text-link" onclick="event.stopPropagation()">
-                  GitHub Repository
+                <span class="text-link">▶ Watch Live Hardware Demo &amp; Photos</span>
+                <a href="./assets/sih-voice-assistant.png" target="_blank" rel="noopener noreferrer" class="text-link text-link-muted">
+                  EDA Schematic ↗
                 </a>
-                <button type="button" class="text-link text-link-muted" data-open-project="sih-voice-assistant">
-                  Read architecture notes
-                </button>
               </div>
             </div>
           </article>
@@ -240,7 +334,7 @@
         <div>
           <h2 class="section-title">Skills &amp; Tools</h2>
           <p class="section-sub">
-            Select any skill to highlight where it was used in the projects above.
+            Click any skill or language to strictly filter the projects above to only those built with it.
           </p>
         </div>
         <div id="skill-status" class="skill-status" aria-live="polite">All skills</div>
@@ -264,7 +358,7 @@
           <p class="edu-place">Galgotias University · Greater Noida</p>
           <p class="edu-text">
             First-year undergraduate focusing on core computer science, data structures and
-            algorithms (C, C++, Java), TechnoJam Club Agentic AI workshops, and practical builds.
+            algorithms (C, C++, Java), TechnoJam Club Agentic AI sprints, and full-stack &amp; hardware builds.
           </p>
         </div>
 
@@ -274,7 +368,7 @@
           <p class="edu-place">Gorakhpur, Uttar Pradesh</p>
           <p class="edu-text">
             Completed middle, secondary, and senior secondary schooling under the ICSE/ISC board,
-            developing strong fundamentals in computer science, presentations, and public speaking.
+            developing strong fundamentals in Java programming, presentations, and public speaking.
           </p>
         </div>
 
@@ -292,8 +386,8 @@
           <h3 class="edu-heading">Public Speaking &amp; Technical Presentations</h3>
           <p class="edu-place">TechnoJam Club · Hackathon Pitching</p>
           <p class="edu-text">
-            Extroverted communicator who enjoys presenting technical architectures, pitching
-            hackathon demos to judges, and collaborating across student engineering teams.
+            Extroverted communicator who leads live hardware/software demos on stage, pitches
+            architectures clearly to hackathon juries, and integrates cross-functional student teams.
           </p>
         </div>
       </div>
@@ -314,7 +408,8 @@
         <div class="contact-links">
           <a href="mailto:arpitkumar81008@gmail.com" class="btn btn-primary">Email Arpit</a>
           <button type="button" class="btn btn-outline" data-copy-email>Copy Address</button>
-          <button type="button" class="btn btn-outline" data-open-resume>Print Resume PDF</button>
+          <a href="./assets/Arpit_Kumar_Gupta_Resume.pdf" download="Arpit_Kumar_Gupta_Resume.pdf" class="btn btn-outline">Download Resume PDF</a>
+          <button type="button" class="btn btn-text" data-open-resume>Preview Resume</button>
         </div>
 
         <div class="contact-socials">
@@ -343,22 +438,23 @@
           <div id="drawer-kicker" class="drawer-kicker"></div>
           <h2 id="drawer-title" class="drawer-title"></h2>
         </div>
-        <button type="button" class="close-btn" data-close-overlay aria-label="Close project drawer">Close</button>
+        <button type="button" id="drawer-close-btn" class="close-btn" data-close-overlay aria-label="Close project drawer">Close</button>
       </div>
       <div id="drawer-body" class="drawer-body"></div>
     </aside>
   </div>
 
   <!-- ================================================================
-       PRINTABLE ATS RESUME MODAL
+       PRINTABLE & DOWNLOADABLE ATS RESUME MODAL
        ================================================================ -->
   <div id="resume-modal" class="modal-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="resume-modal-title">
     <div class="modal-panel">
       <div class="modal-header no-print">
         <h2 id="resume-modal-title" class="drawer-title">Resume</h2>
         <div class="modal-header-actions">
-          <button type="button" id="print-resume-btn" class="btn btn-primary">Print / Save PDF</button>
-          <button type="button" class="close-btn" data-close-overlay aria-label="Close resume">Close</button>
+          <a href="./assets/Arpit_Kumar_Gupta_Resume.pdf" download="Arpit_Kumar_Gupta_Resume.pdf" class="btn btn-primary">Download PDF</a>
+          <button type="button" id="print-resume-btn" class="btn btn-outline">Print</button>
+          <button type="button" id="resume-close-btn" class="close-btn" data-close-overlay aria-label="Close resume">Close</button>
         </div>
       </div>
 
@@ -368,14 +464,14 @@
         <header class="resume-header">
           <div>
             <h1 class="resume-name">Arpit Kumar Gupta</h1>
-            <p class="resume-headline">B.Tech Computer Science &amp; Engineering · Systems Builder &amp; Public Speaker</p>
+            <p class="resume-headline">B.Tech Computer Science &amp; Engineering · Hardware, AI &amp; Web Systems Builder</p>
             <p class="resume-loc">Galgotias University, Greater Noida · Hometown: Gorakhpur, UP</p>
           </div>
           <div class="resume-contact-grid">
             <a href="mailto:arpitkumar81008@gmail.com">arpitkumar81008@gmail.com</a>
+            <a href="https://arpitkumar81008-cmd.github.io/" target="_blank" rel="noopener noreferrer">arpitkumar81008-cmd.github.io</a>
             <a href="https://github.com/arpitkumar81008-cmd" target="_blank" rel="noopener noreferrer">github.com/arpitkumar81008-cmd</a>
-            <a href="https://www.linkedin.com/in/arpit-kumar-gupta-0320a4335/" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a>
-            <a href="https://x.com/Arpit_omil" target="_blank" rel="noopener noreferrer">x.com/Arpit_omil</a>
+            <a href="https://www.linkedin.com/in/arpit-kumar-gupta-0320a4335/" target="_blank" rel="noopener noreferrer">linkedin.com/in/arpit-kumar-gupta-0320a4335</a>
           </div>
         </header>
 
@@ -385,10 +481,7 @@
             <section class="resume-section">
               <h2>Profile</h2>
               <p>
-                First-year B.Tech CSE undergraduate driven by exploring what technology can do and
-                implementing it in real life—spanning embedded Edge AI hardware (ESP32-S3), autonomous
-                research agents, and practical web applications. Extroverted public speaker who enjoys
-                delivering technical presentations, pitching prototypes, and collaborating in teams.
+                First-year B.Tech CSE student focused on turning technical ideas into working real-world systems—spanning soldered ESP32-S3 Edge AI hardware, autonomous Gemini research agents, and production React/Firebase web apps. 2× 1st-place hackathon winner and confident stage speaker experienced in integrating team codebases and pitching live demos.
               </p>
             </section>
 
@@ -399,15 +492,15 @@
                   <strong>1st Place — Unprompted Hackathon</strong>
                   <span class="resume-tag">Meridian × Proxy</span>
                 </div>
-                <p>Built and pitched a timezone-equity and asynchronous AI meeting-proxy platform for distributed teams.</p>
+                <p>Engineered the <strong>Meridian</strong> burnout-tracking engine monitoring overtime &amp; late-night calls per teammate to rotate global schedules fairly.</p>
               </div>
 
               <div class="resume-award">
                 <div class="resume-row">
                   <strong>1st Place — The Problem Protocol Hackathon</strong>
-                  <span class="resume-tag">Campus Water Conservation</span>
+                  <span class="resume-tag">Campus Water Portal</span>
                 </div>
-                <p>Designed and presented a campus water leak detection and conservation solution focused on early anomaly detection and rapid maintenance alerts.</p>
+                <p>Built the web reporting portal where users capture leak photos, attach live Google Maps API coordinates, and dispatch repair tickets to maintenance teams.</p>
               </div>
 
               <div class="resume-award">
@@ -415,54 +508,65 @@
                   <strong>6th Place — Smart India Hackathon (SIH) 2026 (Internal)</strong>
                   <span class="resume-tag">ESP32-S3 Voice AI</span>
                 </div>
-                <p>Engineered a dual-core FreeRTOS Edge AI voice assistant with a local FastAPI, Silero VAD, and Faster-Whisper inference server.</p>
+                <p>Led hardware soldering &amp; prototyping, integrated and flashed team modules onto dual-core ESP32-S3 firmware, and delivered the live stage pitch &amp; demo.</p>
               </div>
             </section>
 
             <section class="resume-section">
-              <h2>Selected Projects</h2>
+              <h2>Selected Engineering Projects</h2>
 
               <div class="resume-project">
                 <div class="resume-row">
-                  <strong>Meridian × Proxy — Timezone Burnout &amp; Async Meeting Proxy</strong>
-                  <a href="https://github.com/arpitkumar81008-cmd" target="_blank" rel="noopener noreferrer">GitHub</a>
+                  <strong>VanshVriksha (वंश वृक्ष) — Bilingual Family Tree Platform</strong>
+                  <a href="https://vanshvriksha.web.app" target="_blank" rel="noopener noreferrer">vanshvriksha.web.app</a>
                 </div>
-                <p class="resume-muted">HTML, CSS, Tailwind CSS, JavaScript, Python · 1st Place, Unprompted Hackathon</p>
+                <p class="resume-muted">React 18, Vite, Firebase Auth &amp; Cloud Firestore, JavaScript, PWA · Solo Creator</p>
                 <ul class="resume-list">
-                  <li>Built an interactive multi-screen web product combining fair meeting rotation (Meridian) with pre-meeting briefings and decision summaries (Proxy).</li>
+                  <li>Built a bilingual (English/हिन्दी) lineage platform with a dual-mode zero-collision spatial layout engine, offline-capable Devanagari transliteration, Indian kinship solver, private Firestore sync, and 2× DPI poster export.</li>
                 </ul>
               </div>
 
               <div class="resume-project">
                 <div class="resume-row">
-                  <strong>Campus Water Leak &amp; Conservation System</strong>
-                  <a href="https://github.com/arpitkumar81008-cmd" target="_blank" rel="noopener noreferrer">GitHub</a>
+                  <strong>Meridian × Proxy — Burnout Tracker &amp; Async Meeting Proxy</strong>
+                  <a href="https://arpitkumar81008-cmd.github.io/assets/meridian-demo/dashboard.html" target="_blank" rel="noopener noreferrer">Live Demo</a>
                 </div>
-                <p class="resume-muted">Systems Design, IoT Monitoring, Prototyping · 1st Place, The Problem Protocol</p>
+                <p class="resume-muted">HTML, CSS, Tailwind CSS, JavaScript, Python · Role: Meridian Burnout Module</p>
                 <ul class="resume-list">
-                  <li>Architected a campus-wide water conservation and leak detection workflow to pinpoint pipeline leaks early and reduce institutional water wastage.</li>
+                  <li>Developed the Meridian burnout tracker quantifying off-hours and overtime meeting burden per engineer and automating fair timezone rotation alongside Proxy async summaries.</li>
                 </ul>
               </div>
 
               <div class="resume-project">
                 <div class="resume-row">
-                  <strong>Edge AI Voice Assistant (SIH 2026)</strong>
-                  <a href="https://github.com/arpitkumar81008-cmd/SIH-ESP32-S3-Voice-Assistant" target="_blank" rel="noopener noreferrer">GitHub</a>
+                  <strong>ESP32-S3 Edge AI Voice Assistant (SIH 2026)</strong>
+                  <a href="https://github.com/arpitkumar81008-cmd" target="_blank" rel="noopener noreferrer">Hardware &amp; Firmware</a>
                 </div>
-                <p class="resume-muted">C++ (FreeRTOS), ESP32-S3, INMP441 I2S, Python, FastAPI, Faster-Whisper, Silero VAD</p>
+                <p class="resume-muted">C/C++ (FreeRTOS), ESP32-S3, INMP441 I2S, Python, FastAPI, Faster-Whisper, Silero VAD</p>
                 <ul class="resume-list">
-                  <li>Partitioned dual-core FreeRTOS firmware (Core 0: I2S DMA + DC filter; Core 1: 921,600-baud serial/WebSocket framing) and cut end-to-end latency from ~4.5s to ~1.5s.</li>
+                  <li>Soldered the ESP32-S3 + INMP441 MEMS hardware bench, compiled &amp; flashed integrated dual-core FreeRTOS firmware (921,600-baud streaming, ~4.5s → ~1.5s latency), and pitched live.</li>
                 </ul>
               </div>
 
               <div class="resume-project">
                 <div class="resume-row">
-                  <strong>ResearchMesh — Evidence-Backed Autonomous Research Agent</strong>
+                  <strong>Campus Water Leak Reporting Website</strong>
+                  <a href="https://github.com/arpitkumar81008-cmd" target="_blank" rel="noopener noreferrer">1st Place Build</a>
+                </div>
+                <p class="resume-muted">HTML, CSS, JavaScript, Google Maps API · Role: Web App &amp; Maps Geotagging</p>
+                <ul class="resume-list">
+                  <li>Built the leak-reporting web interface enabling photo uploads tagged with Google Maps API location coordinates, automatically routing tickets to campus maintenance crews.</li>
+                </ul>
+              </div>
+
+              <div class="resume-project">
+                <div class="resume-row">
+                  <strong>ResearchMesh — Autonomous Evidence-Backed Research Agent</strong>
                   <a href="https://github.com/arpitkumar81008-cmd/ResearchMesh" target="_blank" rel="noopener noreferrer">GitHub</a>
                 </div>
-                <p class="resume-muted">Python, Google Gemini (google-genai), TinyFish SDK, Pydantic, Streamlit · TechnoJam Club</p>
+                <p class="resume-muted">Python, Google Gemini SDK, TinyFish SDK, Pydantic, Streamlit · Solo ~1-Hr Sprint</p>
                 <ul class="resume-list">
-                  <li>Built a 4-stage web discovery, Chromium extraction, and structured synthesis pipeline with tiered 429/503 Gemini fallback and Markdown/JSON export.</li>
+                  <li>Shipped a solo 4-stage web discovery, Chromium extraction, and conflict-aware synthesis agent with tiered 429/503 Gemini fallback during a 1-hour TechnoJam sprint.</li>
                 </ul>
               </div>
             </section>
@@ -498,26 +602,26 @@
                 </div>
               </div>
               <div class="resume-skill-block">
-                <span class="resume-skill-label">Hardware &amp; AI</span>
+                <span class="resume-skill-label">Web &amp; Cloud</span>
                 <div class="resume-skill-chips">
-                  <span>ESP32-S3</span><span>FreeRTOS</span><span>FastAPI</span><span>Gemini SDK</span><span>Faster-Whisper</span><span>Silero VAD</span>
+                  <span>React 18</span><span>Vite</span><span>Firebase</span><span>Firestore</span><span>Google Maps API</span><span>Tailwind CSS</span>
                 </div>
               </div>
               <div class="resume-skill-block">
-                <span class="resume-skill-label">Tools &amp; Frameworks</span>
+                <span class="resume-skill-label">Hardware &amp; AI</span>
                 <div class="resume-skill-chips">
-                  <span>Git</span><span>GitHub</span><span>Tailwind CSS</span><span>Streamlit</span><span>Pydantic</span>
+                  <span>ESP32-S3</span><span>FreeRTOS</span><span>INMP441 I2S</span><span>Hardware Soldering</span><span>FastAPI</span><span>Gemini SDK</span><span>Faster-Whisper</span><span>Pydantic</span>
                 </div>
               </div>
             </section>
 
             <section class="resume-section">
-              <h2>Communication &amp; Strengths</h2>
+              <h2>Leadership &amp; Strengths</h2>
               <ul class="resume-list">
-                <li>Public speaking &amp; live technical presentations</li>
-                <li>Hackathon pitching &amp; product storytelling</li>
-                <li>Extroverted team collaborator &amp; rapid prototyper</li>
-                <li>Active member, TechnoJam Club (Galgotias University)</li>
+                <li>Live hackathon stage pitching &amp; hardware/software demos</li>
+                <li>Cross-team code compilation &amp; hardware-firmware integration</li>
+                <li>Public speaking &amp; technical storytelling</li>
+                <li>Active builder, TechnoJam Club (Galgotias University)</li>
               </ul>
             </section>
           </aside>
@@ -526,8 +630,17 @@
     </div>
   </div>
 
+  <!-- Full-Screen Photo Lightbox -->
+  <div id="media-lightbox" class="lightbox-backdrop" hidden role="dialog" aria-modal="true" aria-label="Expanded photo preview">
+    <button type="button" class="close-btn lightbox-close" data-close-lightbox aria-label="Close photo preview">Close ×</button>
+    <figure class="lightbox-figure">
+      <img id="lightbox-img" src="" alt="" />
+      <figcaption id="lightbox-caption"></figcaption>
+    </figure>
+  </div>
+
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
-  <script src="./app.js?v=4" defer></script>
+  <script src="./app.js?v=6" defer></script>
 </body>
 </html>
