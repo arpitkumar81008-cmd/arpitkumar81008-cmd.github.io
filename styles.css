@@ -1,41 +1,41 @@
 /* ==========================================================================
    Editorial Pastel Design System
-   Warm linen-sand pastel canvas, animated silk waves, Instrument Serif +
-   Inter typography, frosted-glass bars, infinite L→R bento showcase,
-   single forest-pine accent.
+   Crisp warm ivory-linen canvas, animated silk waves, Instrument Serif +
+   Inter typography, frosted-glass bars, infinite R→L bento showcase,
+   high-contrast Light Mode readability.
    ========================================================================== */
 
 :root {
-  --bg-canvas: #ede9e0;
-  --bg-surface: rgba(252, 250, 245, 0.72);
-  --bg-surface-hover: rgba(254, 253, 250, 0.9);
-  --bg-surface-solid: #faf8f3;
+  --bg-canvas: #f4f1ea;
+  --bg-surface: rgba(255, 254, 251, 0.92);
+  --bg-surface-hover: #ffffff;
+  --bg-surface-solid: #ffffff;
 
-  --border-hairline: rgba(28, 27, 24, 0.11);
-  --border-strong: rgba(28, 27, 24, 0.24);
+  --border-hairline: rgba(18, 17, 15, 0.16);
+  --border-strong: rgba(18, 17, 15, 0.32);
 
-  --ink-primary: #1c1b18;
-  --ink-secondary: #534f47;
-  --ink-muted: #7b756b;
+  --ink-primary: #12110f;
+  --ink-secondary: #2c2924;
+  --ink-muted: #4d483f;
 
-  --accent: #254f42;
-  --accent-soft: rgba(37, 79, 66, 0.09);
-  --accent-warm: #a64b2a;
-  --accent-warm-soft: rgba(166, 75, 42, 0.1);
+  --accent: #194235;
+  --accent-soft: rgba(25, 66, 53, 0.11);
+  --accent-warm: #8a3619;
+  --accent-warm-soft: rgba(138, 54, 25, 0.11);
 
   --font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
   /* Translucent Frosted-Glass Surfaces */
-  --header-bg: rgba(237, 233, 224, 0.42);
-  --header-bg-scrolled: rgba(245, 242, 235, 0.62);
-  --hero-bar-bg: rgba(252, 250, 245, 0.46);
-  --glass-border: rgba(28, 27, 24, 0.12);
-  --glass-highlight: rgba(255, 255, 255, 0.62);
-  --spotlight-glow: rgba(37, 79, 66, 0.075);
+  --header-bg: rgba(244, 241, 234, 0.56);
+  --header-bg-scrolled: rgba(252, 250, 246, 0.76);
+  --hero-bar-bg: rgba(255, 254, 251, 0.66);
+  --glass-border: rgba(18, 17, 15, 0.16);
+  --glass-highlight: rgba(255, 255, 255, 0.78);
+  --spotlight-glow: rgba(25, 66, 53, 0.07);
 
-  --tag-bg: rgba(255, 255, 255, 0.54);
+  --tag-bg: #f1ede4;
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -620,48 +620,12 @@ body {
   color: var(--bg-surface-solid);
 }
 
-.view-mode-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.42rem;
-  border: 1px solid var(--border-strong);
-  background: var(--bg-surface);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  color: var(--ink-primary);
-  padding: 0.4rem 0.85rem;
-  border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: 0.73rem;
-  cursor: pointer;
-  transition: all 200ms var(--ease);
-}
-
-.view-mode-btn:hover {
-  background: var(--bg-surface-hover);
-  border-color: var(--accent);
-}
-
-.view-mode-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-soft);
-  transition: background-color 200ms var(--ease), box-shadow 200ms var(--ease);
-}
-
-.view-mode-btn.is-grid .view-mode-dot {
-  background: var(--ink-muted);
-  box-shadow: none;
-}
-
 /* Active Strict Filter Banner */
 .active-filter-bar {
   margin-bottom: 1.25rem;
   padding: 0.65rem 1rem;
   border-radius: 12px;
-  background: var(--hero-bar-bg);
+  background: var(--bg-surface);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--accent);
@@ -672,6 +636,7 @@ body {
   gap: 0.75rem;
   font-family: var(--font-mono);
   font-size: 0.76rem;
+  font-weight: 500;
   color: var(--ink-primary);
   animation: fadeIn 220ms var(--ease);
 }
@@ -688,6 +653,7 @@ body {
   border-radius: 999px;
   font-family: var(--font-mono);
   font-size: 0.72rem;
+  font-weight: 500;
   cursor: pointer;
   transition: all 180ms var(--ease);
 }
@@ -703,7 +669,7 @@ body {
 }
 
 /* ==========================================================================
-   Infinite Left-to-Right Auto-Scrolling Bento Reel + Filtered Bento Grid
+   Infinite Right-to-Left Auto-Scrolling Bento Reel
    ========================================================================== */
 .projects-showcase {
   position: relative;
@@ -757,32 +723,10 @@ body {
   flex-shrink: 0;
 }
 
-/* Static / Filtered Bento Grid */
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 1.25rem;
-}
-
-.projects-grid .project-card {
-  grid-column: span 12;
-  animation: cardFadeUp 340ms var(--ease) both;
-  animation-delay: calc(var(--card-idx, 0) * 60ms);
-}
-
-@media (min-width: 820px) {
-  .projects-grid .project-card.span-7 {
-    grid-column: span 7;
-  }
-  .projects-grid .project-card.span-5 {
-    grid-column: span 5;
-  }
-  .projects-grid .project-card.span-6 {
-    grid-column: span 6;
-  }
-  .projects-grid .project-card.span-12 {
-    grid-column: span 12;
-  }
+/* Single strictly-filtered project view (when exactly 1 project matches) */
+.single-project-wrap {
+  max-width: 580px;
+  animation: cardFadeUp 320ms var(--ease) both;
 }
 
 .project-card {
@@ -795,6 +739,7 @@ body {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border-hairline);
+  box-shadow: 0 10px 30px -22px rgba(18, 17, 15, 0.14);
   cursor: pointer;
   overflow: hidden;
   transition:
@@ -808,7 +753,7 @@ body {
   transform: translateY(-4px);
   background: var(--bg-surface-hover);
   border-color: var(--border-strong);
-  box-shadow: 0 20px 44px -24px rgba(28, 27, 24, 0.24);
+  box-shadow: 0 22px 46px -24px rgba(18, 17, 15, 0.24);
 }
 
 .project-preview {
@@ -869,13 +814,14 @@ body {
   gap: 0.75rem;
   margin-bottom: 0.95rem;
   font-family: var(--font-mono);
-  font-size: 0.71rem;
+  font-size: 0.72rem;
 }
 
 .project-badge {
+  font-weight: 500;
   color: var(--accent);
   background: var(--accent-soft);
-  padding: 0.22rem 0.62rem;
+  padding: 0.24rem 0.65rem;
   border-radius: 999px;
 }
 
@@ -885,6 +831,7 @@ body {
 }
 
 .project-year {
+  font-weight: 500;
   color: var(--ink-muted);
 }
 
@@ -892,7 +839,7 @@ body {
   margin: 0 0 0.45rem;
   font-family: var(--font-serif);
   font-weight: 400;
-  font-size: 1.62rem;
+  font-size: 1.65rem;
   line-height: 1.14;
   color: var(--ink-primary);
 }
@@ -900,14 +847,15 @@ body {
 .project-role {
   margin: 0 0 0.6rem;
   font-family: var(--font-mono);
-  font-size: 0.71rem;
+  font-size: 0.72rem;
+  font-weight: 500;
   color: var(--accent);
 }
 
 .project-summary {
   margin: 0;
-  font-size: 0.9rem;
-  line-height: 1.6;
+  font-size: 0.91rem;
+  line-height: 1.62;
   color: var(--ink-secondary);
   max-width: 64ch;
 }
@@ -916,6 +864,7 @@ body {
   margin-top: 0.95rem;
   font-family: var(--font-mono);
   font-size: 0.74rem;
+  font-weight: 500;
   color: var(--ink-primary);
 }
 
@@ -928,9 +877,10 @@ body {
 
 .project-stack span {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.69rem;
+  font-weight: 500;
   color: var(--ink-secondary);
-  padding: 0.18rem 0.52rem;
+  padding: 0.2rem 0.54rem;
   border-radius: 6px;
   border: 1px solid var(--border-hairline);
   background: var(--tag-bg);

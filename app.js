@@ -383,29 +383,24 @@ const SKILL_GROUPS = [
 ];
 
 /* ==========================================================================
-   1. Infinite Left-to-Right Bento Showcase + Strict In-Place Filter
+   1. Infinite Right-to-Left Auto-Scrolling Bento Showcase + Strict Filter
    ========================================================================== */
 
 const projectsShowcase = document.getElementById("projects-showcase");
 const activeFilterBar = document.getElementById("active-filter-bar");
 const activeFilterText = document.getElementById("active-filter-text");
 const clearFilterBtn = document.getElementById("clear-filter-btn");
-const layoutModeBtn = document.getElementById("layout-mode-btn");
-const layoutModeLabel = document.getElementById("layout-mode-label");
 const skillsGrid = document.getElementById("skills-grid");
 const skillStatus = document.getElementById("skill-status");
 
-const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
 let activeFilter = "all";
 let activeSkill = null;
-let userPrefersGrid = prefersReducedMotion;
 
-// Marquee animation state
+// Marquee animation state (Right -> Left)
 let marqueeRafId = null;
 let marqueeLastTs = 0;
 let marqueeOffsetX = 0;
-let marqueeCurrentSpeed = 42; // px per second moving Left -> Right
+let marqueeCurrentSpeed = 48; // px per second moving Right -> Left
 let marqueeHovered = false;
 let marqueeSingleWidth = 0;
 
@@ -436,11 +431,7 @@ function getFilteredProjects() {
   return PROJECTS;
 }
 
-function isMarqueeActive() {
-  return activeFilter === "all" && !activeSkill && !userPrefersGrid;
-}
-
-function buildCardHTML(project, { gridSpanClass = "", cardIdx = 0, isClone = false } = {}) {
+function buildCardHTML(project, { cardIdx = 0, isClone = false } = {}) {
   const primaryLink = project.links[0];
   const badgeClass = project.warmBadge ? "project-badge is-warm" : "project-badge";
   const sizeClass = project.bentoSize === "wide" ? "project-card--wide" : "project-card--compact";
@@ -456,7 +447,7 @@ function buildCardHTML(project, { gridSpanClass = "", cardIdx = 0, isClone = fal
 
   return `
     <article
-      class="project-card ${sizeClass} ${gridSpanClass}"
+      class="project-card ${sizeClass}"
       style="--card-idx: ${cardIdx}"
       data-open-project="${project.id}"
       tabindex="${tabIndexAttr}"
@@ -493,42 +484,22 @@ function buildCardHTML(project, { gridSpanClass = "", cardIdx = 0, isClone = fal
   `;
 }
 
-function computeBentoSpans(count) {
-  if (count === 5) return ["span-7", "span-5", "span-5", "span-7", "span-12"];
-  if (count === 4) return ["span-7", "span-5", "span-5", "span-7"];
-  if (count === 3) return ["span-7", "span-5", "span-12"];
-  if (count === 2) return ["span-6", "span-6"];
-  return ["span-12"];
-}
-
 function updateFilterUI(filteredCount) {
-  const isStrictFiltered = activeFilter !== "all" || Boolean(activeSkill);
+  if (!activeFilterBar || !activeFilterText) return;
 
-  if (activeFilterBar && activeFilterText) {
-    if (activeSkill) {
-      activeFilterBar.hidden = false;
-      activeFilterText.textContent = `Strictly showing ${filteredCount} project${filteredCount === 1 ? "" : "s"} built with ${activeSkill}`;
-    } else if (activeFilter !== "all") {
-      const labelMap = { web: "Web", hardware: "Hardware", ai: "AI Systems" };
-      activeFilterBar.hidden = false;
-      activeFilterText.textContent = `Category: ${labelMap[activeFilter] || activeFilter} — ${filteredCount} project${filteredCount === 1 ? "" : "s"}`;
-    } else {
-      activeFilterBar.hidden = true;
-    }
-  }
-
-  if (layoutModeBtn && layoutModeLabel) {
-    if (isStrictFiltered) {
-      layoutModeBtn.hidden = true;
-    } else {
-      layoutModeBtn.hidden = false;
-      layoutModeBtn.classList.toggle("is-grid", userPrefersGrid);
-      layoutModeLabel.textContent = userPrefersGrid ? "Bento Grid (Click to Auto-Scroll)" : "Auto-Scroll L→R (Click for Grid)";
-    }
+  if (activeSkill) {
+    activeFilterBar.hidden = false;
+    activeFilterText.textContent = `Strictly showing ${filteredCount} project${filteredCount === 1 ? "" : "s"} built with ${activeSkill}`;
+  } else if (activeFilter !== "all") {
+    const labelMap = { web: "Web", hardware: "Hardware", ai: "AI Systems" };
+    activeFilterBar.hidden = false;
+    activeFilterText.textContent = `Category: ${labelMap[activeFilter] || activeFilter} — ${filteredCount} project${filteredCount === 1 ? "" : "s"}`;
+  } else {
+    activeFilterBar.hidden = true;
   }
 }
 
-function startLeftToRightMarquee() {
+function startRightToLeftMarquee() {
   stopMarqueeLoop();
 
   const marqueeEl = projectsShowcase?.querySelector(".bento-marquee");
@@ -538,14 +509,14 @@ function startLeftToRightMarquee() {
 
   function measure() {
     marqueeSingleWidth = firstGroup.offsetWidth;
-    if (marqueeSingleWidth > 0 && (marqueeOffsetX < -marqueeSingleWidth || marqueeOffsetX > 0)) {
-      marqueeOffsetX = -marqueeSingleWidth;
+    if (marqueeSingleWidth > 0 && marqueeOffsetX <= -marqueeSingleWidth) {
+      marqueeOffsetX %= marqueeSingleWidth;
     }
   }
 
   measure();
-  marqueeOffsetX = -marqueeSingleWidth;
-  marqueeCurrentSpeed = 42;
+  marqueeOffsetX = 0;
+  marqueeCurrentSpeed = 48;
   marqueeHovered = false;
 
   marqueeEl.addEventListener("pointerenter", () => {
@@ -570,15 +541,14 @@ function startLeftToRightMarquee() {
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && marqueeSingleWidth > 0) {
         e.preventDefault();
         marqueeOffsetX -= e.deltaX;
-        while (marqueeOffsetX >= 0) marqueeOffsetX -= marqueeSingleWidth;
-        while (marqueeOffsetX < -marqueeSingleWidth) marqueeOffsetX += marqueeSingleWidth;
+        while (marqueeOffsetX <= -marqueeSingleWidth) marqueeOffsetX += marqueeSingleWidth;
+        while (marqueeOffsetX > 0) marqueeOffsetX -= marqueeSingleWidth;
         trackEl.style.transform = `translate3d(${marqueeOffsetX.toFixed(2)}px, 0, 0)`;
       }
     },
     { passive: false }
   );
 
-  // Re-measure when images finish decoding or viewport resizes
   marqueeEl.querySelectorAll("img").forEach((img) => {
     if (!img.complete) {
       img.addEventListener("load", measure, { once: true });
@@ -592,14 +562,14 @@ function startLeftToRightMarquee() {
 
     if (marqueeSingleWidth <= 0) measure();
 
-    const targetSpeed = marqueeHovered || !motionEnabled ? 0 : 44;
+    const targetSpeed = marqueeHovered ? 0 : 48;
     marqueeCurrentSpeed += (targetSpeed - marqueeCurrentSpeed) * 0.085;
 
     if (marqueeSingleWidth > 0 && marqueeCurrentSpeed > 0.05) {
-      // Positive delta moves cards smoothly from LEFT to RIGHT
-      marqueeOffsetX += marqueeCurrentSpeed * dt;
-      if (marqueeOffsetX >= 0) {
-        marqueeOffsetX -= marqueeSingleWidth;
+      // Negative delta moves cards smoothly from RIGHT to LEFT
+      marqueeOffsetX -= marqueeCurrentSpeed * dt;
+      if (marqueeOffsetX <= -marqueeSingleWidth) {
+        marqueeOffsetX += marqueeSingleWidth;
       }
       trackEl.style.transform = `translate3d(${marqueeOffsetX.toFixed(2)}px, 0, 0)`;
     }
@@ -607,16 +577,14 @@ function startLeftToRightMarquee() {
     marqueeRafId = requestAnimationFrame(step);
   }
 
-  trackEl.style.transform = `translate3d(${marqueeOffsetX.toFixed(2)}px, 0, 0)`;
+  trackEl.style.transform = `translate3d(0px, 0, 0)`;
   marqueeRafId = requestAnimationFrame(step);
 }
 
 window.addEventListener("resize", () => {
-  if (isMarqueeActive()) {
-    const firstGroup = projectsShowcase?.querySelector(".bento-marquee__group");
-    if (firstGroup) {
-      marqueeSingleWidth = firstGroup.offsetWidth;
-    }
+  const firstGroup = projectsShowcase?.querySelector(".bento-marquee__group");
+  if (firstGroup) {
+    marqueeSingleWidth = firstGroup.offsetWidth;
   }
 });
 
@@ -627,40 +595,40 @@ function renderProjects() {
   const filtered = getFilteredProjects();
   updateFilterUI(filtered.length);
 
-  if (isMarqueeActive()) {
-    const primaryCards = filtered
-      .map((project, idx) => buildCardHTML(project, { cardIdx: idx, isClone: false }))
-      .join("");
-    const cloneCards = filtered
-      .map((project, idx) => buildCardHTML(project, { cardIdx: idx, isClone: true }))
-      .join("");
-
+  if (filtered.length === 1) {
+    // Strictly 1 matching project: display it cleanly without repeating the identical card
     projectsShowcase.innerHTML = `
-      <div class="bento-marquee" aria-label="Auto-scrolling selected projects showcase">
-        <div class="bento-marquee__track">
-          <div class="bento-marquee__group">${primaryCards}</div>
-          <div class="bento-marquee__group" aria-hidden="true">${cloneCards}</div>
-        </div>
+      <div class="single-project-wrap">
+        ${buildCardHTML(filtered[0], { cardIdx: 0, isClone: false })}
       </div>
     `;
-
-    startLeftToRightMarquee();
-  } else {
-    const spans = computeBentoSpans(filtered.length);
-    projectsShowcase.innerHTML = `
-      <div class="projects-grid">
-        ${filtered
-          .map((project, idx) =>
-            buildCardHTML(project, {
-              gridSpanClass: spans[idx] || "span-12",
-              cardIdx: idx,
-              isClone: false,
-            })
-          )
-          .join("")}
-      </div>
-    `;
+    return;
   }
+
+  const primaryCards = filtered
+    .map((project, idx) => buildCardHTML(project, { cardIdx: idx, isClone: false }))
+    .join("");
+  const cloneCards = filtered
+    .map((project, idx) => buildCardHTML(project, { cardIdx: idx, isClone: true }))
+    .join("");
+
+  // Ensure enough clone groups so even 2- or 3-card filtered sets fill wide monitors seamlessly
+  const extraCloneGroup =
+    filtered.length < 4
+      ? `<div class="bento-marquee__group" aria-hidden="true">${cloneCards}</div>`
+      : "";
+
+  projectsShowcase.innerHTML = `
+    <div class="bento-marquee" aria-label="Auto-scrolling selected projects showcase">
+      <div class="bento-marquee__track">
+        <div class="bento-marquee__group">${primaryCards}</div>
+        <div class="bento-marquee__group" aria-hidden="true">${cloneCards}</div>
+        ${extraCloneGroup}
+      </div>
+    </div>
+  `;
+
+  startRightToLeftMarquee();
 }
 
 function renderSkills() {
@@ -734,11 +702,6 @@ clearFilterBtn?.addEventListener("click", () => {
   if (skillStatus) skillStatus.textContent = "All skills";
   updateFilterTabs();
   renderSkills();
-  renderProjects();
-});
-
-layoutModeBtn?.addEventListener("click", () => {
-  userPrefersGrid = !userPrefersGrid;
   renderProjects();
 });
 
@@ -1117,7 +1080,7 @@ function applyTheme(theme) {
     if (metaThemeColor) metaThemeColor.setAttribute("content", "#161614");
   } else {
     document.documentElement.removeAttribute("data-theme");
-    if (metaThemeColor) metaThemeColor.setAttribute("content", "#ede9e0");
+    if (metaThemeColor) metaThemeColor.setAttribute("content", "#f4f1ea");
   }
   try {
     localStorage.setItem("arpit-theme", theme);
@@ -1139,12 +1102,8 @@ themeToggleBtn?.addEventListener("click", () => {
    7. Visibly Animated Calm Pastel Silk Waves (Organic + Cursor/Scroll Reactive)
    ========================================================================== */
 
-let motionEnabled = !prefersReducedMotion;
+let motionEnabled = true;
 const toggleMotionBtn = document.getElementById("toggle-motion-btn");
-
-if (toggleMotionBtn && !motionEnabled) {
-  toggleMotionBtn.textContent = "Background motion: Paused";
-}
 
 function initPastelWaveCanvas() {
   const canvas = document.getElementById("bg-canvas");
@@ -1179,10 +1138,10 @@ function initPastelWaveCanvas() {
   );
 
   const lightLayers = [
-    { baseY: 0.24, amp: 54, freq: 0.0021, color: "rgba(186, 211, 193, 0.52)", stroke: "rgba(37, 79, 66, 0.09)" },
-    { baseY: 0.48, amp: 68, freq: 0.0017, color: "rgba(236, 207, 188, 0.48)", stroke: "rgba(166, 75, 42, 0.08)" },
-    { baseY: 0.72, amp: 60, freq: 0.0024, color: "rgba(195, 214, 228, 0.46)", stroke: "rgba(58, 92, 122, 0.08)" },
-    { baseY: 0.9, amp: 44, freq: 0.0019, color: "rgba(218, 206, 224, 0.42)", stroke: "rgba(88, 72, 108, 0.07)" },
+    { baseY: 0.24, amp: 54, freq: 0.0021, color: "rgba(186, 211, 193, 0.36)", stroke: "rgba(25, 66, 53, 0.1)" },
+    { baseY: 0.48, amp: 68, freq: 0.0017, color: "rgba(236, 207, 188, 0.33)", stroke: "rgba(138, 54, 25, 0.09)" },
+    { baseY: 0.72, amp: 60, freq: 0.0024, color: "rgba(195, 214, 228, 0.32)", stroke: "rgba(58, 92, 122, 0.09)" },
+    { baseY: 0.9, amp: 44, freq: 0.0019, color: "rgba(218, 206, 224, 0.28)", stroke: "rgba(88, 72, 108, 0.08)" },
   ];
 
   const darkLayers = [

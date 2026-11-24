@@ -18,7 +18,7 @@
     name="description"
     content="Arpit Kumar Gupta — B.Tech CSE student at Galgotias University building Edge AI hardware, autonomous research agents, and full-stack web platforms."
   />
-  <meta name="theme-color" content="#ede9e0" id="meta-theme-color" />
+  <meta name="theme-color" content="#f4f1ea" id="meta-theme-color" />
 
   <!-- Editorial Monogram Favicon & Touch Icon -->
   <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
@@ -48,7 +48,7 @@
     href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="./styles.css?v=6" />
+  <link rel="stylesheet" href="./styles.css?v=7" />
 </head>
 <body>
   <!-- Visibly Animated Calm Pastel Silk Wave Canvas -->
@@ -177,14 +177,14 @@
     </section>
 
     <!-- ================================================================
-         SELECTED WORK (INFINITE L→R BENTO SHOWCASE + STRICT FILTER)
+         SELECTED WORK (INFINITE R→L AUTO-SCROLLING BENTO SHOWCASE)
          ================================================================ -->
     <section id="work" class="section">
       <div class="section-head reveal">
         <div>
           <h2 class="section-title">Selected Work</h2>
           <p class="section-sub">
-            Hover to pause the live bento reel or click any card to inspect my exact role, system flow, and links.
+            Hover any card to pause the bento reel, or click to inspect my role, architecture flow, and live demos.
           </p>
         </div>
 
@@ -195,21 +195,16 @@
             <button type="button" class="filter-tab" data-filter="hardware" role="tab" aria-selected="false">Hardware</button>
             <button type="button" class="filter-tab" data-filter="ai" role="tab" aria-selected="false">AI Systems</button>
           </div>
-
-          <button type="button" id="layout-mode-btn" class="view-mode-btn" title="Switch between infinite auto-scroll and static bento grid">
-            <span class="view-mode-dot" aria-hidden="true"></span>
-            <span id="layout-mode-label">Auto-Scroll</span>
-          </button>
         </div>
       </div>
 
       <!-- Active Filter Banner (shown only when strictly filtering by category or skill) -->
       <div id="active-filter-bar" class="active-filter-bar" hidden>
         <span id="active-filter-text"></span>
-        <button type="button" id="clear-filter-btn" class="clear-filter-btn">Show all work (Auto-scroll) ×</button>
+        <button type="button" id="clear-filter-btn" class="clear-filter-btn">Show all work ×</button>
       </div>
 
-      <!-- Dynamic Bento Showcase Container (Marquee in default state, Strict Bento Grid when filtered) -->
+      <!-- Auto-Scrolling Bento Showcase Container -->
       <div id="projects-showcase" class="projects-showcase"></div>
     </section>
 
@@ -641,6 +636,6 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
-  <script src="./app.js?v=6" defer></script>
+  <script src="./app.js?v=7" defer></script>
 </body>
 </html>
